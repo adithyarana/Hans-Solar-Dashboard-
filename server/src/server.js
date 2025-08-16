@@ -2,6 +2,8 @@ import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/auth.js";
 import cookieParser from "cookie-parser";
+import customerdataRoutes from "./routes/customerdata.js";
+import publicCustomerRoutes from "./routes/publicCustomer.js";
 
 dotenv.config();
 
@@ -18,6 +20,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/admin",authRoutes); // for handling the admin routes
+app.use("/api/admin",customerdataRoutes); // for handling the customer data routes
+app.use("/api/public",publicCustomerRoutes); // for handling the public customer data routes
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

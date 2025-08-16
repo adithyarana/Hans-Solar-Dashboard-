@@ -20,3 +20,57 @@ model Admin {
   createdAt DateTime @default(now())
 
 }
+
+model CustomerData {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  customerId   String   @unique
+  // this form detaisl for customer only 
+  name         String
+  phoneNumber  String
+  whatsappNumber  String?
+  interestAreas String[]
+  address      String?
+  birthday     DateTime?  
+  location     Location?  
+
+  // admin can see full form
+  infoSource   String?
+  notes        String?
+  followUp     DateTime?
+  workCategory String?
+  reelsVideo   String?
+  startDate    DateTime?
+  leadStage    LeadStage  @default(NEW_LEAD)
+  priority     Priority  @default(LOW)
+  progressBoard String?
+  images       String[] // Cloudinary URLs
+  attachments  String[] // Extra documents
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+type Location {
+  district String?
+  tehsil   String?
+  block    String?
+  village  String?
+}
+
+enum LeadStage {
+  NEW_LEAD
+  IN_PROCESS
+  QUALIFIED
+  SITE_VISIT_SCHEDULE
+  SITE_VISIT_DONE
+  ESTIMATE_SENT
+  NEGOTIATION
+  LEAD_LOST
+  ON_HOLD
+  LEAD_WON
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+}
