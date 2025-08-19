@@ -13,40 +13,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Admin {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  email    String @unique
-  password String
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(EMPLOYEE)
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  // Relations
+  leads CustomerData[] @relation("UserLeads")
 }
 
 model CustomerData {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  customerId   String   @unique
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  customerId     String    @unique
   // this form detaisl for customer only 
-  name         String
-  phoneNumber  String
-  whatsappNumber  String?
-  interestAreas String[]
-  address      String?
-  birthday     DateTime?  
-  location     Location?  
+  name           String
+  phoneNumber    String
+  whatsappNumber String?
+  interestAreas  String[]
+  address        String?
+  birthday       DateTime?
+  location       Location?
 
   // admin can see full form
-  infoSource   String?
-  notes        String?
-  followUp     DateTime?
-  workCategory String?
-  reelsVideo   String?
-  startDate    DateTime?
-  leadStage    LeadStage  @default(NEW_LEAD)
-  priority     Priority  @default(LOW)
+  infoSource    String?
+  notes         String?
+  followUp      DateTime?
+  workCategory  String?
+  reelsVideo    String?
+  startDate     DateTime?
+  leadStage     LeadStage @default(NEW_LEAD)
+  priority      Priority  @default(LOW)
   progressBoard String?
-  images       String[] // Cloudinary URLs
-  attachments  String[] // Extra documents
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  images        String[] // Cloudinary URLs
+  attachments   String[] // Extra documents
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+ 
+  // Relation to the user (Employee/Admin who created the lead)
+  createdBy     User?     @relation("UserLeads", fields: [createdById], references: [id])
+  createdById   String?   @db.ObjectId
 }
 
 type Location {
@@ -73,4 +82,9 @@ enum Priority {
   LOW
   MEDIUM
   HIGH
+}
+
+enum Role {
+  ADMIN
+  EMPLOYEE
 }

@@ -1,25 +1,27 @@
 import { Router } from "express";
-import { uploadImage, uploadAttachment } from "../middlewares/multer.js";
-import verifyAdmin from "../middlewares/verifyadmin.js";
+import { verifyUser } from "../middlewares/verifyadmin.js";
 import { Addcustomerdata } from "../controllers/customerdata.js";
 import { getallcustomerdata } from "../controllers/customerdata.js";
-import { getCustomerById } from "../controllers/customerdata.js";
-import { updateCustomer } from "../controllers/customerdata.js";
-import { deleteCustomer } from "../controllers/customerdata.js";
+import { getCustomerdataById } from "../controllers/customerdata.js";
+import { updateCustomerdata } from "../controllers/customerdata.js";
+import { deleteCustomerdata } from "../controllers/customerdata.js";
+import { upload } from "../middlewares/multer.js";
 
 const router = Router();
 
 router.post(
   "/addcustomerdata",
-  verifyAdmin,
-  uploadImage.array("images",5),
-  uploadAttachment.array("attachments",5),
+  verifyUser,
+  upload.fields([
+    { name: "images", maxCount: 5 },
+    { name: "attachments", maxCount: 5 },
+  ]), 
   Addcustomerdata
 );
 
-router.get("/getallcustomerdata",verifyAdmin,getallcustomerdata);
-router.get("/getcustomerbyid/:id",verifyAdmin,getCustomerById);
-router.put("/updatecustomer/:id",verifyAdmin,updateCustomer);
-router.delete("/deletecustomer/:id",verifyAdmin,deleteCustomer);
+router.get("/getallcustomerdata", verifyUser, getallcustomerdata);
+router.get("/getcustomerbyid/:id", verifyUser, getCustomerdataById);
+router.put("/updatecustomer/:id", verifyUser, updateCustomerdata);
+router.delete("/deletecustomer/:id", verifyUser, deleteCustomerdata);
 
 export default router;

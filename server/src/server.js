@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from "dotenv";
-import authRoutes from "./routes/auth.js";
+import authRoutes from "./routes/adminauth.js";
+import employeeRoutes from "./routes/emolyeeauth.js";
 import cookieParser from "cookie-parser";
 import customerdataRoutes from "./routes/customerdata.js";
 import publicCustomerRoutes from "./routes/publicCustomer.js";
@@ -19,8 +20,15 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+// admin routes 
 app.use("/api/admin",authRoutes); // for handling the admin routes
 app.use("/api/admin",customerdataRoutes); // for handling the customer data routes
+
+
+// employee routes 
+app.use("/api/employee",employeeRoutes); // for handling the employee routes
+
+// public routes 
 app.use("/api/public",publicCustomerRoutes); // for handling the public customer data routes
 
 app.listen(port, () => {
