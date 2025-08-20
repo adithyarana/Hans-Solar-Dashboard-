@@ -20,16 +20,21 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
-// admin routes 
-app.use("/api/admin",authRoutes); // for handling the admin routes
-app.use("/api/admin",customerdataRoutes); // for handling the customer data routes
+// admin routes
+app.use("/api/admin/auth", authRoutes); // for handling the admin routes
+// employee routes
+app.use("/api/employee/auth", employeeRoutes); // for handling the employee routes
+
+// customer data routes
+app.use("/api/admin/customer", customerdataRoutes); // for handling the customer data routes
+
+// Employee customer routes
+app.use("/api/employee/customer", customerdataRoutes);
 
 
-// employee routes 
-app.use("/api/employee",employeeRoutes); // for handling the employee routes
 
-// public routes 
-app.use("/api/public",publicCustomerRoutes); // for handling the public customer data routes
+// public routes
+app.use("/api/public", publicCustomerRoutes); // for handling the public customer data routes
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

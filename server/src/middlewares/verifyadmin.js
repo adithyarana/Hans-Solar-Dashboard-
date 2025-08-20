@@ -25,34 +25,14 @@ export const verifyUser = (req, res, next) => {
   }
 };
 
-// to chekc if admin is logged in he can only create the employees
-
-export const verifyAdmin = (req, res, next) => {
-  verifyUser(req, res, () => {
-    if (req.user.role !== "ADMIN") {
-      return res.status(403).json({ message: "Forbidden - Admins only" });
-    }
-    next();
-  });
-};
-
-export const verifyEmployee = (req, res, next) => {
-  verifyUser(req, res, () => {
-    if (req.user.role !== "EMPLOYEE") {
-      return res.status(403).json({ message: "Forbidden - Employees only" });
-    }
-    next();
-  });
-};
-
 /**
  * ✅ Allow both ADMIN and EMPLOYEE but check roles explicitly
  */
-export const verifyRole = (roles) => {
+export const verifyRole = (allowedRoles) => {
   return (req, res, next) => {
     verifyUser(req, res, () => {
-      if (!roles.includes(req.user.role)) {
-        return res.status(403).json({ message: "Forbidden - Not allowed" });
+      if (!allowedRoles.includes(req.user.role)) {
+        return res.status(403).json({ message: "Forbidden - Access denied" });
       }
       next();
     });
