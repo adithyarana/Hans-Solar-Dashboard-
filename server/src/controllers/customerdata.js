@@ -221,6 +221,18 @@ export const updateCustomerdata = async (req, res) => {
         message: "Forbidden - You are not authorized to access this data",
       });
     }
+
+    const updatedCustomer = await prisma.customerData.update({
+      where: {
+        id,
+      },
+      data: req.body,
+    });
+
+    return res.status(200).json({
+      message: "Customer data updated successfully",
+      customer: updatedCustomer,
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
