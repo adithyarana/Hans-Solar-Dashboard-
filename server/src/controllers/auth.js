@@ -57,11 +57,11 @@ export const registerUser = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { name ,  email, password } = req.body;
 
     //  push the auth details in database
 
-    if (!email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -83,6 +83,10 @@ export const login = async (req, res) => {
     console.log(passwordvalid);
 
     if (!passwordvalid) {
+      return res.status(401).json({ message: "INVALID CREDENTIALS" });
+    }
+
+    if(user.name !== name){
       return res.status(401).json({ message: "INVALID CREDENTIALS" });
     }
 
@@ -110,7 +114,7 @@ export const login = async (req, res) => {
       maxAge: 60 * 60 * 1000,
     });
 
-    res.status(200).json({ message: "Login successful", token , user:{name: user.name, email: user.email, role: user.role} });
+    res.status(200).json({ message: "Login successful", token , user:{userId: user.id, name: user.name, email: user.email, role: user.role} });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });

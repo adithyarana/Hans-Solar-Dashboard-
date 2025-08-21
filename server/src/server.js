@@ -1,10 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
 import authRoutes from "./routes/adminauth.js";
-import employeeRoutes from "./routes/emolyeeauth.js";
 import cookieParser from "cookie-parser";
 import customerdataRoutes from "./routes/customerdata.js";
 import publicCustomerRoutes from "./routes/publicCustomer.js";
+import cors from "cors";
 
 dotenv.config();
 
@@ -16,20 +16,25 @@ app.use(express.json()); // for parsing the json data from frontend
 app.use(cookieParser()); // for parsing the cookies from frontend
 app.use(express.urlencoded({ extended: true })); // for parsing the form data from frontend
 
+// app.use(cors());
+
+// frontedn url to access the server
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 // admin routes
-app.use("/api/admin/auth", authRoutes); // for handling the admin routes
-// employee routes
-app.use("/api/employee/auth", employeeRoutes); // for handling the employee routes
-
+app.use("/api/auth", authRoutes); // for handling the admin routes
 // customer data routes
-app.use("/api/admin/customer", customerdataRoutes); // for handling the customer data routes
-
-// Employee customer routes
-app.use("/api/employee/customer", customerdataRoutes);
+app.use("/api/customer", customerdataRoutes); // for handling the customer data routes
+;
 
 
 
