@@ -47,8 +47,8 @@ const Login = () => {
           >
             {({ errors, touched, values, handleChange, handleBlur }) => (
               <Form className="flex flex-col justify-center  gap-4  p-4 h-screen w-[40vw]">
-                <h1 className="mb-17 text-orange-500 text-nowrap text-4xl font-bold">
-                  Both Admin and Employee can Login
+                <h1 className="mb-17 text-orange-500 text-wrap text-2xl font-bold md:text-4xl xl:text-4xl 2xl:text-4xl">
+                  Both Admin and Employee can Sign In
                 </h1>
                 <label
                   className="text-lg font-semibold text-left w-full"
@@ -111,10 +111,10 @@ const Login = () => {
                 )}
 
                 <button
-                  className="bg-gradient-to-r from-orange-500 to-green-500 text-lg font-semibold text-white p-2 rounded w-full cursor-pointer hover:bg-blue-600"
+                  className="bg-gradient-to-r from-orange-500 to-green-500 text-lg font-semibold text-white p-2 rounded w-full cursor-pointer hover:opacity-80"
                   type="submit"
                 >
-                  Login
+                  Sign In
                 </button>
               </Form>
             )}

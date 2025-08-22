@@ -5,6 +5,8 @@ import { RouterProvider } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import MainDashboard from './pages/Dashboard/MainDashboard'
+import { Provider } from 'react-redux'
+import store from './utils/store'
 
 const Router = createBrowserRouter([
   {
@@ -22,19 +24,21 @@ function App() {
 
   return (
   <div>
-   <RouterProvider router={Router}/>
-   <ToastContainer
-   position="top-right"
-   autoClose={5000}
-   hideProgressBar={false}
-   newestOnTop={false}
-   closeOnClick
-   rtl={false}
-   pauseOnFocusLoss
-   draggable
-   pauseOnHover
-   theme="colored"
-   />
+  <Provider store={store}>
+  <RouterProvider router={Router}/>
+  <ToastContainer
+  position="top-right"
+  autoClose={5000}
+  hideProgressBar={false}
+  newestOnTop={false}
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="colored"
+  />
+  </Provider>
   </div>
   )
 }

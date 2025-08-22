@@ -7,8 +7,8 @@ const router = express.Router();
 // admin routes 
 router.post("/registerEmployee", verifyRole(["ADMIN"]), registerUser);
 
-router.post("/login", verifyRole(["ADMIN", "EMPLOYEE"]), login);
+router.post("/login", login);
 
-router.post("/logout", verifyRole(["ADMIN", "EMPLOYEE"]), logout);
+router.post("/logout", logout);
 
 export default router;
