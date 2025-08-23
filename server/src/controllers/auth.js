@@ -34,8 +34,10 @@ export const registerUser = async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);  
 
+    const LowerCaseName = name.toLowerCase();
+
     const CreateUser = {
-      name,
+      name: LowerCaseName,
       email,
       password: hashPassword,
       role,

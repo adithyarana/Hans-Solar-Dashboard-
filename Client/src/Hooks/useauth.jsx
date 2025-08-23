@@ -16,6 +16,7 @@ const useauth = () => {
         { withCredentials: true }
       );
       setUser(userdata.data);
+      
       dispatch(
         LoggedInUser({
           user: userdata?.data?.user,
@@ -23,14 +24,6 @@ const useauth = () => {
         })
       );
       console.log("Login success:", userdata.data);
-
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          user: userdata?.data?.user,
-          token: userdata?.data?.token,
-        })
-      );
 
       return userdata.data;
     } catch (error) {

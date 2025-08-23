@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import MainDashboard from './pages/Dashboard/MainDashboard'
 import { Provider } from 'react-redux'
 import store from './utils/store'
+import DashboadLayout from './Layouts/DashboardLayout.jsx'
+import CustomersData from './pages/Dashboard/CustomersData.jsx'
+import EmployesData from './pages/Dashboard/EmployesData.jsx'
 
 const Router = createBrowserRouter([
   {
@@ -14,9 +17,25 @@ const Router = createBrowserRouter([
     element: <Login/>,
   },
   {
-    path: "/dashboard",
-    element: <MainDashboard/>,
+   
+        path: "/",
+        element: <DashboadLayout/>,
+        children:[
+          {
+            path:"/dashboard",
+            element:<MainDashboard/>
+          },
+          {
+            path:"/dashboard/customers",
+            element:<CustomersData/>
+          },
+          {
+            path:"/dashboard/employees",
+            element:<EmployesData/>
+          }
+        ]
   },
+ 
 
 ])
 
