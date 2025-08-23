@@ -59,6 +59,7 @@ model CustomerData {
 }
 
 type Location {
+  state    String?
   district String?
   tehsil   String?
   block    String?

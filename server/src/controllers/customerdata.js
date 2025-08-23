@@ -102,6 +102,7 @@ export const Addcustomerdata = async (req, res) => {
       address,
       birthday: formatedbirthday,
       location: {
+        state: location?.state || null,
         district: location?.district || null,
         tehsil: location?.tehsil || null,
         block: location?.block || null,

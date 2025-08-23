@@ -1,1 +1,28 @@
 @import "tailwindcss";
+
+/* Hide scrollbar in modal */
+.fixed.inset-0 .overflow-y-auto {
+    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none;  /* IE and Edge */
+}
+
+.fixed.inset-0 .overflow-y-auto::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
+}
+
+/* Custom scrollbar for the rest of the application */
+:not(.fixed.inset-0 .overflow-y-auto)::-webkit-scrollbar {
+    width: 10px;
+}
+
+:not(.fixed.inset-0 .overflow-y-auto)::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+:not(.fixed.inset-0 .overflow-y-auto)::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+:not(.fixed.inset-0 .overflow-y-auto)::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

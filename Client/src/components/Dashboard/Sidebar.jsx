@@ -36,7 +36,7 @@ const Sidebar = () => {
           <IoReorderThreeOutline
             size={28}
             onClick={handleToggle}
-            className="cursor-pointer text-gray-700 hover:text-orange-500 transition-colors"
+            className="cursor-pointer  text-gray-700 hover:text-orange-500 transition-colors"
           />
         </div>
 
@@ -78,20 +78,22 @@ const Sidebar = () => {
             {toggle && "Customers"}
           </NavLink>
 
-          <NavLink
-            to="/dashboard/employees"
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2 rounded-lg transition-all
-               ${
-                 isActive
-                   ? "bg-orange-100 text-orange-500 font-semibold"
-                   : "text-gray-600 hover:bg-gray-100"
-               }`
-            }
-          >
-            <LuUser size={22} />
-            {toggle && "Employees"}
-          </NavLink>
+   {user.role === "ADMIN" && (
+    <NavLink
+    to="/dashboard/employees"
+    className={({ isActive }) =>
+      `flex items-center gap-3 px-3 py-2 rounded-lg transition-all
+       ${
+         isActive
+           ? "bg-orange-100 text-orange-500 font-semibold"
+           : "text-gray-600 hover:bg-gray-100"
+       }`
+    }
+  >
+    <LuUser size={22} />
+    {toggle && "Employees"}
+  </NavLink>
+)}
         </div>
       </div>
 
