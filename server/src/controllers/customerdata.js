@@ -58,37 +58,6 @@ export const Addcustomerdata = async (req, res) => {
 
     // convert birthday to date format
 
-    let formatedbirthday = null;
-
-    if (birthday) {
-      const parsedata = new Date(birthday);
-      formatedbirthday = parsedata;
-    } else {
-      return res.status(400).json({ message: "Invalid birthday format" });
-    }
-
-    // convert followup to  data format
-
-    let formatedfollowup = null;
-
-    if (followUp) {
-      const parsedata = new Date(followUp);
-      formatedfollowup = parsedata;
-    } else {
-      return res.status(400).json({ message: "Invalid followup format" });
-    }
-
-    // convert startdate to  data format
-
-    let formatedstartdate = null;
-
-    if (startDate) {
-      const parsedata = new Date(startDate);
-      formatedstartdate = parsedata;
-    } else {
-      return res.status(400).json({ message: "Invalid startdate format" });
-    }
-
     const customerdata = {
       customerId: generatecustomerId(),
       name,
@@ -100,7 +69,7 @@ export const Addcustomerdata = async (req, res) => {
         ? [interestAreas]
         : [], // fallback empty array
       address,
-      birthday: formatedbirthday,
+      birthday:birthday ? new Date(birthday) : null,
       location: {
         state: location?.state || null,
         district: location?.district || null,
@@ -110,10 +79,14 @@ export const Addcustomerdata = async (req, res) => {
       },
       infoSource,
       notes,
-      followUp: formatedfollowup,
+      followUp: followUp
+        ? new Date(followUp)
+        : null,
       workCategory,
       reelsVideo,
-      startDate: formatedstartdate,
+      startDate: startDate
+        ? new Date(startDate)
+        : null,
       leadStage,
       priority,
       progressBoard,
@@ -293,11 +266,9 @@ export const searchCustomerdataByCustomerId = async (req, res) => {
 
     if (req.user.role === "EMPLOYEE") {
       if (customer.createdById !== req.user.userId) {
-        return res
-          .status(403)
-          .json({
-            message: "Forbidden - You are not authorized to access this data",
-          });
+        return res.status(403).json({
+          message: "Forbidden - You are not authorized to access this data",
+        });
       }
     }
 

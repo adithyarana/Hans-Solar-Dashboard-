@@ -5,7 +5,7 @@ const MainDashboard = () => {
   const user = useSelector((state) => state.userdata?.user);
 
   return (
-    <div className="flex items-center justify-center h-full p-6">
+    <div className="flex items-center justify-center h-full  p-6">
       <div className="bg-white shadow-2xl rounded-2xl p-10 text-center max-w-2xl w-full">
         {/* Welcome Text */}
         <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
