@@ -10,6 +10,7 @@ import store from './utils/store'
 import DashboadLayout from './Layouts/DashboardLayout.jsx'
 import CustomersData from './pages/Dashboard/CustomersData.jsx'
 import EmployesData from './pages/Dashboard/EmployesData.jsx'
+import CustomerDetailsPage from './pages/Dashboard/CustomerDetailsPage.jsx'
 
 const Router = createBrowserRouter([
   {
@@ -32,6 +33,9 @@ const Router = createBrowserRouter([
           {
             path:"/dashboard/employees",
             element:<EmployesData/>
+          },{
+            path:"/dashboard/customers/:id",
+            element:<CustomerDetailsPage/>
           }
         ]
   },
