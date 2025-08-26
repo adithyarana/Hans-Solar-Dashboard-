@@ -3,8 +3,16 @@ import { Formik, Form, Field } from "formik";
 import usePostcustomerData from "../../Hooks/usePostcustomerData";
 import { toast } from "react-toastify";
 
-const CreateLeadForm = ({close}) => {
+const indianStates = [
+  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+  "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
+  "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
+  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan",
+  "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+  "Uttarakhand", "West Bengal"
+];
 
+const CreateLeadForm = ({ close }) => {
   const { Apicall } = usePostcustomerData(); // custom hook for post customer data
   return (
     <div className="max-w-6xl mx-auto p-6  bg-white rounded-2xl">
@@ -29,41 +37,46 @@ const CreateLeadForm = ({close}) => {
           leadStage: "",
           priority: "",
           progressBoard: "",
-          state: "",
-          district: "",
-          tehsil: "",
-          village: "",
+          location: {
+            state: "",
+            district: "",
+            tehsil: "",
+            block: "",
+            village: "",
+          },
           images: [],
           attachments: [],
+        }}
+        validate={(value) => {
+          let errors = {};
+
+          if (!value.name) errors.name = "Name is required";
+          if (value.leadStage === "")
+            errors.leadStage = "Lead Stage is required";
+          if (value.priority === "") errors.priority = "Priority is required";
+          return errors;
         }}
         onSubmit={async (values, { resetForm }) => {
           try {
             // Create FormData instance
             const formData = new FormData();
 
-            // Append text fields
+            // Append non-nested fields (exclude location, images, attachments)
             Object.keys(values).forEach((key) => {
-              if (
-                ![
-                  "images",
-                  "attachments",
-                  "state",
-                  "district",
-                  "tehsil",
-                  "village",
-                ].includes(key)
-              ) {
+              if (!["images", "attachments", "location"].includes(key)) {
                 formData.append(key, values[key] || "");
               }
             });
-            // Append location as nested object
+
+            // Append location object as JSON string
             formData.append(
               "location",
               JSON.stringify({
-                state: values.state,
-                district: values.district,
-                tehsil: values.tehsil,
-                village: values.village,
+                state: values.location?.state || "",
+                district: values.location?.district || "",
+                tehsil: values.location?.tehsil || "",
+                block: values.location?.block || "",
+                village: values.location?.village || "",
               })
             );
 
@@ -86,264 +99,294 @@ const CreateLeadForm = ({close}) => {
               close(false);
             }
           } catch (error) {
-            toast.error("Failed to create lead");
+            toast.error(error.message);
           }
         }}
       >
-
-        {({setFieldValue})=>(
+        {({
+          errors,
+          touched,
+          values,
+          handleChange,
+          handleBlur,
+          setFieldValue,
+        }) => (
           <Form className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Name */}
-          <div>
-            <label className="block font-medium mb-1">Name</label>
-            <Field
-              type="text"
-              name="name"
-              placeholder="Enter name"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Name */}
+            <div>
+              <label className="block font-medium mb-1">Name</label>
+              <Field
+                type="text"
+                name="name"
+                value={values.name}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Enter name"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+              {errors.name && touched.name && (
+                <div className="text-red-500">{errors.name}</div>
+              )}
+            </div>
 
-          {/* Phone Number */}
-          <div>
-            <label className="block font-medium mb-1">Phone Number</label>
-            <Field
-              type="number"
-              name="phoneNumber"
-              placeholder="Enter phone number"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Phone Number */}
+            <div>
+              <label className="block font-medium mb-1">Phone Number</label>
+              <Field
+                type="number"
+                name="phoneNumber"
+                value={values.phoneNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Enter phone number"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* WhatsApp Number */}
-          <div>
-            <label className="block font-medium mb-1">WhatsApp Number</label>
-            <Field
-              type="number"
-              name="whatsappNumber"
-              placeholder="Enter WhatsApp number"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* WhatsApp Number */}
+            <div>
+              <label className="block font-medium mb-1">WhatsApp Number</label>
+              <Field
+                type="number"
+                name="whatsappNumber"
+                placeholder="Enter WhatsApp number"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Interest Areas */}
-          <div>
-            <label className="block font-medium mb-1">Interest Areas</label>
-            <Field
-              type="text"
-              name="interestAreas"
-              placeholder="Enter interest areas"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Interest Areas */}
+            <div>
+              <label className="block font-medium mb-1">Interest Areas</label>
+              <Field
+                type="text"
+                name="interestAreas"
+                placeholder="Enter interest areas"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Address - Full Width */}
-          <div className="md:col-span-2">
-            <label className="block font-medium mb-1">Address</label>
-            <Field
-              type="text"
-              name="address"
-              placeholder="Enter address"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Address - Full Width */}
+            <div className="md:col-span-2">
+              <label className="block font-medium mb-1">Address</label>
+              <Field
+                type="text"
+                name="address"
+                placeholder="Enter address"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Birthday */}
-          <div>
-            <label className="block font-medium mb-1">DOB</label>
-            <Field
-              type="date"
-              name="birthday"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Birthday */}
+            <div>
+              <label className="block font-medium mb-1">DOB</label>
+              <Field
+                type="date"
+                name="birthday"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Info Source */}
-          <div>
-            <label className="block font-medium mb-1">Info Source</label>
-            <Field
-              type="text"
-              name="infoSource"
-              placeholder="Enter info source"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Info Source */}
+            <div>
+              <label className="block font-medium mb-1">Lead Source</label>
+              <Field
+                type="text"
+                name="infoSource"
+                placeholder="Enter info source"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Notes */}
-          <div>
-            <label className="block font-medium mb-1">Notes</label>
-            <Field
-              type="text"
-              name="notes"
-              placeholder="Enter notes"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Notes */}
+            <div>
+              <label className="block font-medium mb-1">Notes</label>
+              <Field
+                type="text"
+                name="notes"
+                placeholder="Enter notes"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Follow Up */}
-          <div>
-            <label className="block font-medium mb-1">Follow Up</label>
-            <Field
-              type="date"
-              name="followUp"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Follow Up */}
+            <div>
+              <label className="block font-medium mb-1">Follow Up</label>
+              <Field
+                type="date"
+                name="followUp"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Work Category */}
-          <div>
-            <label className="block font-medium mb-1">Work Category</label>
-            <Field
-              type="text"
-              name="workCategory"
-              placeholder="Enter work category"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Work Category */}
+            <div>
+              <label className="block font-medium mb-1">Work Category</label>
+              <Field
+                type="text"
+                name="workCategory"
+                placeholder="Enter work category"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Reels Video */}
-          <div>
-            <label className="block font-medium mb-1">Reels Video</label>
-            <Field
-              type="text"
-              name="reelsVideo"
-              placeholder="Enter reels video"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Reels Video */}
+            <div>
+              <label className="block font-medium mb-1">Reels Video</label>
+              <Field
+                type="text"
+                name="reelsVideo"
+                placeholder="Enter reels video"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Start Date */}
-          <div>
-            <label className="block font-medium mb-1">Start Date</label>
-            <Field
-              type="date"
-              name="startDate"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Start Date */}
+            <div>
+              <label className="block font-medium mb-1">Start Date</label>
+              <Field
+                type="date"
+                name="startDate"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Lead Stage */}
-          <div>
-            <label className="block font-medium mb-1">Lead Stage</label>
-            <Field
-              as="select"
-              name="leadStage"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            >
-              <option value="">Select Lead Stage</option>
-              <option value="NEW_LEAD">New Lead</option>
-              <option value="IN_PROCESS">In Process</option>
-              <option value="QUALIFIED">Qualified</option>
-              <option value="SITE_VISIT_SCHEDULE">Site Visit Scheduled</option>
-              <option value="SITE_VISIT_DONE">Site Visit Done</option>
-              <option value="ESTIMATE_SENT">Estimate Sent</option>
-              <option value="NEGOTIATION">Negotiation</option>
-              <option value="LEAD_LOST">Lead Lost</option>
-              <option value="ON_HOLD">On Hold</option>
-              <option value="LEAD_WON">Lead Won</option>
-            </Field>
-          </div>
+            {/* Lead Stage */}
+            <div>
+              <label className="block font-medium mb-1">Lead Stage</label>
+              <Field
+                as="select"
+                name="leadStage"
+                value={values.leadStage}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              >
+                <option value="">Select Lead Stage</option>
+                <option className="text-gray-500" value="NEW_LEAD">New Lead</option>
+                <option className="text-gray-500" value="IN_PROCESS">In Process</option>
+                <option className="text-gray-500" value="QUALIFIED">Qualified</option>
+                <option className="text-gray-500" value="SITE_VISIT_SCHEDULE">
+                  Site Visit Scheduled
+                </option>
+                <option className="text-gray-500" value="SITE_VISIT_DONE">Site Visit Done</option>
+                <option className="text-gray-500" value="ESTIMATE_SENT">Estimate Sent</option>
+                <option className="text-gray-500" value="NEGOTIATION">Negotiation</option>
+                <option className="text-gray-500" value="LEAD_LOST">Lead Lost</option>
+                <option className="text-gray-500" value="ON_HOLD">On Hold</option>
+                <option className="text-gray-500" value="LEAD_WON">Lead Won</option>
+              </Field>
+              {errors.leadStage && touched.leadStage && (
+                <div className="text-red-500">{errors.leadStage}</div>
+              )}
+            </div>
 
-          {/* Priority */}
-          <div>
-            <label className="block font-medium mb-1">Priority</label>
-            <Field
-              as="select"
-              name="priority"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            >
-              <option value="">Select Priority</option>
-              <option value="LOW">Low</option>
-              <option value="MEDIUM">Medium</option>
-              <option value="HIGH">High</option>
-            </Field>
-          </div>
+            {/* Priority */}
+            <div>
+              <label className="block font-medium mb-1">Priority</label>
+              <Field
+                as="select"
+                name="priority"
+                value={values.priority}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              >
+                <option value="">Select Priority</option>
+                <option className="text-gray-500" value="LOW">Low</option>
+                <option className="text-gray-500" value="MEDIUM">Medium</option>
+                <option className="text-gray-500" value="HIGH">High</option>
+              </Field>
+              {errors.priority && touched.priority && (
+                <div className="text-red-500">{errors.priority}</div>
+              )}
+            </div>
 
-          {/* Progress Board */}
-          <div>
-            <label className="block font-medium mb-1">Progress Board</label>
-            <Field
-              type="text"
-              name="progressBoard"
-              placeholder="Enter progress board"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Progress Board */}
+            <div>
+              <label className="block font-medium mb-1">Progress Board</label>
+              <Field
+                type="text"
+                name="progressBoard"
+                placeholder="Enter progress board"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
 
-          {/* Location (State, District, Tehsil, Village) */}
-          <div>
-            <label className="block font-medium mb-1">State</label>
-            <Field
-              type="text"
-              name="state"
-              placeholder="Enter state"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">District</label>
-            <Field
-              type="text"
-              name="district"
-              placeholder="Enter district"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Tehsil</label>
-            <Field
-              type="text"
-              name="tehsil"
-              placeholder="Enter tehsil"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
-          <div>
-            <label className="block font-medium mb-1">Village</label>
-            <Field
-              type="text"
-              name="village"
-              placeholder="Enter village"
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-            />
-          </div>
+            {/* Location (State, District, Tehsil, Village) */}
+            <div>
+              <label className="block font-medium mb-1">State</label>
+            <select onChange={handleChange} onBlur={handleBlur} className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300" name="location.state" id="">
+              <option >Select State</option>
+              {indianStates.map((state , idx)=>(
+                <option className="text-gray-500 " key={idx} value={state}>{state}</option>
+    
+              ))}
+            </select>
+            </div>
+            <div>
+              <label className="block font-medium mb-1">District</label>
+              <Field
+                type="text"
+                name="location.district"
+                placeholder="Enter district"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Tehsil</label>
+              <Field
+                type="text"
+                name="location.tehsil"
+                placeholder="Enter tehsil"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
+            <div>
+              <label className="block font-medium mb-1">Village</label>
+              <Field
+                type="text"
+                name="location.village"
+                placeholder="Enter village"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
 
-          {/* Images */}
-          <div>
-            <label className="block font-medium mb-1">Upload Images</label>
-            <input
-              type="file"
-              name="images"
-              multiple
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              onChange={(e) => setFieldValue("images", e.currentTarget.files)}
-            />
-          </div>
+            {/* Images */}
+            <div>
+              <label className="block font-medium mb-1">Upload Images</label>
+              <input
+                type="file"
+                name="images"
+                multiple
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                onChange={(e) => setFieldValue("images", e.currentTarget.files)}
+              />
+            </div>
 
-          {/* Attachments */}
-          <div>
-            <label className="block font-medium mb-1">Attachments</label>
-            <input
-              type="file"
-              name="attachments"
-              multiple
-              className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              onChange={(e) =>
-                setFieldValue("attachments", e.currentTarget.files)
-              }
-            />
-          </div>
+            {/* Attachments */}
+            <div>
+              <label className="block font-medium mb-1">Attachments</label>
+              <input
+                type="file"
+                name="attachments"
+                multiple
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                onChange={(e) =>
+                  setFieldValue("attachments", e.currentTarget.files)
+                }
+              />
+            </div>
 
-          {/* Submit */}
-          <div className="md:col-span-2 flex justify-center">
-            <button
-              type="submit"
-              className="px-6 py-2 mt-4 w-full font-semibold t cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500"
-            >
-              Create
-            </button>
-          </div>
-        </Form>
+            {/* Submit */}
+            <div className="md:col-span-2 flex justify-center">
+              <button
+                type="submit"
+                className="px-6 py-2 mt-4 w-full font-semibold t cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500"
+              >
+                Create
+              </button>
+            </div>
+          </Form>
         )}
       </Formik>
     </div>

@@ -9,9 +9,12 @@ const usegetcustomerdatabyId = (id) => {
   const Apicall = async () => {
     try {
       setloding(true);
-      const response = await axios.get(GetCustomerDataById + id);
+      const response = await axios.get(`${GetCustomerDataById}${id}`,{
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       setcustomerdatabyid(response.data);
-      console.log("response", response);
+      console.log("response", response?.data);
       setloding(false);
     } catch (error) {
       console.log(error);
@@ -20,8 +23,11 @@ const usegetcustomerdatabyId = (id) => {
   };
 
   useEffect(() => {
-    Apicall();
-  }, []);
+     
+    if(id){
+      Apicall()
+    }
+  }, [id]);
 
   return { customerdatabyid, loding };
 };

@@ -27,10 +27,9 @@ export const Addcustomerdata = async (req, res) => {
       leadStage,
       priority,
       progressBoard,
-      location,
     } = req.body;
 
-    if (!name || !phoneNumber || !address) {
+    if (!name) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -56,7 +55,22 @@ export const Addcustomerdata = async (req, res) => {
       ? req.files.attachments.map((file) => file.path)
       : [];
 
-    // convert birthday to date format
+     
+      let parsedLocation = {};
+
+      if (req.body.location) {
+        try {
+          // If location is already an object, don't parse again
+          parsedLocation = 
+            typeof req.body.location === "string"
+              ? JSON.parse(req.body.location)
+              : req.body.location;
+        } catch (err) {
+          console.error("Invalid location JSON:", err);
+        }
+      }
+      
+
 
     const customerdata = {
       customerId: generatecustomerId(),
@@ -71,11 +85,11 @@ export const Addcustomerdata = async (req, res) => {
       address,
       birthday:birthday ? new Date(birthday) : null,
       location: {
-        state: location?.state || null,
-        district: location?.district || null,
-        tehsil: location?.tehsil || null,
-        block: location?.block || null,
-        village: location?.village || null,
+        state: parsedLocation?.state || null,
+        district: parsedLocation?.district || null,
+        tehsil: parsedLocation?.tehsil || null,
+        block: parsedLocation?.block || null,
+        village: parsedLocation?.village || null,
       },
       infoSource,
       notes,
