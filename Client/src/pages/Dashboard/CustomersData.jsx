@@ -1,10 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import Filter from "../../components/customerdata/Filter";
 import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
 import Dataheading from "../../components/customerdata/Dataheading";
+import { GetCustomerData } from "../../constants/Apiurls";
+import axios from "axios";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
+  const [customerData, setCustomerData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+
+  const fetchCustomerData = useCallback(async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(GetCustomerData, {
+        withCredentials: true,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setCustomerData(response.data);
+    } catch (error) {
+      console.error("Error fetching customer data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    // Check if we're coming back from a delete operation
+    if (location.state?.shouldRefresh) {
+      fetchCustomerData();
+      // Clear the state to prevent unnecessary refetches
+      window.history.replaceState({}, document.title);
+    } else {
+      fetchCustomerData();
+    }
+  }, [fetchCustomerData, location.state]);
 
   return (
     <>
@@ -31,7 +63,7 @@ const CustomersData = () => {
                   ✕
                 </button>
 
-                <CreateLeadForm close={setOpen} />
+                <CreateLeadForm close={setOpen} onSuccess={fetchCustomerData} />
               </div>
             </div>
           )}
@@ -40,7 +72,7 @@ const CustomersData = () => {
 
       <Filter />
 
-      <Dataheading/>
+      <Dataheading customerData={customerData?.customer} loading={loading} />
     </>
   );
 };

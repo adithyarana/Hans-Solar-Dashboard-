@@ -1,5 +1,4 @@
 import React from "react";
-import usegetcustomerdata from "../../Hooks/usegetcustomerdata";
 import { useNavigate } from "react-router-dom";
 import { IoEyeSharp } from "react-icons/io5";
 
@@ -23,12 +22,8 @@ const stageColors = {
   "HIGH": "bg-green-100 text-green-700",
  }
 
-const Dataheading = () => {
+const Dataheading = ({ customerData, loading }) => {
   const navigate = useNavigate();
-  const { customerdata , loading} = usegetcustomerdata();
-  console.log("customerdata", customerdata);
-
-
 
 
   return (
@@ -70,7 +65,7 @@ const Dataheading = () => {
                 <div className="animate-spin  rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
               </td>
             </tr>
-          ) : customerdata?.customer?.map((item, index) => (
+          ) : customerData?.map((item, index) => (
             <tr
               key={index}
               className="hover:bg-white transition border-b cursor-pointer border-gray-300"

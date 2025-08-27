@@ -12,7 +12,7 @@ const indianStates = [
   "Uttarakhand", "West Bengal"
 ];
 
-const CreateLeadForm = ({ close }) => {
+const CreateLeadForm = ({ close, onSuccess }) => {
   const { Apicall } = usePostcustomerData(); // custom hook for post customer data
   return (
     <div className="max-w-6xl mx-auto p-6  bg-white rounded-2xl">
@@ -97,9 +97,10 @@ const CreateLeadForm = ({ close }) => {
               toast.success("Lead created successfully");
               resetForm();
               close(false);
+              onSuccess(); // fetch data after lead creation
             }
           } catch (error) {
-            toast.error(error.message);
+            toast.error(error.response?.data?.message || "Failed to create lead");
           }
         }}
       >

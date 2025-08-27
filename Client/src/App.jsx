@@ -11,6 +11,8 @@ import DashboadLayout from './Layouts/DashboardLayout.jsx'
 import CustomersData from './pages/Dashboard/CustomersData.jsx'
 import EmployesData from './pages/Dashboard/EmployesData.jsx'
 import CustomerDetailsPage from './pages/Dashboard/CustomerDetailsPage.jsx'
+import Protectedroutes from './utils/Protectedroutes'
+
 
 const Router = createBrowserRouter([
   {
@@ -24,18 +26,18 @@ const Router = createBrowserRouter([
         children:[
           {
             path:"/dashboard",
-            element:<MainDashboard/>
+            element:<Protectedroutes><MainDashboard/></Protectedroutes>
           },
           {
             path:"/dashboard/customers",
-            element:<CustomersData/>
+            element:<Protectedroutes><CustomersData/></Protectedroutes>
           },
           {
             path:"/dashboard/employees",
-            element:<EmployesData/>
+            element:<Protectedroutes><EmployesData/></Protectedroutes>
           },{
             path:"/dashboard/customers/:id",
-            element:<CustomerDetailsPage/>
+            element:<Protectedroutes><CustomerDetailsPage/></Protectedroutes>
           }
         ]
   },

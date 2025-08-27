@@ -1,17 +1,16 @@
-// import React from "react";
-// import { useSelector } from "react-redux";
-// import { Outlet, Navigate } from "react-router-dom";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 
-// const Protectedroutes = ( ) => {
-//   const token = useSelector((state) => state.userdata?.token);
-//   console.log("token",token)
+const Protectedroutes = ({children} ) => {
+  const token = useSelector((state) => state.userdata?.token);
+  console.log("token",token)
 
-//   if (!token) {
-//     return <Navigate to="/" />;
-//   }
+  if (!token) {
+    return <Navigate to="/" />;
+  }
 
+  return children;
+};
 
-//   return <Outlet/>;
-// };
-
-// export default Protectedroutes;
+export default Protectedroutes;
