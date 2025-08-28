@@ -6,7 +6,7 @@ const stageColors = {
   "NEW_LEAD": "bg-blue-100 text-blue-700",
   "IN_PROCESS": "bg-yellow-100 text-yellow-700",
   "QUALIFIED": "bg-green-100 text-green-700",
-  "SITE_VISIT_SCHEDULED": "bg-red-100 text-red-700",
+  "SITE_VISIT_SCHEDULE": "bg-red-100 text-red-700",
   "SITE_VISIT_DONE": "bg-red-100 text-red-700",
   "ESTIMATE_SENT": "bg-red-100 text-red-700",
   "NEGOTIATION": "bg-red-100 text-red-700",
@@ -25,6 +25,13 @@ const stageColors = {
 const Dataheading = ({ customerData, loading }) => {
   const navigate = useNavigate();
 
+  if(!customerData || customerData.length === 0){
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-gray-600  text-2xl">No data available</p>
+      </div>
+    )
+  }
 
   return (
     <div className="rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
@@ -52,8 +59,7 @@ const Dataheading = ({ customerData, loading }) => {
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Tehsil</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Block</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Village</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Images</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Attachments</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Lead Photo</th>
           </tr>
         </thead>
 
@@ -134,7 +140,7 @@ const Dataheading = ({ customerData, loading }) => {
               </td>
 
               {/* Attachments with View button */}
-              <td className="px-4 py-2">
+              {/* <td className="px-4 py-2">
                 {item.attachments ? (
                   <a
                     href={item.attachments}
@@ -148,7 +154,7 @@ const Dataheading = ({ customerData, loading }) => {
                 ) : (
                   <span className="text-gray-500 text-2xl text-center">-</span>
                 )}
-              </td>
+              </td> */}
             </tr>
           ))}
         </tbody>

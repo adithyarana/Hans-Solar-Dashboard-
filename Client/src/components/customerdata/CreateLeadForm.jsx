@@ -2,51 +2,82 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import usePostcustomerData from "../../Hooks/usePostcustomerData";
 import { toast } from "react-toastify";
+import useUpdateLead from "../../Hooks/useUpdateLead";
+import { useNavigate } from "react-router-dom";
 
 const indianStates = [
-  "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-  "Delhi", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand",
-  "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur",
-  "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan",
-  "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
-  "Uttarakhand", "West Bengal"
+  "Andhra Pradesh",
+  "Arunachal Pradesh",
+  "Assam",
+  "Bihar",
+  "Chhattisgarh",
+  "Delhi",
+  "Goa",
+  "Gujarat",
+  "Haryana",
+  "Himachal Pradesh",
+  "Jharkhand",
+  "Karnataka",
+  "Kerala",
+  "Madhya Pradesh",
+  "Maharashtra",
+  "Manipur",
+  "Meghalaya",
+  "Mizoram",
+  "Nagaland",
+  "Odisha",
+  "Punjab",
+  "Rajasthan",
+  "Sikkim",
+  "Tamil Nadu",
+  "Telangana",
+  "Tripura",
+  "Uttar Pradesh",
+  "Uttarakhand",
+  "West Bengal",
 ];
 
-const CreateLeadForm = ({ close, onSuccess }) => {
+const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccessId}) => {
   const { Apicall } = usePostcustomerData(); // custom hook for post customer data
+  const { UpdateApicall } = useUpdateLead();
+  const navigate = useNavigate();
   return (
     <div className="max-w-6xl mx-auto p-6  bg-white rounded-2xl">
       <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
-        <span className="text-orange-500 font-semibold">Create</span> Lead
+        <span className="text-orange-500 font-semibold">
+          {" "}
+          {initialData ? "Edit" : "Create"} Lead
+        </span>
       </h2>
 
       <Formik
         initialValues={{
-          name: "",
-          phoneNumber: "",
-          whatsappNumber: "",
-          interestAreas: "",
-          address: "",
-          birthday: "",
-          infoSource: "",
-          notes: "",
-          followUp: "",
-          workCategory: "",
-          reelsVideo: "",
-          startDate: "",
-          leadStage: "",
-          priority: "",
-          progressBoard: "",
+          name: initialData?.name || "",
+          phoneNumber: initialData?.phoneNumber || "",
+          whatsappNumber: initialData?.whatsappNumber || "",
+          interestAreas: initialData?.interestAreas || "",
+          address: initialData?.address || "",
+          birthday: initialData?.birthday || "",
+          infoSource: initialData?.infoSource || "",
+          notes: initialData?.notes || "",
+          followUp: initialData?.followUp || "",
+          workCategory: initialData?.workCategory || "",
+          reelsVideo: initialData?.reelsVideo || "",
+          startDate: initialData?.startDate || "",
+          leadStage: initialData?.leadStage || "",
+          priority: initialData?.priority || "",
+          progressBoard: initialData?.progressBoard || "",
           location: {
-            state: "",
-            district: "",
-            tehsil: "",
-            block: "",
-            village: "",
+            state: initialData?.location?.state || "",
+            district: initialData?.location?.district || "",
+            tehsil: initialData?.location?.tehsil || "",
+            block: initialData?.location?.block || "",
+            village: initialData?.location?.village || "",
           },
           images: [],
           attachments: [],
         }}
+        enableReinitialize
         validate={(value) => {
           let errors = {};
 
@@ -63,10 +94,15 @@ const CreateLeadForm = ({ close, onSuccess }) => {
 
             // Append non-nested fields (exclude location, images, attachments)
             Object.keys(values).forEach((key) => {
-              if (!["images", "attachments", "location"].includes(key)) {
+              if (!["images", "attachments", "location", "birthday", "followUp", "startDate"].includes(key)) {
                 formData.append(key, values[key] || "");
               }
             });
+
+            // Handle date fields to ensure proper ISO-8601 format
+            if (values.birthday) formData.append('birthday', new Date(values.birthday).toISOString());
+            if (values.followUp) formData.append('followUp', new Date(values.followUp).toISOString());
+            if (values.startDate) formData.append('startDate', new Date(values.startDate).toISOString());
 
             // Append location object as JSON string
             formData.append(
@@ -91,16 +127,34 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                 formData.append("attachments", file);
               });
             }
-            const result = await Apicall(formData);
-            console.log(result);
-            if (result) {
-              toast.success("Lead created successfully");
-              resetForm();
-              close(false);
-              onSuccess(); // fetch data after lead creation
+
+            let result;
+            if (initialData) {
+              // update lead
+              result = await UpdateApicall(id, formData);
+              if (result) {
+                toast.success("Lead updated successfully");
+                // navigate("/dashboard/customers");
+                closeedit?.(false);
+                onSuccessId?.();
+              }
+            } else {
+              // create lead
+              result = await Apicall(formData);
+              if (result) {
+                toast.success("Lead created successfully");
+                resetForm();
+                close?.(false);
+                onSuccess?.();
+              }
             }
           } catch (error) {
-            toast.error(error.response?.data?.message || "Failed to create lead");
+            toast.error(
+              error.response?.data?.message ||
+                (initialData
+                  ? "Failed to update lead"
+                  : "Failed to create lead")
+            );
           }
         }}
       >
@@ -157,13 +211,41 @@ const CreateLeadForm = ({ close, onSuccess }) => {
 
             {/* Interest Areas */}
             <div>
-              <label className="block font-medium mb-1">Interest Areas</label>
+              <label className="block font-medium mb-1">Looking For</label>
               <Field
-                type="text"
+                as="select"
                 name="interestAreas"
-                placeholder="Enter interest areas"
+                value={values.interestAreas}
+                onChange={(e) =>
+                  setFieldValue("interestAreas", e.target.value)
+                }
+                onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              />
+              >
+                <option value="">Select what you are looking for</option>
+                <option className="text-gray-500" value="ONGRID">
+                  ONGRID – Connected to electricity grid, no battery, lower cost
+                </option>
+                <option className="text-gray-500" value="HYBRID">
+                  HYBRID – Works with grid + batteries, backup during power cuts
+                </option>
+                <option className="text-gray-500" value="OFFGRID">
+                  OFFGRID – Fully independent, uses only batteries/solar, no
+                  grid
+                </option>
+                <option className="text-gray-500" value="KW_1">
+                  1 KW – Small setup for basic needs
+                </option>
+                <option className="text-gray-500" value="KW_2">
+                  2 KW – Suitable for small homes
+                </option>
+                <option className="text-gray-500" value="KW_3">
+                  3 KW – Medium household usage
+                </option>
+                <option className="text-gray-500" value="KW_4">
+                  4 KW – Higher usage homes
+                </option>
+              </Field>
             </div>
 
             {/* Address - Full Width */}
@@ -231,7 +313,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
             </div>
 
             {/* Reels Video */}
-            <div>
+            {/* <div>
               <label className="block font-medium mb-1">Reels Video</label>
               <Field
                 type="text"
@@ -239,7 +321,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                 placeholder="Enter reels video"
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               />
-            </div>
+            </div> */}
 
             {/* Start Date */}
             <div>
@@ -263,18 +345,36 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
                 <option value="">Select Lead Stage</option>
-                <option className="text-gray-500" value="NEW_LEAD">New Lead</option>
-                <option className="text-gray-500" value="IN_PROCESS">In Process</option>
-                <option className="text-gray-500" value="QUALIFIED">Qualified</option>
+                <option className="text-gray-500" value="NEW_LEAD">
+                  New Lead
+                </option>
+                <option className="text-gray-500" value="IN_PROCESS">
+                  In Process
+                </option>
+                <option className="text-gray-500" value="QUALIFIED">
+                  Qualified
+                </option>
                 <option className="text-gray-500" value="SITE_VISIT_SCHEDULE">
                   Site Visit Scheduled
                 </option>
-                <option className="text-gray-500" value="SITE_VISIT_DONE">Site Visit Done</option>
-                <option className="text-gray-500" value="ESTIMATE_SENT">Estimate Sent</option>
-                <option className="text-gray-500" value="NEGOTIATION">Negotiation</option>
-                <option className="text-gray-500" value="LEAD_LOST">Lead Lost</option>
-                <option className="text-gray-500" value="ON_HOLD">On Hold</option>
-                <option className="text-gray-500" value="LEAD_WON">Lead Won</option>
+                <option className="text-gray-500" value="SITE_VISIT_DONE">
+                  Site Visit Done
+                </option>
+                <option className="text-gray-500" value="ESTIMATE_SENT">
+                  Estimate Sent
+                </option>
+                <option className="text-gray-500" value="NEGOTIATION">
+                  Negotiation
+                </option>
+                <option className="text-gray-500" value="LEAD_LOST">
+                  Lead Lost
+                </option>
+                <option className="text-gray-500" value="ON_HOLD">
+                  On Hold
+                </option>
+                <option className="text-gray-500" value="LEAD_WON">
+                  Lead Won
+                </option>
               </Field>
               {errors.leadStage && touched.leadStage && (
                 <div className="text-red-500">{errors.leadStage}</div>
@@ -293,9 +393,15 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
                 <option value="">Select Priority</option>
-                <option className="text-gray-500" value="LOW">Low</option>
-                <option className="text-gray-500" value="MEDIUM">Medium</option>
-                <option className="text-gray-500" value="HIGH">High</option>
+                <option className="text-gray-500" value="LOW">
+                  Low
+                </option>
+                <option className="text-gray-500" value="MEDIUM">
+                  Medium
+                </option>
+                <option className="text-gray-500" value="HIGH">
+                  High
+                </option>
               </Field>
               {errors.priority && touched.priority && (
                 <div className="text-red-500">{errors.priority}</div>
@@ -316,13 +422,20 @@ const CreateLeadForm = ({ close, onSuccess }) => {
             {/* Location (State, District, Tehsil, Village) */}
             <div>
               <label className="block font-medium mb-1">State</label>
-            <select onChange={handleChange} onBlur={handleBlur} className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300" name="location.state" id="">
-              <option >Select State</option>
-              {indianStates.map((state , idx)=>(
-                <option className="text-gray-500 " key={idx} value={state}>{state}</option>
-    
-              ))}
-            </select>
+              <select
+                onChange={handleChange}
+                onBlur={handleBlur}
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                name="location.state"
+                id=""
+              >
+                <option>Select State</option>
+                {indianStates.map((state, idx) => (
+                  <option className="text-gray-500 " key={idx} value={state}>
+                    {state}
+                  </option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block font-medium mb-1">District</label>
@@ -354,7 +467,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
 
             {/* Images */}
             <div>
-              <label className="block font-medium mb-1">Upload Images</label>
+              <label className="block font-medium mb-1">Lead Photo <span>(Optional)</span></label>
               <input
                 type="file"
                 name="images"
@@ -365,7 +478,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
             </div>
 
             {/* Attachments */}
-            <div>
+            {/* <div>
               <label className="block font-medium mb-1">Attachments</label>
               <input
                 type="file"
@@ -376,7 +489,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                   setFieldValue("attachments", e.currentTarget.files)
                 }
               />
-            </div>
+            </div> */}
 
             {/* Submit */}
             <div className="md:col-span-2 flex justify-center">
@@ -384,7 +497,7 @@ const CreateLeadForm = ({ close, onSuccess }) => {
                 type="submit"
                 className="px-6 py-2 mt-4 w-full font-semibold t cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500"
               >
-                Create
+                {initialData ? "Update" : "Create"}
               </button>
             </div>
           </Form>

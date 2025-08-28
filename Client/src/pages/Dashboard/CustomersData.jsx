@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import Filter from "../../components/customerdata/Filter";
 import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
 import Dataheading from "../../components/customerdata/Dataheading";
@@ -40,7 +40,7 @@ const CustomersData = () => {
 
   return (
     <>
-      <div className="flex justify-between gap-9">
+      <div  className="flex justify-between gap-9">
         <div className=" bg-white w-full text-gray-600 font-medium   p-5 text-xl border border-gray-300 mt-5 ml-5">
           Customer Data
         </div>
@@ -54,7 +54,7 @@ const CustomersData = () => {
           </button>
 
           {open && (
-            <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
+            <div  className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
               <div className="relative bg-white w-full max-w-5xl h-[90vh] rounded-2xl shadow-xl overflow-y-auto p-6">
                 <button
                   onClick={() => setOpen(false)}

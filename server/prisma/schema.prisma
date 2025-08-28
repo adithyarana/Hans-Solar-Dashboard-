@@ -33,7 +33,7 @@ model CustomerData {
   name           String
   phoneNumber    String
   whatsappNumber String?
-  interestAreas  String[]
+  interestAreas  InterestAreas?  @default(ONGRID)
   address        String?
   birthday       DateTime?
   location       Location?
@@ -77,6 +77,16 @@ enum LeadStage {
   LEAD_LOST
   ON_HOLD
   LEAD_WON
+}
+
+enum InterestAreas {
+  ONGRID // ⚡ Ongrid: Low cost, no backup
+  HYBRID  // ⚡ Hybrid: Backup, high cost
+  OFFGRID // ⚡ Off Grid: Electricity in remote areas
+  KW_1   // 1 kW
+  KW_2   // 2 kW
+  KW_3   // 3 kW
+  KW_4   // 4 kW
 }
 
 enum Priority {

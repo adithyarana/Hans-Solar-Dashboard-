@@ -55,35 +55,28 @@ export const Addcustomerdata = async (req, res) => {
       ? req.files.attachments.map((file) => file.path)
       : [];
 
-     
-      let parsedLocation = {};
+    let parsedLocation = {};
 
-      if (req.body.location) {
-        try {
-          // If location is already an object, don't parse again
-          parsedLocation = 
-            typeof req.body.location === "string"
-              ? JSON.parse(req.body.location)
-              : req.body.location;
-        } catch (err) {
-          console.error("Invalid location JSON:", err);
-        }
+    if (req.body.location) {
+      try {
+        // If location is already an object, don't parse again
+        parsedLocation =
+          typeof req.body.location === "string"
+            ? JSON.parse(req.body.location)
+            : req.body.location;
+      } catch (err) {
+        console.error("Invalid location JSON:", err);
       }
-      
-
+    }
 
     const customerdata = {
       customerId: generatecustomerId(),
       name,
       phoneNumber,
       whatsappNumber,
-      interestAreas: Array.isArray(interestAreas)
-        ? interestAreas
-        : interestAreas
-        ? [interestAreas]
-        : [], // fallback empty array
-      address,
-      birthday:birthday ? new Date(birthday) : null,
+      ...(interestAreas && { interestAreas }),
+      ...(address && { address }),
+      birthday: birthday ? new Date(birthday) : null,
       location: {
         state: parsedLocation?.state || null,
         district: parsedLocation?.district || null,
@@ -91,16 +84,12 @@ export const Addcustomerdata = async (req, res) => {
         block: parsedLocation?.block || null,
         village: parsedLocation?.village || null,
       },
-      infoSource,
-      notes,
-      followUp: followUp
-        ? new Date(followUp)
-        : null,
-      workCategory,
-      reelsVideo,
-      startDate: startDate
-        ? new Date(startDate)
-        : null,
+      ...(infoSource && { infoSource }),
+      ...(notes && { notes }),
+      followUp: followUp ? new Date(followUp) : null,
+      ...(workCategory && { workCategory }),
+      ...(reelsVideo && { reelsVideo }),
+      startDate: startDate ? new Date(startDate) : null,
       leadStage,
       priority,
       progressBoard,
@@ -190,17 +179,14 @@ export const updateCustomerdata = async (req, res) => {
     const { id } = req.params;
 
     const customer = await prisma.customerData.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    // if role is employee only get his lead data
-
+    // Role check for EMPLOYEE
     if (
       req.user.role === "EMPLOYEE" &&
       customer.createdById !== req.user.userId
@@ -210,11 +196,34 @@ export const updateCustomerdata = async (req, res) => {
       });
     }
 
+    let parsedLocation = null;
+    if (req.body.location) {
+      try {
+        // if frontend sends as JSON string
+        parsedLocation =
+          typeof req.body.location === "string"
+            ? JSON.parse(req.body.location)
+            : req.body.location;
+
+        parsedLocation = {
+          state: parsedLocation?.state || null,
+          district: parsedLocation?.district || null,
+          tehsil: parsedLocation?.tehsil || null,
+          block: parsedLocation?.block || null,
+          village: parsedLocation?.village || null,
+        };
+      } catch (err) {
+        console.error("Error parsing location:", err);
+        return res.status(400).json({ message: "Invalid location format" });
+      }
+    }
+
     const updatedCustomer = await prisma.customerData.update({
-      where: {
-        id,
+      where: { id },
+      data: {
+        ...req.body,
+        location: parsedLocation ? parsedLocation : undefined,
       },
-      data: req.body,
     });
 
     return res.status(200).json({
@@ -222,7 +231,7 @@ export const updateCustomerdata = async (req, res) => {
       customer: updatedCustomer,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -253,7 +262,7 @@ export const deleteCustomerdata = async (req, res) => {
       .status(200)
       .json({ message: "Customer data deleted successfully" });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -290,7 +299,7 @@ export const searchCustomerdataByCustomerId = async (req, res) => {
       .status(200)
       .json({ message: "Customer data fetched successfully", customer });
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

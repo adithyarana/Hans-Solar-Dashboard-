@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams, useNavigate } from "react-router-dom";
-import usegetcustomerdatabyId from "../../Hooks/usegetcustomerdatabyId";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdDeleteOutline, MdOutlineSmartphone } from "react-icons/md";
@@ -9,6 +8,8 @@ import useDeleteLead from "../../Hooks/useDelateLead";
 import { toast } from "react-toastify";
 import DeletePopup from "../../components/customerdata/DelatePopup";
 import {useSelector} from "react-redux"
+import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
+import useGetCustomerDataById from "../../Hooks/usegetcustomerdatabyId";
 
 const stageColors = {
   NEW_LEAD: "bg-blue-100 text-blue-700",
@@ -26,13 +27,15 @@ const stageColors = {
 const CustomerDetailsPage = () => {
   const [lead, setlead] = useState([]);
   const [open, setopen] = useState(false);
+  const [OpenEdit , setOpenEdit] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userdata?.user);
 
 
-  const { customerdatabyid, loading } = usegetcustomerdatabyId(id);
+  const { customerdatabyid, loading, refetch } = useGetCustomerDataById(id);
   const { Apicall } = useDeleteLead();
+  
 
   useEffect(() => {
     if (customerdatabyid) {
@@ -56,8 +59,11 @@ const CustomerDetailsPage = () => {
     }
   };
 
+
+
   return (
     <>
+    
       <div className="flex items-center gap-1  ml-14 mt-5">
         <NavLink to="/dashboard/customers">
           <span className="text-xl font-semibold text-gray-600">Leads</span>
@@ -157,9 +163,25 @@ const CustomerDetailsPage = () => {
 
             {/* buttons  */}
             <div className="flex gap-3 h-[50px] w-full]">
-              <button className="px-3 py-2 flex gap-1  items-center cursor-pointer hover:opacity-80 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold">
+              <button onClick={()=>setOpenEdit(true)}
+               className="px-3 py-2 flex gap-1  items-center cursor-pointer hover:opacity-80 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold">
                 <MdModeEditOutline size={20} /> <span>Edit</span>
               </button>
+
+            {OpenEdit && (
+            <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
+              <div className="relative bg-white w-full max-w-5xl h-[90vh] rounded-2xl shadow-xl overflow-y-auto p-6">
+                <button
+                  onClick={() => setOpenEdit(false)}
+                  className="absolute top-3 right-3 cursor-pointer text-gray-500 hover:text-red-500 text-xl"
+                >
+                  ✕
+                </button>
+
+                <CreateLeadForm closeedit={setOpenEdit} id={id} initialData={data}   onSuccessId={refetch} />
+              </div>
+            </div>
+          )}
 
           {user.role ==="ADMIN" && (
             <button
