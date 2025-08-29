@@ -1,0 +1,36 @@
+import { useCallback, useEffect, useState } from "react"
+import { GetEmployeeData } from "../../constants/Apiurls"
+import axios from "axios"
+
+// In useGetEmployee.jsx
+const useGetEmployee = () => {
+    const [employeeData, setEmployeeData] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    const getEmployeeData = useCallback(async () => {
+        try {
+            setLoading(true)
+            const response = await axios.get(GetEmployeeData, {
+                withCredentials: true,
+                headers: {
+                    "Content-Type": "application/json" 
+                }
+            })
+            
+            setEmployeeData(response.data.employee || [])
+            setLoading(false)            
+        } catch (error) {
+            console.error("Error fetching employee data:", error)
+            setEmployeeData([]) 
+            setLoading(false)
+        }
+    }, [])
+
+    useEffect(() => {
+        getEmployeeData()
+    }, [getEmployeeData])
+
+    return { employeeData, loading, refetch: getEmployeeData }
+}
+
+export default useGetEmployee

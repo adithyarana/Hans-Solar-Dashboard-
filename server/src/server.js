@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 // admin routes
-app.use("/api/auth", authRoutes); // for handling the admin routes
+app.use("/api", authRoutes); // for handling the admin routes
 // customer data routes
 app.use("/api/customer", customerdataRoutes); // for handling the customer data routes
 ;

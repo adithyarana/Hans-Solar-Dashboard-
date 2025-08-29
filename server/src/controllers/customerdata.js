@@ -186,7 +186,6 @@ export const updateCustomerdata = async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    // Role check for EMPLOYEE
     if (
       req.user.role === "EMPLOYEE" &&
       customer.createdById !== req.user.userId
@@ -196,10 +195,10 @@ export const updateCustomerdata = async (req, res) => {
       });
     }
 
+    // Parse location safely
     let parsedLocation = null;
-    if (req.body.location) {
+    if (req.body?.location) {
       try {
-        // if frontend sends as JSON string
         parsedLocation =
           typeof req.body.location === "string"
             ? JSON.parse(req.body.location)
@@ -218,11 +217,37 @@ export const updateCustomerdata = async (req, res) => {
       }
     }
 
+    // Handle uploads
+    let attachmentsUpdate = customer.attachments || [];
+    let imagesUpdate = customer.images || [];
+
+    if (req.files) {
+      if (req.files.attachments) {
+        attachmentsUpdate = req.files.attachments.map(f => f.path);
+      }
+      if (req.files.images) {
+        imagesUpdate = req.files.images.map(f => f.path);
+      }
+    }
+
+    // Clear if explicitly passed as "[]"
+    if (req.body?.attachments === "[]") {
+      attachmentsUpdate = [];
+    }
+    if (req.body?.images === "[]") {
+      imagesUpdate = [];
+    }
+
+    // ✅ safe destructure
+    const { attachments, images, ...rest } = req.body || {};
+
     const updatedCustomer = await prisma.customerData.update({
       where: { id },
       data: {
-        ...req.body,
+        ...rest,
         location: parsedLocation ? parsedLocation : undefined,
+        attachments: attachmentsUpdate,
+        images: imagesUpdate,
       },
     });
 

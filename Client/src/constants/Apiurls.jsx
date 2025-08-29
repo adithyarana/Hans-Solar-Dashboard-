@@ -1,6 +1,11 @@
-export const LoginApi = "http://localhost:3000/api/auth/login"
-export const PostCustomerData = "http://localhost:3000/api/customer/addcustomerdata"
-export const GetCustomerData = "http://localhost:3000/api/customer/getallcustomerdata"
-export const GetCustomerDataById = "http://localhost:3000/api/customer/getcustomerbyid/"
-export const DeleteLead = "http://localhost:3000/api/customer/deletecustomer/"
-export const UpdateLead = "http://localhost:3000/api/customer/updatecustomer/"
+const Baseurl = "http://localhost:3000/api"
+
+export const LoginApi = `${Baseurl}/login`
+export const PostCustomerData = `${Baseurl}/customer/addcustomerdata`
+export const GetCustomerData = `${Baseurl}/customer/getallcustomerdata`
+export const GetCustomerDataById = `${Baseurl}/customer/getcustomerbyid/`
+export const DeleteLead = `${Baseurl}/customer/deletecustomer/`
+export const UpdateLead = `${Baseurl}/customer/updatecustomer/`
+export const PostEmployeeData = `${Baseurl}/registerEmployee`
+export const GetEmployeeData = `${Baseurl}/getEmployeeData`
+export const DeleteEmployeeData = `${Baseurl}/deleteEmployeeData/`

@@ -35,31 +35,31 @@ const Dataheading = ({ customerData, loading }) => {
 
   return (
     <div className="rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
-      <table className="min-w-max bg-orange-50 rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
+      <table className="min-w-max  shadow-md  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
         {/* Table Head */}
         <thead className=" sticky  top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Customer ID</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Name</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Phone Number</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">WhatsApp Number</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Interest Areas</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Address</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">DOB</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Lead Source</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Notes</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Customer ID</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Name</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Phone Number</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">WhatsApp Number</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Interest Areas</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Address</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">DOB</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Source</th>
+            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Notes</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Follow Up</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Work Category</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Start Date</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Lead Stage</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Priority</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Progress Board</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">State</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">District</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Tehsil</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Work Category</th> */}
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Start Date</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Stage</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Priority</th>
+            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Progress Board</th> */}
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">State</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">District</th>
+            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Tehsil</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Block</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Village</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Lead Photo</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Village</th> */}
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Photo</th>
           </tr>
         </thead>
 
@@ -74,7 +74,7 @@ const Dataheading = ({ customerData, loading }) => {
           ) : customerData?.map((item, index) => (
             <tr
               key={index}
-              className="hover:bg-white transition border-b cursor-pointer border-gray-300"
+              className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
               onClick={() => navigate(`/dashboard/customers/${item.id}`)}
             >
               <td className="px-4 py-2 font-semibold">{item.customerId ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
@@ -87,11 +87,11 @@ const Dataheading = ({ customerData, loading }) => {
                 {item.birthday ? item.birthday.split("T")[0] : <span className="text-gray-500 text-2xl text-center">-</span>}
               </td>
               <td className="px-4 py-2">{item.infoSource || "-"}</td>
-              <td className="px-4 py-2">{item.notes || "-"}</td>
+              {/* <td className="px-4 py-2">{item.notes || "-"}</td>
               <td className="px-4 py-2">
                 {item.followUp ? item.followUp.split("T")[0] : <span className="text-gray-500 text-2xl text-center">-</span>}
               </td>
-              <td className="px-4 py-2">{item.workCategory || "-"}</td>
+              <td className="px-4 py-2">{item.workCategory || "-"}</td> */}
               <td className="px-4 py-2">
                 {item.startDate ? item.startDate.split("T")[0] : <span className="text-gray-500 text-2xl text-center">-</span>}
               </td>
@@ -114,12 +114,12 @@ const Dataheading = ({ customerData, loading }) => {
                 </span>
               </td>
 
-              <td className="px-4 py-2">{item.progressBoard || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              {/* <td className="px-4 py-2">{item.progressBoard || <span className="text-gray-500 text-2xl text-center">-</span>}</td> */}
               <td className="px-4 py-2">{item.location?.state || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.location?.district || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
-              <td className="px-4 py-2">{item.location?.tehsil || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              {/* <td className="px-4 py-2">{item.location?.tehsil || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.location?.block || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
-              <td className="px-4 py-2">{item.location?.village || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              <td className="px-4 py-2">{item.location?.village || <span className="text-gray-500 text-2xl text-center">-</span>}</td> */}
 
               {/* Images with View button */}
               <td className="px-4 py-2 flex gap-3">

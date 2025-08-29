@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import usePostcustomerData from "../../Hooks/usePostcustomerData";
 import { toast } from "react-toastify";
 import useUpdateLead from "../../Hooks/useUpdateLead";
-import { useNavigate } from "react-router-dom";
 
 const indianStates = [
   "Andhra Pradesh",
@@ -37,10 +36,17 @@ const indianStates = [
   "West Bengal",
 ];
 
-const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccessId}) => {
+const CreateLeadForm = ({
+  close,
+  onSuccess,
+  closeedit,
+  initialData,
+  id,
+  onSuccessId,
+}) => {
+  const [loading, setloading] = useState(false);
   const { Apicall } = usePostcustomerData(); // custom hook for post customer data
   const { UpdateApicall } = useUpdateLead();
-  const navigate = useNavigate();
   return (
     <div className="max-w-6xl mx-auto p-6  bg-white rounded-2xl">
       <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
@@ -74,8 +80,8 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
             block: initialData?.location?.block || "",
             village: initialData?.location?.village || "",
           },
-          images: [],
-          attachments: [],
+          images: initialData?.images || [],
+          attachments: initialData?.attachments || [],
         }}
         enableReinitialize
         validate={(value) => {
@@ -94,15 +100,36 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
 
             // Append non-nested fields (exclude location, images, attachments)
             Object.keys(values).forEach((key) => {
-              if (!["images", "attachments", "location", "birthday", "followUp", "startDate"].includes(key)) {
+              if (
+                ![
+                  "images",
+                  "attachments",
+                  "location",
+                  "birthday",
+                  "followUp",
+                  "startDate",
+                ].includes(key)
+              ) {
                 formData.append(key, values[key] || "");
               }
             });
 
             // Handle date fields to ensure proper ISO-8601 format
-            if (values.birthday) formData.append('birthday', new Date(values.birthday).toISOString());
-            if (values.followUp) formData.append('followUp', new Date(values.followUp).toISOString());
-            if (values.startDate) formData.append('startDate', new Date(values.startDate).toISOString());
+            if (values.birthday)
+              formData.append(
+                "birthday",
+                new Date(values.birthday).toISOString()
+              );
+            if (values.followUp)
+              formData.append(
+                "followUp",
+                new Date(values.followUp).toISOString()
+              );
+            if (values.startDate)
+              formData.append(
+                "startDate",
+                new Date(values.startDate).toISOString()
+              );
 
             // Append location object as JSON string
             formData.append(
@@ -116,19 +143,30 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
               })
             );
 
-            // Append files
-            if (values.images) {
+            // Handle images
+            if (values.images && values.images.length > 0) {
               Array.from(values.images).forEach((file) => {
-                formData.append("images", file);
+                if (file instanceof File) {
+                  formData.append("images", file); // ✅ new files
+                } else {
+                  formData.append("images", file); // ✅ keep old URLs
+                }
               });
             }
-            if (values.attachments) {
+
+            // Handle attachments
+            if (values.attachments && values.attachments.length > 0) {
               Array.from(values.attachments).forEach((file) => {
-                formData.append("attachments", file);
+                if (file instanceof File) {
+                  formData.append("attachments", file); // ✅ new files
+                } else {
+                  formData.append("attachments", file); // ✅ keep old URLs
+                }
               });
             }
 
             let result;
+            setloading(true);
             if (initialData) {
               // update lead
               result = await UpdateApicall(id, formData);
@@ -137,15 +175,18 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
                 // navigate("/dashboard/customers");
                 closeedit?.(false);
                 onSuccessId?.();
+                setloading(false);
               }
             } else {
               // create lead
+              setloading(true);
               result = await Apicall(formData);
               if (result) {
                 toast.success("Lead created successfully");
                 resetForm();
                 close?.(false);
                 onSuccess?.();
+                setloading(false);
               }
             }
           } catch (error) {
@@ -216,9 +257,7 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
                 as="select"
                 name="interestAreas"
                 value={values.interestAreas}
-                onChange={(e) =>
-                  setFieldValue("interestAreas", e.target.value)
-                }
+                onChange={(e) => setFieldValue("interestAreas", e.target.value)}
                 onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
@@ -467,18 +506,25 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
 
             {/* Images */}
             <div>
-              <label className="block font-medium mb-1">Lead Photo <span>(Optional)</span></label>
+              <label className="block font-medium mb-1">
+                Lead Photo <span>(Optional)</span>
+              </label>
               <input
                 type="file"
                 name="images"
                 multiple
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
-                onChange={(e) => setFieldValue("images", e.currentTarget.files)}
+                onChange={(e) =>
+                  setFieldValue("images", [
+                    ...(values.images || []),   // keep old ones
+                    ...Array.from(e.currentTarget.files),
+                  ])
+                }
               />
             </div>
 
             {/* Attachments */}
-            {/* <div>
+            <div>
               <label className="block font-medium mb-1">Attachments</label>
               <input
                 type="file"
@@ -486,18 +532,50 @@ const CreateLeadForm = ({ close, onSuccess, closeedit, initialData, id,onSuccess
                 multiple
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
                 onChange={(e) =>
-                  setFieldValue("attachments", e.currentTarget.files)
+                  setFieldValue("attachments", [
+                    ...(values.attachments || []),
+                    ...Array.from(e.currentTarget.files),
+                  ])
                 }
               />
-            </div> */}
+            </div>
 
             {/* Submit */}
-            <div className="md:col-span-2 flex justify-center">
+            <div className="md:col-span-2  flex justify-center">
               <button
                 type="submit"
-                className="px-6 py-2 mt-4 w-full font-semibold t cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500"
+                disabled={loading}
+                className={`px-6 py-2 mt-4 w-full font-semibold cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500 flex justify-center items-center gap-2 ${
+                  loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
               >
-                {initialData ? "Update" : "Create"}
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      ></path>
+                    </svg>
+                    <span>{initialData ? "Updating..." : "Creating..."}</span>
+                  </>
+                ) : (
+                  <span>{initialData ? "Update" : "Create"}</span>
+                )}
               </button>
             </div>
           </Form>

@@ -10,6 +10,8 @@ import DeletePopup from "../../components/customerdata/DelatePopup";
 import {useSelector} from "react-redux"
 import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
 import useGetCustomerDataById from "../../Hooks/usegetcustomerdatabyId";
+import LeadInformation from "../../components/customerdata/LeadInformation";
+import Attachment from "../../components/customerdata/Attachment";
 
 const stageColors = {
   NEW_LEAD: "bg-blue-100 text-blue-700",
@@ -62,9 +64,9 @@ const CustomerDetailsPage = () => {
 
 
   return (
-    <>
+     <div className="overflow-y-scroll">
     
-      <div className="flex items-center gap-1  ml-14 mt-5">
+      <div className="flex items-center gap-2  ml-14 mt-5">
         <NavLink to="/dashboard/customers">
           <span className="text-xl font-semibold text-gray-600">Leads</span>
         </NavLink>
@@ -83,11 +85,12 @@ const CustomerDetailsPage = () => {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-full">
+        <div className="flex  items-center justify-center h-full">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
         </div>
       ) : (
-        <div className="bg-white border border-gray-50 shadow h-[300px] w-[80vw] ml-14">
+        // upper section
+        <div className="bg-white border mt-5 border-gray-50 shadow  h-[300px] w-[80vw] ml-14">
           <div className="flex gap-3 justify-between p-3 ">
             {/* image and name */}
             <div className="flex ">
@@ -200,8 +203,14 @@ const CustomerDetailsPage = () => {
             </div>
           </div>
         </div>
+
       )}
-    </>
+
+      <div className="ml-14 mt-5 flex gap-6 flex-col">
+        <LeadInformation lead={data}/>
+        <Attachment attachments={data?.attachments || []} />
+      </div>
+    </div>
   );
 };
 
