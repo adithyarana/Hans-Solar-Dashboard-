@@ -1,24 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { Field, Form, Formik } from "formik";
 import usePostemployeedata from "../../Hooks/EmployeeApiHooks/usePostemployeedata.jsx";
 import { toast } from "react-toastify";
+import useEmployeUpdate from "../../Hooks/EmployeeApiHooks/useEmployeUpdate";
 
-const EmployeeForm = ({close,refetch}) => {
+const EmployeeForm = ({close,refetch, closeedit, refetcheditdata, initialData, id}) => {
+  const [loading , setloading] = useState(false)
   const {Postemployeedata} = usePostemployeedata()
+  const {UpdateApicall} = useEmployeUpdate();
   return (
     <div className="flex justify-center w-full items-center min-h-screen">
       <div className="w-full max-w-lg bg-white  p-8 rounded-2xl shadow-xl">
         
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          Add New Employee
+          {initialData ? "Update Employee" : "Add New Employee"}
         </h2>
 
         <Formik
           initialValues={{
-            name: "",
-            email: "",
-            password: "",
-            role: "",
+            name:initialData?.name || "",
+            email: initialData?.email || "",
+            password: initialData?.password || "",
+            role: initialData?.role || "",
           }}
           validate={(values) => {
             const errors = {};
@@ -29,18 +32,38 @@ const EmployeeForm = ({close,refetch}) => {
             return errors;
           }}
           onSubmit={async(values,{resetForm}) => {
-            
-            const result = await Postemployeedata(values)
+            setloading(true)
+            let result;
 
-            if(result){
-              toast.success("Employee Added Successfully")
-             await refetch?.()
-              close(false)
-              resetForm()             
+            if(initialData){
+              result = await UpdateApicall(id, values)
+              toast.success("Employee Updated Successfully")
+              closeedit?.(false)
+              refetcheditdata?.()
+              resetForm()
+              setloading(false)
             }
             else{
-              toast.error("Employee Added Failed")
+              setloading(true)
+              result = await Postemployeedata(values)
+              toast.success("Employee Added Successfully")
+              close?.(false)
+              refetch?.()
+              resetForm() 
+              setloading(false)            
             }
+                       
+            // let result 
+            // await Postemployeedata(values)
+            // if(result){
+            //   toast.success("Employee Added Successfully")
+            //  await refetch?.()
+            //   close(false)
+            //   resetForm()             
+            // }
+            // else{
+            //   toast.error("Employee Added Failed")
+            // }
            
           }}
         >
@@ -134,14 +157,40 @@ const EmployeeForm = ({close,refetch}) => {
                 type="submit"
                 className="w-full cursor-pointer hover:opacity-80 bg-gradient-to-l from-orange-500 to-red-500 text-white py-3 rounded-lg font-semibold shadow hover:bg-indigo-700 transition duration-300"
               >
-                Submit
+                {loading ? (
+                  <>
+                     <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                      ></path>
+                    </svg>
+                    <span>{initialData ? "Updating" : "Adding"}</span>
+                  </>
+                ) : (
+                  initialData ? "Update" : "Add"
+                )}
               </button>
               <button
                 type="button"
-                onClick={() => close(false)}
+                onClick={()=>initialData ? closeedit?.(false) : close?.(false)}
                 className="w-full cursor-pointer hover:opacity-80 bg-gradient-to-l from-orange-500 to-red-500 text-white py-3 rounded-lg font-semibold shadow hover:bg-indigo-700 transition duration-300"
               >
-                Cancel
+                {initialData ? "Cancel" : "Close"}
               </button>
                 </div> 
             </Form>

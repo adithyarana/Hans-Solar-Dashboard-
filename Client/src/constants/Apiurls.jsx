@@ -9,3 +9,4 @@ export const UpdateLead = `${Baseurl}/customer/updatecustomer/`
 export const PostEmployeeData = `${Baseurl}/registerEmployee`
 export const GetEmployeeData = `${Baseurl}/getEmployeeData`
 export const DeleteEmployeeData = `${Baseurl}/deleteEmployeeData/`
+export const UpdateEmployeeData = `${Baseurl}/updateEmployeeData/`

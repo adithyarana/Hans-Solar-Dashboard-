@@ -3,10 +3,12 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import useDeleteEmploye from "../../Hooks/EmployeeApiHooks/useDeleteEmploye";
 import { toast } from "react-toastify";
 import DeletePopup from "./DeletePopup";
+import EmployeeForm from "./EmployeeForm";
 
 const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   
   const [open, setOpen] = useState(false);
+  const [openedit , setopenedit]= useState(false);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
   const { Apicall } = useDeleteEmploye();
 
@@ -42,6 +44,11 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   const openDeleteDialog = (id) => {
     setSelectedEmployeeId(id);
     setOpen(true);
+  };
+
+  const openEditDialog = (id) => {
+    setSelectedEmployeeId(id);
+    setopenedit(true);
   };
 
   return (
@@ -80,9 +87,17 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                   <td className="p-3 border-b border-gray-200 flex justify-center gap-3">
 
 
-                    <button className="px-4 py-3 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
+                    {/* // edit popup */}
+                    <button onClick={(c=>openEditDialog(emp.id))} className="px-4 py-3 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
                       <MdEdit />
                     </button>
+                    {openedit && (
+                      <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
+                        <EmployeeForm closeedit={setopenedit} initialData={emp} id={emp.id} refetcheditdata={refetch} />
+                      </div>
+                    )}
+
+                    {/* // delete popup */}
                     <button
                       onClick={() => openDeleteDialog(emp.id)}
                       className="px-4 py-3 cursor-pointer rounded-lg bg-red-500 text-white hover:bg-red-600 transition"

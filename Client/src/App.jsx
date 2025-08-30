@@ -12,6 +12,7 @@ import CustomersData from './pages/Dashboard/CustomersData.jsx'
 import EmployesData from './pages/Employee/EmployesData.jsx'
 import CustomerDetailsPage from './pages/Dashboard/CustomerDetailsPage.jsx'
 import Protectedroutes from './utils/Protectedroutes'
+import Profile from './pages/Dashboard/Profile.jsx'
 
 
 const Router = createBrowserRouter([
@@ -38,6 +39,10 @@ const Router = createBrowserRouter([
           },{
             path:"/dashboard/customers/:id",
             element:<Protectedroutes><CustomerDetailsPage/></Protectedroutes>
+          },
+          {
+            path:"/dashboard/profile",
+            element:<Protectedroutes><Profile/></Protectedroutes>
           }
         ]
   },
