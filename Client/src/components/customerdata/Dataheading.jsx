@@ -34,8 +34,9 @@ const Dataheading = ({ customerData, loading }) => {
   }
 
   return (
+    <>
     <div className="rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
-      <table className="min-w-max  shadow-md  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
+      <table className="min-w-max  shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
         {/* Table Head */}
         <thead className=" sticky  top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
@@ -160,6 +161,20 @@ const Dataheading = ({ customerData, loading }) => {
         </tbody>
       </table>
     </div>
+      {/* Bottom wave flipped */}
+      <div className="absolute bottom-0 left-0 mb-1 w-full overflow-hidden">
+        <svg
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+          className="w-full h-20 transform rotate-180"
+        >
+          <path
+            d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+            className="fill-current text-orange-500/20"
+          ></path>
+        </svg>
+      </div>
+    </>
   );
 };
 

@@ -18,6 +18,7 @@ model User {
   name      String
   email     String   @unique
   password  String
+  normalpass String
   role      Role     @default(EMPLOYEE)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

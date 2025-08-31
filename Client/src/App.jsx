@@ -15,7 +15,7 @@ import Protectedroutes from './utils/Protectedroutes'
 import Profile from './pages/Dashboard/Profile.jsx'
 
 
-const Router = createBrowserRouter([
+const Router = createBrowserRouter([ 
   {
     path: "/",
     element: <Login/>,

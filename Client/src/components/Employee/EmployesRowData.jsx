@@ -4,12 +4,14 @@ import useDeleteEmploye from "../../Hooks/EmployeeApiHooks/useDeleteEmploye";
 import { toast } from "react-toastify";
 import DeletePopup from "./DeletePopup";
 import EmployeeForm from "./EmployeeForm";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 
 const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   
   const [open, setOpen] = useState(false);
   const [openedit , setopenedit]= useState(false);
   const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const { Apicall } = useDeleteEmploye();
 
   if(!employeeData || employeeData.length === 0){
@@ -80,8 +82,9 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                 >
                   <td className="p-3 border-b border-gray-200">{emp.name}</td>
                   <td className="p-3 border-b border-gray-200">{emp.email}</td>
-                  <td className="p-3 border-b border-gray-200">
-                    {maskPassword()}
+                  <td className="p-3 border-b flex gap-4 items-center text-lg border-gray-200">
+                    {showPassword ? emp.normalpass : maskPassword()} 
+                    <span className="cursor-pointer mb-0.5" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
                   </td>
                   <td className="p-3 border-b border-gray-200">{emp.role}</td>
                   <td className="p-3 border-b border-gray-200 flex justify-center gap-3">

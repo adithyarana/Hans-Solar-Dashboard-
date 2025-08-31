@@ -111,12 +111,12 @@ const Sidebar = () => {
             >
               <LuUser size={22} />
               <motion.span
-              initial={{ opacity: 0 }}
-              animate={{ opacity: toggle ? 1 : 0 }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-            >
-              {toggle && "Employees"}
-            </motion.span>
+                initial={{ opacity: 0 }}
+                animate={{ opacity: toggle ? 1 : 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {toggle && "Employees"}
+              </motion.span>
             </NavLink>
           )}
 
@@ -140,17 +140,19 @@ const Sidebar = () => {
               {toggle && "Profile"}
             </motion.span>
           </NavLink>
-        </div>
-      </div>
 
-      <div className="mb-5 px-3">
-        <button
-          onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2 w-full cursor-pointer rounded-lg bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium hover:opacity-90 transition-all"
-        >
-          <FiLogOut size={22} />
-          {toggle && "Logout"}
-        </button>
+          <div className="mb-5 ">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 px-3 py-2 w-full cursor-pointer rounded-lg text-orange-500 font-medium hover:opacity-90 transition-all"
+            >
+              <FiLogOut size={22} />
+              {toggle && "Logout"}
+            </button>
+          </div>
+
+
+        </div>
       </div>
     </div>
   );

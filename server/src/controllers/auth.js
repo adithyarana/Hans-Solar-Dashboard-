@@ -40,9 +40,10 @@ export const registerUser = async (req, res) => {
       name: LowerCaseName,
       email,
       password: hashPassword,
+      normalpass:password,
       role,
     };
-
+    
     const newuser = await prisma.user.create({
       data: CreateUser,
     });
@@ -135,7 +136,8 @@ export const updateEmployeeData = async(req , res)=>{
     const updatedEmployeeData = {
       name: LowerCaseName,
       email,
-      password:hashPassword,
+      password: hashPassword,
+      normalpass: password, 
       role,
     };
 
@@ -247,7 +249,7 @@ export const login = async (req, res) => {
       maxAge: 60 * 60 * 1000,
     });
 
-    res.status(200).json({ message: "Login successful", token , user:{userId: user.id, name: user.name, email: user.email, role: user.role} });
+    res.status(200).json({ message: "Login successful", token , user:{userId: user.id, name: user.name, email: user.email, normalpass: user.normalpass, role: user.role} });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });

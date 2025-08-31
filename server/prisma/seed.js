@@ -11,6 +11,7 @@ async function main() {
       name: "Adithya".toLowerCase(),
       email: "adithya@hanssolar.com",
       password:passwordHash,
+      normalpass:"adithya@123",
       role: "ADMIN",
     },
   });
