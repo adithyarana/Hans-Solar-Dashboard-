@@ -33,56 +33,53 @@ const indianStates = [
   "West Bengal",
 ];
 
+const Filter = ({ handleFilter, closefilter }) => {
+  const [filter, setFilter] = useState({
+    name: "",
+    leadStage: "",
+    priority: "",
+    customerId: "",
+    state: "",
+    district: "",
+    tehsil: "",
+    village: "",
+  });
 
-const Filter = ({leaddata}) => {
-  const [filter , setfilter]=useState({
-    name:"",
-    leadStage:"",
-    priority:"",
-    customerId:"",
-    leadCreatedDate:"",
-    state:"",
-  })
+  const handleChange = (e) => {
+    setFilter({ ...filter, [e.target.name]: e.target.value });
+  };
 
-  const handlechange = (e)=>{
-    setfilter({...filter,[e.target.name]:e.target.value})
-  }
+  const handleSearch = (e) => {
+    e.preventDefault();
+    // If state is selected, include it in the location object
+    const filterCriteria = {
+      ...filter,
+      location: filter.state ? { state: filter.state } : null
+    };
+    handleFilter(filterCriteria);
+  };
 
-  const handleSearch =(e)=>{
-    e.preventDefault()
-
-    const filterdata = leaddata?.filter((data)=>{
-      return (
-        data?.name?.toLowerCase().includes(filter?.name?.toLowerCase()) &&
-        data?.leadStage?.toLowerCase().includes(filter?.leadStage?.toLowerCase()) &&
-        data?.priority?.toLowerCase().includes(filter?.priority?.toLowerCase()) &&
-        data?.customerId?.toLowerCase().includes(filter?.customerId?.toLowerCase()) &&
-        (data?.leadCreatedDate === "" ||
-          new Date(data?.createdAt).toISOString().split("T")[0] ===
-            data?.leadCreatedDate)  &&
-        data?.state?.toLowerCase().includes(filter?.state?.toLowerCase())
-      )
-    })
-
-    setfilter(filterdata)
-    
-  }
-
-  const handleReset =()=>{
-    setfilter({
-      name:"",
-      leadStage:"",
-      priority:"",
-      customerId:"",
-      leadCreatedDate:"",
-      state:"",
-    })
-    setfilter(leaddata)
-  }
+  const handleReset = () => {
+    const resetFilter = {
+      name: "",
+      leadStage: "",
+      priority: "",
+      customerId: "",
+      state: "",
+      district: "",
+      tehsil: "",
+      village: "",
+    };
+    setFilter(resetFilter);
+    handleFilter(null); 
+  };
 
   return (
     <div className="ml-6">
-      <form className="grid grid-cols-5 gap-6 bg-white shadow-lg rounded-xl p-6 w-[1000px]">
+      <form
+        onSubmit={handleSearch}
+        className="grid grid-cols-5 gap-6 bg-white shadow-lg rounded-xl p-6 w-[1000px]"
+      >
         {/* Search by Name */}
         <div>
           <label className="block text-sm font-medium mb-1">Search by Name</label>
@@ -91,7 +88,7 @@ const Filter = ({leaddata}) => {
             placeholder="Enter name"
             name="name"
             value={filter.name}
-            onChange={handlechange}
+            onChange={handleChange}
             className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
           />
         </div>
@@ -99,29 +96,39 @@ const Filter = ({leaddata}) => {
         {/* Lead Status */}
         <div>
           <label className="block text-sm font-medium mb-1">Lead Status</label>
-          <select name="leadStage" value={filter.leadStage} onChange={handlechange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300">
+          <select
+            name="leadStage"
+            value={filter.leadStage}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          >
             <option value="">Select Status</option>
             <option value="NEW_LEAD">New Lead</option>
-            <option value="In Process">In Process</option>
-            <option value="Qualified">Qualified</option>
-            <option value="Site Visit Scheduled">Site Visit Scheduled</option>
-            <option value="Site Visit Done">Site Visit Done</option>
-            <option value="Estimate Sent">Estimate Sent</option>
-            <option value="Negotiation">Negotiation</option>
-            <option value="Lead Lost">Lead Lost</option>
-            <option value="On Hold">On Hold</option>
-            <option value="Lead Won">Lead Won</option>
+            <option value="IN_PROCESS">In Process</option>
+            <option value="QUALIFIED">Qualified</option>
+            <option value="SITE_VISIT_SCHEDULED">Site Visit Scheduled</option>
+            <option value="SITE_VISIT_DONE">Site Visit Done</option>
+            <option value="ESTIMATE_SENT">Estimate Sent</option>
+            <option value="NEGOTIATION">Negotiation</option>
+            <option value="LEAD_LOST">Lead Lost</option>
+            <option value="ON_HOLD">On Hold</option>
+            <option value="LEAD_WON">Lead Won</option>
           </select>
         </div>
 
         {/* Priority */}
         <div>
           <label className="block text-sm font-medium mb-1">Priority</label>
-          <select name="priority" value={filter.priority} onChange={handlechange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300">
+          <select
+            name="priority"
+            value={filter.priority}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          >
             <option value="">Select Priority</option>
-            <option value="Low">Low</option>
-            <option value="Medium">Medium</option>
-            <option value="High">High</option>
+            <option value="LOW">Low</option>
+            <option value="MEDIUM">Medium</option>
+            <option value="HIGH">High</option>
           </select>
         </div>
 
@@ -133,28 +140,24 @@ const Filter = ({leaddata}) => {
             placeholder="Enter customer ID"
             name="customerId"
             value={filter.customerId}
-            onChange={handlechange}
+            onChange={handleChange}
             className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
           />
         </div>
 
-        {/* Lead Created Date */}
-        <div>
-          <label className="block text-sm font-medium mb-1">Lead Created Date</label>
-          <input
-            type="date"
-            name="leadCreatedDate"
-            value={filter.leadCreatedDate}
-            onChange={handlechange}
-            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-          />
-        </div>
+       
 
         {/* State Dropdown */}
         <div>
           <label className="block text-sm font-medium mb-1">State</label>
-          <select name="state" value={filter.state} onChange={handlechange} className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300">
-            {indianStates.map((state, idx) => (
+          <select
+            name="state"
+            value={filter.state}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          >
+            <option value="">Select State</option>
+            {indianStates.filter(state => state !== "Select State").map((state, idx) => (
               <option key={idx} value={state}>
                 {state}
               </option>
@@ -162,16 +165,59 @@ const Filter = ({leaddata}) => {
           </select>
         </div>
 
+{/* // district */}
+        <div>
+          <label className="block text-sm font-medium mb-1">District</label>
+          <input
+          type="text" 
+          placeholder="Enter district"
+          name="district" 
+          value={filter.district}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          />
+
+        </div>
+
+        {/* tehsil */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Tehsil</label>
+          <input
+          type="text" 
+          placeholder="Enter tehsil"
+          name="tehsil" 
+          value={filter.tehsil}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          />
+
+        </div>
+
+        {/* village */}
+        <div>
+          <label className="block text-sm font-medium mb-1">Village</label>
+          <input
+          type="text" 
+          placeholder="Enter village"
+          name="village" 
+          value={filter.village}
+          onChange={handleChange}
+          className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          />
+
+        </div>
+
         {/* Buttons - Full Row */}
         <div className="col-span-3 flex gap-4 mt-4">
           <button
-          onClick={(e)=>e.preventDefault()}
+            onClick={() => closefilter(false)}
             type="submit"
             className="px-8 py-2 cursor-pointer font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full hover:opacity-80 transition"
           >
             Search
           </button>
           <button
+            onClick={handleReset}
             type="reset"
             className="px-8 py-2 cursor-pointer font-semibold bg-gray-200 text-gray-700 rounded-full hover:bg-gray-300 transition"
           >

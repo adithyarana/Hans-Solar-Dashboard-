@@ -12,6 +12,7 @@ import axios from "axios";
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
   const [filteropen, setFilterOpen] = useState(false);
+  const [filterdata, setFilterData] = useState([]);
   const [customerData, setCustomerData] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -23,7 +24,8 @@ const CustomersData = () => {
         withCredentials: true,
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setCustomerData(response.data);
+      setCustomerData(response.data.customer);
+      setFilterData(response.data.customer);
     } catch (error) {
       console.error("Error fetching customer data:", error);
     } finally {
@@ -41,6 +43,42 @@ const CustomersData = () => {
       fetchCustomerData();
     }
   }, [fetchCustomerData, location.state]);
+
+  const handleFilter = (criteria) => {
+    if (!criteria) {
+      // reset filter
+      setFilterData(customerData);
+      return;
+    }
+
+    const filtered = customerData.filter((item) => {
+      // Check if location state matches if provided in criteria
+      const stateMatch =
+        !criteria.location?.state ||
+        (item.location?.state &&
+          item.location.state.toLowerCase() ===
+            criteria.location.state.toLowerCase());
+
+      return (
+        (!criteria.name ||
+          (item.name &&
+            item.name.toLowerCase().includes(criteria.name.toLowerCase()))) &&
+        (!criteria.leadStage || item.leadStage === criteria.leadStage) &&
+        (!criteria.priority || item.priority === criteria.priority) &&
+        (!criteria.customerId ||
+          (item.customerId &&
+            item.customerId
+              .toLowerCase()
+              .includes(criteria.customerId.toLowerCase()))) &&
+        stateMatch &&
+        (!criteria.location?.district || item.location.district.toLowerCase().includes(criteria.location?.district.toLowerCase())) &&
+        (!criteria.location?.tehsil || item.location.tehsil.toLowerCase().includes(criteria.location?.tehsil.toLowerCase())) &&
+        (!criteria.location?.village || item.location.village.toLowerCase().includes(criteria.location?.village.toLowerCase()))
+      );
+    });
+
+    setFilterData(filtered);
+  };
 
   return (
     <>
@@ -86,22 +124,21 @@ const CustomersData = () => {
               <FaFilter className="text-white" size={20} />
             </span>
 
-          
-      {/* Dropdown */}
-      <div
-        className={`absolute top-full mt-3 right-0 z-50 transform transition-all duration-300 ease-in-out ${
-          filteropen
-            ? "opacity-100 scale-100"
-            : "opacity-0 scale-95 pointer-events-none"
-        }`}
-      >
-        <Filter leaddata={customerData?.customer} />
-      </div>
+            {/* Dropdown */}
+            <div
+              className={`absolute top-full mt-3 right-0 z-50 transform transition-all duration-300 ease-in-out ${
+                filteropen
+                  ? "opacity-100 scale-100"
+                  : "opacity-0 scale-95 pointer-events-none"
+              }`}
+            >
+              <Filter leaddata={customerData} handleFilter={handleFilter} closefilter={setFilterOpen} />
+            </div>
           </div>
         </div>
       </div>
 
-      <Dataheading customerData={customerData?.customer} loading={loading} />
+      <Dataheading customerData={filterdata} loading={loading} />
     </>
   );
 };
