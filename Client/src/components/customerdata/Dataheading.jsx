@@ -1,20 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
+import { stageColors } from "../../constants/Apiurls";
 
-const stageColors = {
-  "NEW_LEAD": "bg-blue-100 text-blue-700",
-  "IN_PROCESS": "bg-yellow-100 text-yellow-700",
-  "QUALIFIED": "bg-green-100 text-green-700",
-  "SITE_VISIT_SCHEDULE": "bg-red-100 text-red-700",
-  "SITE_VISIT_DONE": "bg-red-100 text-red-700",
-  "ESTIMATE_SENT": "bg-red-100 text-red-700",
-  "NEGOTIATION": "bg-red-100 text-red-700",
-  "LEAD_LOST": "bg-red-100 text-red-700",
-  "ON_HOLD": "bg-red-100 text-red-700",
-  "LEAD_WON": "bg-red-100 text-red-700",
-
-};
 
  const Prioritycolor ={
   "LOW": "bg-red-100 text-red-700",

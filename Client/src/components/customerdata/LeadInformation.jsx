@@ -1,18 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
+import { stageColors } from "../../constants/Apiurls";
 
-const stageColors = {
-  NEW_LEAD: "bg-blue-100 text-blue-700",
-  IN_PROCESS: "bg-yellow-100 text-yellow-700",
-  QUALIFIED: "bg-green-100 text-green-700",
-  SITE_VISIT_SCHEDULED: "bg-purple-100 text-purple-700",
-  SITE_VISIT_DONE: "bg-indigo-100 text-indigo-700",
-  ESTIMATE_SENT: "bg-orange-100 text-orange-700",
-  NEGOTIATION: "bg-pink-100 text-pink-700",
-  LEAD_LOST: "bg-red-100 text-red-700",
-  ON_HOLD: "bg-gray-200 text-gray-700",
-  LEAD_WON: "bg-green-200 text-green-800",
-};
 
 const LeadInformation = ({ lead }) => {
   const [isOpen, setIsOpen] = useState(false);
