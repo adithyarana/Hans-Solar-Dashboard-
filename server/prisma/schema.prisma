@@ -101,4 +101,5 @@ enum Priority {
 enum Role {
   ADMIN
   EMPLOYEE
+  RECEPTIONIST
 }

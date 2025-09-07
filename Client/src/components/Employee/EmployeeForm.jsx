@@ -149,26 +149,29 @@ const EmployeeForm = ({
               </div>
 
               {/* Role */}
-              <div>
-                <label className="block font-medium text-gray-700 mb-1">
-                  Role
-                </label>
-                <Field
-                  as="select"
-                  name="role"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  className="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-indigo-400 focus:outline-none"
-                >
-                  <option value="">Select Role</option>
-                  <option value="EMPLOYEE">Employee</option>
-                </Field>
-                {errors.role && touched.role && (
-                  <div className="text-red-500 text-sm italic">
-                    {errors.role}
-                  </div>
-                )}
-              </div>
+             {!initialData &&(
+               <div>
+               <label className="block font-medium text-gray-700 mb-1">
+                 Role
+               </label>
+               <Field
+                 as="select"
+                 name="role"
+                 onChange={handleChange}
+                 onBlur={handleBlur}
+                 className="w-full p-3 border rounded-lg bg-white focus:ring-2 focus:ring-indigo-400 focus:outline-none"
+               >
+                 <option value="">Select Role</option>
+                 <option value="EMPLOYEE">Employee</option>
+                 <option value="RECEPTIONIST">Receptionist</option>
+               </Field>
+               {errors.role && touched.role && (
+                 <div className="text-red-500 text-sm italic">
+                   {errors.role}
+                 </div>
+               )}
+             </div>
+             )}
 
               {/* Submit Button */}
               <div className="flex gap-4">

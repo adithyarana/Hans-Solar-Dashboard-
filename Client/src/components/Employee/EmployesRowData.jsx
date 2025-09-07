@@ -69,7 +69,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
         <table className="w-full border-collapse bg-white">
           <thead>
             <tr className="bg-gradient-to-b from-orange-500 to-red-500 text-white text-left">
-              <th className="p-3 border-b">EmpId</th>
+              <th className="p-3 border-b">Emp Id</th>
               <th className="p-3 border-b">Name</th>
               <th className="p-3 border-b">Email</th>
               <th className="p-3 border-b">Password</th>
@@ -91,7 +91,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                   key={emp.id}
                   className="hover:bg-gray-100 transition duration-200"
                 >
-                  <td className="p-3 font-semibold border-b border-gray-200">{emp.empid}</td>
+                  <td className="p-3 font-semibold border-b border-gray-200">{emp.empid || "RECEPTIONIST"}</td>
                   <td className="p-3 border-b border-gray-200">{emp.name}</td>
                   <td className="p-3 border-b border-gray-200">{emp.email}</td>
                   <td className="p-3 border-b flex gap-4 items-center text-lg border-gray-200">

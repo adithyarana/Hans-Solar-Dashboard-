@@ -11,7 +11,9 @@ const MainDashboard = () => {
           {/* Welcome Text */}
           <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
             <span className="text-orange-500">Welcome to</span>{" "}
-            {user.role === "ADMIN" ? "Admin Dashboard" : "Employee Dashboard"}
+            {user.role === "ADMIN" ? "Admin Dashboard" : ""}
+            {user.role === "RECEPTIONIST" ? "Receptionist Dashboard" : ""}
+            {user.role === "EMPLOYEE" ? "Employee Dashboard" : ""}
           </h1>
 
           {/* User Name Highlight */}

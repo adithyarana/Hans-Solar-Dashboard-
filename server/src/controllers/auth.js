@@ -58,7 +58,10 @@ export const registerUser = async (req, res) => {
 
     const LowerCaseName = name.toLowerCase();
 
-    const empId = await countEmployee();
+    let empId;
+    if(role === "EMPLOYEE"){
+      empId = await countEmployee();
+    }
 
     const CreateUser = {
       name: LowerCaseName,
@@ -85,6 +88,7 @@ export const registerUser = async (req, res) => {
 
 export const getEmployeeData = async (req, res) => {
   try {
+
     if (req.user.role !== "ADMIN") {
       return res
         .status(403)
@@ -93,7 +97,7 @@ export const getEmployeeData = async (req, res) => {
 
     const employee = await prisma.user.findMany({
       where: {
-        role: "EMPLOYEE",
+        role: {"in": ["EMPLOYEE", "RECEPTIONIST"]} ,
       },
     });
 

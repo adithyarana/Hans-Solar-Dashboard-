@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { IoEyeSharp } from "react-icons/io5";
+import {useSelector} from "react-redux"
 
 const stageColors = {
   "NEW_LEAD": "bg-blue-100 text-blue-700",
@@ -24,6 +24,7 @@ const stageColors = {
 
 const Dataheading = ({ customerData, loading }) => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.userdata?.user);
 
   if(!customerData || customerData.length === 0){
     return (
@@ -40,7 +41,9 @@ const Dataheading = ({ customerData, loading }) => {
         {/* Table Head */}
         <thead className=" sticky  top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
+          {user.role === "ADMIN" && (
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Created By</th>
+          )}
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Customer ID</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Name</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Phone Number</th>
@@ -79,7 +82,9 @@ const Dataheading = ({ customerData, loading }) => {
               className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
               onClick={() => navigate(`/dashboard/customers/${item.id}`)}
             >
+             {user.role === "ADMIN" && (
               <td className="px-4 py-2 font-semibold">{item.createdByEmpId || "ADMIN"}</td>
+             )}
               <td className="px-4 py-2 font-semibold">{item.customerId ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.name ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.phoneNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>

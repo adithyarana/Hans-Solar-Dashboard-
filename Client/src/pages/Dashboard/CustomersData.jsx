@@ -6,6 +6,7 @@ import Dataheading from "../../components/customerdata/Dataheading";
 import { GetCustomerData } from "../../constants/Apiurls";
 import { FaFilter } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
+import { useSelector } from "react-redux";
 
 import axios from "axios";
 
@@ -16,6 +17,7 @@ const CustomersData = () => {
   const [customerData, setCustomerData] = useState([]);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const user = useSelector((state) => state.userdata?.user);
 
   const fetchCustomerData = useCallback(async () => {
     try {
@@ -71,9 +73,18 @@ const CustomersData = () => {
               .toLowerCase()
               .includes(criteria.customerId.toLowerCase()))) &&
         stateMatch &&
-        (!criteria.location?.district || item.location.district.toLowerCase().includes(criteria.location?.district.toLowerCase())) &&
-        (!criteria.location?.tehsil || item.location.tehsil.toLowerCase().includes(criteria.location?.tehsil.toLowerCase())) &&
-        (!criteria.location?.village || item.location.village.toLowerCase().includes(criteria.location?.village.toLowerCase()))
+        (!criteria.location?.district ||
+          item.location.district
+            .toLowerCase()
+            .includes(criteria.location?.district.toLowerCase())) &&
+        (!criteria.location?.tehsil ||
+          item.location.tehsil
+            .toLowerCase()
+            .includes(criteria.location?.tehsil.toLowerCase())) &&
+        (!criteria.location?.village ||
+          item.location.village
+            .toLowerCase()
+            .includes(criteria.location?.village.toLowerCase()))
       );
     });
 
@@ -88,15 +99,17 @@ const CustomersData = () => {
         </div>
 
         <div className="flex items-center">
-          <button
-            onClick={() => setOpen(true)}
-            className="flex items-center mr-6 rounded-xl text-nowrap cursor-pointer hover:opacity-80 transition-all  
+          {user.role != "RECEPTIONIST" && (
+            <button
+              onClick={() => setOpen(true)}
+              className="flex items-center mr-6 rounded-xl text-nowrap cursor-pointer hover:opacity-80 transition-all  
         bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-3 py-2 mt-4 gap-1"
-          >
-            <span className=" text-2xl">
-              <FaPlus />
-            </span>
-          </button>
+            >
+              <span className=" text-2xl">
+                <FaPlus />
+              </span>
+            </button>
+          )}
 
           {open && (
             <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -132,7 +145,11 @@ const CustomersData = () => {
                   : "opacity-0 scale-95 pointer-events-none"
               }`}
             >
-              <Filter leaddata={customerData} handleFilter={handleFilter} closefilter={setFilterOpen} />
+              <Filter
+                leaddata={customerData}
+                handleFilter={handleFilter}
+                closefilter={setFilterOpen}
+              />
             </div>
           </div>
         </div>

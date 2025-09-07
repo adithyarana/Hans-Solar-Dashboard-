@@ -166,10 +166,12 @@ const CustomerDetailsPage = () => {
 
             {/* buttons  */}
             <div className="flex gap-3 h-[50px] w-full]">
+             {user.role != "RECEPTIONIST" &&(
               <button onClick={()=>setOpenEdit(true)}
                className="px-3 py-2 flex gap-1  items-center cursor-pointer hover:opacity-80 rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold">
                 <MdModeEditOutline size={20} /> <span>Edit</span>
               </button>
+             )}
 
             {OpenEdit && (
             <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">

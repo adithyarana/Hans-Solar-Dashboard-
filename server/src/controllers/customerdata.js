@@ -119,6 +119,10 @@ export const getallcustomerdata = async (req, res) => {
 
     // if role is employyee only getch his lead data
 
+    // if(req.user.role === "RECEPTIONIST"){
+    //   customer = await prisma.customerData.findMany();
+    // }
+
     if (req.user.role === "EMPLOYEE") {
       customer = await prisma.customerData.findMany({
         where: {
@@ -296,37 +300,37 @@ export const deleteCustomerdata = async (req, res) => {
 
 // searcj cusotmerdata for the created 6 digit customerId
 
-export const searchCustomerdataByCustomerId = async (req, res) => {
-  try {
-    const { customerId } = req.params;
+// export const searchCustomerdataByCustomerId = async (req, res) => {
+//   try {
+//     const { customerId } = req.params;
 
-    // if admin get all data
+//     // if admin get all data
 
-    const customer = await prisma.customerData.findUnique({
-      where: {
-        customerId,
-      },
-    });
+//     const customer = await prisma.customerData.findUnique({
+//       where: {
+//         customerId,
+//       },
+//     });
 
-    if (!customerId) {
-      return res.status(404).json({ message: "Customer not found" });
-    }
+//     if (!customerId) {
+//       return res.status(404).json({ message: "Customer not found" });
+//     }
 
-    // if employee seach by customerid
+//     // if employee seach by customerid
 
-    if (req.user.role === "EMPLOYEE") {
-      if (customer.createdById !== req.user.userId) {
-        return res.status(403).json({
-          message: "Forbidden - You are not authorized to access this data",
-        });
-      }
-    }
+//     if (req.user.role === "EMPLOYEE") {
+//       if (customer.createdById !== req.user.userId) {
+//         return res.status(403).json({
+//           message: "Forbidden - You are not authorized to access this data",
+//         });
+//       }
+//     }
 
-    return res
-      .status(200)
-      .json({ message: "Customer data fetched successfully", customer });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: "Internal Server Error" });
-  }
-};
+//     return res
+//       .status(200)
+//       .json({ message: "Customer data fetched successfully", customer });
+//   } catch (error) {
+//     console.error(error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
