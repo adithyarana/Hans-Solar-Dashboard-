@@ -23,7 +23,12 @@ const Profile = () => {
 
       {/* User Details */}
       <div className="flex flex-col gap-9 mt-4">
-        <p>
+       {user.role ==="EMPLOYEE" && (
+        <p className="text-gray-700 text-md">
+          <span className="font-semibold text-xl">EmpId : </span> <span className="border border-gray-400 p-2 rounded-lg">{user.empid}</span>
+        </p>  
+       )}
+        <p className="text-gray-700 text-md">
             <span className="font-semibold text-xl">Name : </span> <span className="border border-gray-400 p-2 rounded-lg">{user.name}</span>
         </p>
         <p className="text-gray-700 text-md">

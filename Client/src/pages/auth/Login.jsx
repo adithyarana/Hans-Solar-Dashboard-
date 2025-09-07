@@ -38,10 +38,10 @@ const Login = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
       {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-orange-500 to-green-500"></div>
+      <div className="absolute top-0 left-0 w-full  h-2 bg-gradient-to-r from-orange-500 to-green-500"></div>
       <div className="absolute bottom-0 left-0 w-full h-2 bg-gradient-to-r from-green-500 to-orange-500"></div>
       
-      <div className="flex flex-col md:flex-row h-screen max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col md:flex-row h-screen max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Left Side - Form */}
         <motion.div 
           className="w-full md:w-1/2 flex items-center justify-center p-8"
@@ -49,11 +49,11 @@ const Login = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
+          <div className="w-max md:w-full xl:w-full 2xl:w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden">
             <div className="bg-gradient-to-r from-orange-500 to-green-500 p-6 text-center">
               <div className="flex items-center justify-center mb-2">
                 <FaSolarPanel className="text-white text-4xl mr-2" />
-                <h2 className="text-2xl font-bold text-white">Hans Solar Dashboard</h2>
+                <h2 className="text-2xl font-bold text-nowrap text-white">Hans Solar Dashboard</h2>
               </div>
               <p className="text-white/90">Welcome back! Please sign in to your account</p>
             </div>
@@ -213,7 +213,7 @@ const Login = () => {
                 alt="Solar Panel Illustration"
                 className="w-full max-w-md mx-auto mb-8 transform transition-transform duration-1000 hover:scale-105"
               />
-              <h2 className="text-3xl font-bold text-white mb-4">Hans Solar Dashboard</h2>
+              <h2 className="text-3xl font-bold text-white mb-4">☀️Hans Solar Dashboard</h2>
               <p className="text-white/90 text-lg">Efficiently manage your solar energy systems</p>
               
               <div className="mt-8 flex justify-center space-x-4">

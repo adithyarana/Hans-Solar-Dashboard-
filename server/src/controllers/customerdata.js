@@ -96,6 +96,7 @@ export const Addcustomerdata = async (req, res) => {
       images: imageUrls,
       attachments: attachmentUrls,
       createdById: req.user.userId,
+      createdByEmpId: req.user.empid,
     };
 
     const newcustomer = await prisma.customerData.create({
@@ -122,6 +123,7 @@ export const getallcustomerdata = async (req, res) => {
       customer = await prisma.customerData.findMany({
         where: {
           createdById: req.user.userId,
+          createdByEmpId: req.user.empid,
         },
       });
     } else {

@@ -40,6 +40,7 @@ const Dataheading = ({ customerData, loading }) => {
         {/* Table Head */}
         <thead className=" sticky  top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Created By</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Customer ID</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Name</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Phone Number</th>
@@ -60,7 +61,7 @@ const Dataheading = ({ customerData, loading }) => {
             {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Tehsil</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Block</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Village</th> */}
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Photo</th>
+            {/* <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Photo</th> */}
           </tr>
         </thead>
 
@@ -78,6 +79,7 @@ const Dataheading = ({ customerData, loading }) => {
               className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
               onClick={() => navigate(`/dashboard/customers/${item.id}`)}
             >
+              <td className="px-4 py-2 font-semibold">{item.createdByEmpId || "ADMIN"}</td>
               <td className="px-4 py-2 font-semibold">{item.customerId ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.name ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.phoneNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
@@ -123,7 +125,7 @@ const Dataheading = ({ customerData, loading }) => {
               <td className="px-4 py-2">{item.location?.village || <span className="text-gray-500 text-2xl text-center">-</span>}</td> */}
 
               {/* Images with View button */}
-              <td className="px-4 py-2 flex gap-3">
+              {/* <td className="px-4 py-2 flex gap-3">
                 {item.images ? (
                   <a
                     href={item.images}
@@ -138,7 +140,7 @@ const Dataheading = ({ customerData, loading }) => {
                 ) : (
                   <span className="text-gray-500 text-2xl text-center">-</span>
                 )}
-              </td>
+              </td> */}
 
               {/* Attachments with View button */}
               {/* <td className="px-4 py-2">

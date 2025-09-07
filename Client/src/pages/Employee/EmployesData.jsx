@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import EmployeeForm from "../../components/Employee/EmployeeForm";
 import EmployesRowData from "../../components/Employee/EmployesRowData";
 import useGetEmployee from "../../Hooks/EmployeeApiHooks/useGetEmployee.jsx";
+import { FaPlus } from "react-icons/fa";
 
 const EmployesData = () => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,10 @@ const EmployesData = () => {
         className="flex items-center mr-6 rounded-xl text-nowrap cursor-pointer hover:opacity-80 transition-all  
         bg-gradient-to-r from-orange-500 to-red-500 text-white font-semibold px-3 py-5 mt-4 gap-1"
       >
-        <span className=" text-2xl">+</span>Create New Employee
+        <div className="flex gap-2 items-center">
+          <FaPlus size={20}/>
+          Create Employee
+        </div>
       </button>
 
       {open && (

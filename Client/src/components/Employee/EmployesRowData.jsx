@@ -9,9 +9,9 @@ import { FaEye, FaEyeSlash } from "react-icons/fa6";
 const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   
   const [open, setOpen] = useState(false);
-  const [openedit , setopenedit]= useState(false);
-  const [selectedEmployeeId, setSelectedEmployeeId] = useState(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const [openedit, setopenedit] = useState(false);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [showPasswords, setShowPasswords] = useState({});
   const { Apicall } = useDeleteEmploye();
 
   if(!employeeData || employeeData.length === 0){
@@ -27,10 +27,10 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   };
 
   const handleDelete = async () => {
-    if (!selectedEmployeeId) return;
+    if (!selectedEmployee) return;
     
     try {
-      await Apicall(selectedEmployeeId);
+      await Apicall(selectedEmployee.id);
       toast.success("Employee Deleted Successfully");
       setOpen(false);
       refetch();
@@ -44,13 +44,23 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   };
 
   const openDeleteDialog = (id) => {
-    setSelectedEmployeeId(id);
+    setSelectedEmployee(employeeData.find(emp => emp.id === id) || null);
     setOpen(true);
   };
 
-  const openEditDialog = (id) => {
-    setSelectedEmployeeId(id);
+  const openEditDialog = (emp) => {
+    setSelectedEmployee(emp);
     setopenedit(true);
+  };
+
+  const closeEditDialog = () => {
+    setopenedit(false);
+    setSelectedEmployee(null);
+  };
+
+  const closeDeleteDialog = () => {
+    setOpen(false);
+    setSelectedEmployee(null);
   };
 
   return (
@@ -59,6 +69,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
         <table className="w-full border-collapse bg-white">
           <thead>
             <tr className="bg-gradient-to-b from-orange-500 to-red-500 text-white text-left">
+              <th className="p-3 border-b">EmpId</th>
               <th className="p-3 border-b">Name</th>
               <th className="p-3 border-b">Email</th>
               <th className="p-3 border-b">Password</th>
@@ -80,25 +91,32 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                   key={emp.id}
                   className="hover:bg-gray-100 transition duration-200"
                 >
+                  <td className="p-3 font-semibold border-b border-gray-200">{emp.empid}</td>
                   <td className="p-3 border-b border-gray-200">{emp.name}</td>
                   <td className="p-3 border-b border-gray-200">{emp.email}</td>
                   <td className="p-3 border-b flex gap-4 items-center text-lg border-gray-200">
-                    {showPassword ? emp.normalpass : maskPassword()} 
-                    <span className="cursor-pointer mb-0.5" onClick={() => setShowPassword(!showPassword)}>{showPassword ? <FaEye /> : <FaEyeSlash />}</span>
+                    {showPasswords[emp.id] ? emp.normalpass : maskPassword()} 
+                    <span 
+                      className="cursor-pointer mb-0.5" 
+                      onClick={() => setShowPasswords(prev => ({
+                        ...prev,
+                        [emp.id]: !prev[emp.id]
+                      }))}
+                    >
+                      {showPasswords[emp.id] ? <FaEye /> : <FaEyeSlash />}
+                    </span>
                   </td>
                   <td className="p-3 border-b border-gray-200">{emp.role}</td>
                   <td className="p-3 border-b border-gray-200 flex justify-center gap-3">
 
 
                     {/* // edit popup */}
-                    <button onClick={(c=>openEditDialog(emp.id))} className="px-4 py-3 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-600 transition">
+                    <button 
+                      onClick={() => openEditDialog(emp)} 
+                      className="px-4 py-3 cursor-pointer rounded-lg bg-green-500 text-white hover:bg-green-600 transition"
+                    >
                       <MdEdit />
                     </button>
-                    {openedit && (
-                      <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
-                        <EmployeeForm closeedit={setopenedit} initialData={emp} id={emp.id} refetcheditdata={refetch} />
-                      </div>
-                    )}
 
                     {/* // delete popup */}
                     <button
@@ -107,11 +125,6 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                     >
                       <MdDelete />
                     </button>
-                    {open && (
-                      <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
-                        <DeletePopup close={setOpen} onDelete={handleDelete} />
-                      </div>
-                    )}
                   </td>
                 </tr>
               ))
@@ -119,6 +132,28 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Edit Popup */}
+      {openedit && selectedEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <EmployeeForm 
+            closeedit={closeEditDialog} 
+            initialData={selectedEmployee} 
+            id={selectedEmployee.id} 
+            refetcheditdata={refetch} 
+          />
+        </div>
+      )}
+
+      {/* Delete Popup */}
+      {open && selectedEmployee && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <DeletePopup 
+            close={closeDeleteDialog} 
+            onDelete={handleDelete} 
+          />
+        </div>
+      )}
     </div>
   );
 };
