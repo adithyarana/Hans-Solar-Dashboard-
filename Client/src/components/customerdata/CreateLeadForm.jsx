@@ -70,8 +70,8 @@ const CreateLeadForm = ({
           workCategory: initialData?.workCategory || "",
           reelsVideo: initialData?.reelsVideo || "",
           startDate: initialData?.startDate || "",
-          leadStage: initialData?.leadStage || "",
-          priority: initialData?.priority || "",
+          leadStage: initialData?.leadStage || "NEW_LEAD",
+          priority: initialData?.priority || "LOW",
           progressBoard: initialData?.progressBoard || "",
           location: {
             state: initialData?.location?.state || "",
@@ -88,9 +88,6 @@ const CreateLeadForm = ({
           let errors = {};
 
           if (!value.name) errors.name = "Name is required";
-          if (value.leadStage === "")
-            errors.leadStage = "Lead Stage is required";
-          if (value.priority === "") errors.priority = "Priority is required";
           return errors;
         }}
         onSubmit={async (values, { resetForm }) => {
@@ -383,7 +380,6 @@ const CreateLeadForm = ({
                 onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
-                <option value="">Select Lead Stage</option>
                 <option className="text-gray-500" value="NEW_LEAD">
                   New Lead
                 </option>
@@ -431,7 +427,6 @@ const CreateLeadForm = ({
                 onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
-                <option value="">Select Priority</option>
                 <option className="text-gray-500" value="LOW">
                   Low
                 </option>

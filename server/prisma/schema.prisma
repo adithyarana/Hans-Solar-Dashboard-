@@ -33,6 +33,7 @@ model CustomerData {
   customerId     String    @unique
   // this form detaisl for customer only 
   name           String
+  email          String?
   phoneNumber    String
   whatsappNumber String?
   interestAreas  InterestAreas?  @default(ONGRID)
