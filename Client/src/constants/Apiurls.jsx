@@ -25,4 +25,10 @@ export const UpdateEmployeeData = `${Baseurl}/updateEmployeeData/`
     "ON_HOLD": "bg-pink-100 text-pink-700",          
     "LEAD_WON": "bg-green-200 text-green-900 font-semibold", 
   };
+
+  export const Prioritycolor ={
+    "LOW": "bg-red-100 text-red-700",
+    "MEDIUM": "bg-yellow-100 text-yellow-700",
+    "HIGH": "bg-green-100 text-green-700",
+   }
   

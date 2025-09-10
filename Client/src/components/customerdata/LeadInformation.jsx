@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { stageColors } from "../../constants/Apiurls";
+import {Prioritycolor} from "../../constants/Apiurls"
 
 
 const LeadInformation = ({ lead }) => {
@@ -32,6 +33,10 @@ const LeadInformation = ({ lead }) => {
           <p className="text-sm text-gray-500">Name</p>
           <p className="text-gray-800 font-medium">{lead.name || "-"}</p>
         </div>
+         <div>
+          <p className="text-sm text-gray-500">Email</p>
+          <p className="text-gray-800 font-medium">{lead.email || "-"}</p>
+         </div>
         <div>
           <p className="text-sm text-gray-500">Lead Stage</p>
           <span
@@ -41,6 +46,16 @@ const LeadInformation = ({ lead }) => {
           >
             {lead.leadStage || "New Lead"}
           </span>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Priority</p>
+          <span
+            className={`px-3 py-1 text-xs font-semibold rounded ${
+              Prioritycolor[lead.priority] || "bg-gray-100 text-gray-700"
+            }`}
+          >
+            {lead.priority || "LOW"}
+          </span>   
         </div>
         <div>
           <p className="text-sm text-gray-500">Phone no</p>

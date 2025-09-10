@@ -43,22 +43,28 @@ const EmployeeForm = ({
             setloading(true);
             let result;
 
-            if (initialData) {
-              result = await UpdateApicall(id, values);
-              toast.success("Employee Updated Successfully");
-              closeedit?.(false);
-              refetcheditdata?.();
-              resetForm();
-              setloading(false);
-            } else {
-              setloading(true);
-              result = await Postemployeedata(values);
-              toast.success("Employee Added Successfully");
-              close?.(false);
-              refetch?.();
-              resetForm();
-              setloading(false);
-            }
+         try {
+          if (initialData) {
+            result = await UpdateApicall(id, values);
+            toast.success("Employee Updated Successfully");
+            closeedit?.(false);
+            refetcheditdata?.();
+            resetForm();
+            setloading(false);
+          } else {
+            setloading(true);
+            result = await Postemployeedata(values);
+            toast.success("Employee Added Successfully");
+            close?.(false);
+            refetch?.();
+            resetForm();
+            setloading(false);
+          }
+          
+         } catch (error) {
+          toast.error( error.response?.data?.message || "Failed to add employee. Please try again.")
+          
+         }
 
             // let result
             // await Postemployeedata(values)
@@ -181,7 +187,8 @@ const EmployeeForm = ({
                 >
                   {loading ? (
                     <>
-                      <svg
+                   <div className="flex gap-2 items-center justify-center ">
+                   <svg
                         className="animate-spin h-5 w-5 text-white"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
@@ -202,11 +209,14 @@ const EmployeeForm = ({
                         ></path>
                       </svg>
                       <span>{initialData ? "Updating" : "Adding"}</span>
+                   </div>
                     </>
-                  ) : initialData ? (
-                    "Update"
                   ) : (
-                    "Add"
+                    initialData ? (
+                      "Update"
+                    ) : (
+                      "Add"
+                    )
                   )}
                 </button>
                 <button

@@ -2,13 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
 import { stageColors } from "../../constants/Apiurls";
-
-
- const Prioritycolor ={
-  "LOW": "bg-red-100 text-red-700",
-  "MEDIUM": "bg-yellow-100 text-yellow-700",
-  "HIGH": "bg-green-100 text-green-700",
- }
+import {Prioritycolor} from "../../constants/Apiurls"
 
 const Dataheading = ({ customerData, loading }) => {
   const navigate = useNavigate();
@@ -34,6 +28,7 @@ const Dataheading = ({ customerData, loading }) => {
           )}
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Customer ID</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Name</th>
+            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Email</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Phone Number</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">WhatsApp Number</th>
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Interest Areas</th>
@@ -75,6 +70,7 @@ const Dataheading = ({ customerData, loading }) => {
              )}
               <td className="px-4 py-2 font-semibold">{item.customerId ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.name ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              <td className="px-4 py-2">{item.email ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.phoneNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.whatsappNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.interestAreas ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>

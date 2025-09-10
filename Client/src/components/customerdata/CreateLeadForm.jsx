@@ -59,6 +59,7 @@ const CreateLeadForm = ({
       <Formik
         initialValues={{
           name: initialData?.name || "",
+          email: initialData?.email || "",
           phoneNumber: initialData?.phoneNumber || "",
           whatsappNumber: initialData?.whatsappNumber || "",
           interestAreas: initialData?.interestAreas || "",
@@ -222,6 +223,24 @@ const CreateLeadForm = ({
               )}
             </div>
 
+            {/* email*/}
+            <div>
+              <label className="block font-medium mb-1">Email</label>
+              <Field
+                type="email"
+                name="email"
+                value={values.email}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="Enter email"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+              {errors.email && touched.email && (
+                <div className="text-red-500">{errors.email}</div>
+              )}
+            </div>
+
+
             {/* Phone Number */}
             <div>
               <label className="block font-medium mb-1">Phone Number</label>
@@ -247,8 +266,19 @@ const CreateLeadForm = ({
               />
             </div>
 
-            {/* Interest Areas */}
-            <div>
+            {/* Address - Full Width */}
+            <div className="md:col-span-2">
+              <label className="block font-medium mb-1">Address</label>
+              <Field
+                type="text"
+                name="address"
+                placeholder="Enter address"
+                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
+
+                {/* Interest Areas */}
+                <div>
               <label className="block font-medium mb-1">Looking For</label>
               <Field
                 as="select"
@@ -282,17 +312,6 @@ const CreateLeadForm = ({
                   4 KW – Higher usage homes
                 </option>
               </Field>
-            </div>
-
-            {/* Address - Full Width */}
-            <div className="md:col-span-2">
-              <label className="block font-medium mb-1">Address</label>
-              <Field
-                type="text"
-                name="address"
-                placeholder="Enter address"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              />
             </div>
 
             {/* Birthday */}

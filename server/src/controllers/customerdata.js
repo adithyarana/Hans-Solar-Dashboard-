@@ -2,6 +2,11 @@ import express from "express";
 import validator from "validator";
 import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
+import multer from "multer";
+
+const upload = multer({
+  dest: "uploads/",
+});
 
 dotenv.config();
 
@@ -9,10 +14,65 @@ const generatecustomerId = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();
 };
 
+
+// bulk data upload
+
+export const BulkUploaddata = async(req, res)=>{
+  try {
+    if(!req.file){
+      return res.status(400).json({message:"No file uploaded"})
+    }
+
+      // Read Excel file
+      const workbook = xlsx.readFile(req.file.path);
+      const sheetName = workbook.SheetNames[0];
+      const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+
+      if(!sheetData.length){
+        return res.status(400).json({message:"No data found in the file"})
+      }
+
+      const customers = sheetData.map((row) => ({
+        customerId: generatecustomerId(),
+        name: row.Name,
+        email: row.Email || null,
+        phoneNumber: row.PhoneNumber?.toString(),
+        whatsappNumber: row.WhatsappNumber?.toString() || null,
+        location: {
+          state: row.State || null,
+          district: row.District || null,
+          tehsil: row.Tehsil || null,
+          village: row.Village || null,
+        },
+        address: row.Address || null,
+        createdById: req.user.userId,
+        createdByEmpId: req.user.empid,
+      }));
+
+      const result = await prisma.customerData.createMany({
+        data: customers,
+        skipDuplicates: true,
+      });
+
+      fs.unlinkSync(req.file.path); // remove file after upload
+
+      return res.status(200).json({
+        message: "Bulk customer data uploaded successfully",
+        InsertedData: result.count,
+      });
+   
+      
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export const Addcustomerdata = async (req, res) => {
   try {
     const {
       name,
+      email,
       phoneNumber,
       whatsappNumber,
       interestAreas,
@@ -34,6 +94,10 @@ export const Addcustomerdata = async (req, res) => {
     }
 
     // validata phone no
+
+    if(!validator.isEmail(email)){
+      return res.status(400).json({ message: "Invalid email" });
+    }
 
     if (!validator.isMobilePhone(phoneNumber, "en-IN")) {
       return res.status(400).json({ message: "Invalid phone number" });
@@ -72,6 +136,7 @@ export const Addcustomerdata = async (req, res) => {
     const customerdata = {
       customerId: generatecustomerId(),
       name,
+      email,
       phoneNumber,
       whatsappNumber,
       ...(interestAreas && { interestAreas }),

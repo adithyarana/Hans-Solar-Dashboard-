@@ -54,7 +54,12 @@ const Filter = ({ handleFilter, closefilter }) => {
     // If state is selected, include it in the location object
     const filterCriteria = {
       ...filter,
-      location: filter.state ? { state: filter.state } : null
+       location:{
+        ...(filter.state ? { state: filter.state } : null),
+        ...(filter.district ? { district: filter.district } : null),
+        ...(filter.tehsil ? { tehsil: filter.tehsil } : null),
+        ...(filter.village ? { village: filter.village } : null),
+       }
     };
     handleFilter(filterCriteria);
   };

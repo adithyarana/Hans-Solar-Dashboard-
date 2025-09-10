@@ -12,6 +12,7 @@ import axios from "axios";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
+  const [file , setfile]= useState(null)
   const [filteropen, setFilterOpen] = useState(false);
   const [filterdata, setFilterData] = useState([]);
   const [customerData, setCustomerData] = useState([]);
@@ -91,6 +92,14 @@ const CustomersData = () => {
     setFilterData(filtered);
   };
 
+  const handleFileChange= (e)=>{
+    setfile(e.target.files[0])
+  }
+
+  const handleupload=()=>{
+    
+  }
+
   return (
     <>
       <div className="flex justify-between items-center  gap-4">
@@ -98,7 +107,7 @@ const CustomersData = () => {
           Customer Data
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center justify-center ">
           {user.role != "RECEPTIONIST" && (
             <button
               onClick={() => setOpen(true)}
@@ -126,14 +135,27 @@ const CustomersData = () => {
             </div>
           )}
 
-          {/* <Filter /> */}
-          <div className="relative flex justify-end mr-12 mt-4">
+          {/* bulk upload */}
+          <div className="flex justify-center items-center mt-3 gap-2">
+           <div className="flex flex-col mb-8 gap-1">
+           <label className="text-sm text-gray-600 mt-2 font-medium">Upload data in bulk</label>
+            <input 
+            type="file"
+            accept=".xlsx,.xls" 
+            onChange={handleFileChange}
+            className="w-[150px] bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium cursor-pointer border border-gray-300 rounded-xl p-2"
+             />
+           </div>
+               <button onClick={handleupload} className="bg-gradient-to-r from-orange-500 to-red-500 font-medium px-4 py-2 mr-6 text-white rounded-xl items-center gap-2 cursor-pointer">Upload</button>
+          </div>
+
+            {/* <Filter /> */}
+            <div className="relative flex justify-end mr-5 mt-4">
             {/* Button */}
             <span
               onClick={() => setFilterOpen(!filteropen)}
-              className="flex hover:opacity-80  bg-gradient-to-b from-orange-500 to-red-500 px-4 py-2 rounded-xl items-center gap-2 cursor-pointer"
+              className="flex hover:opacity-80  bg-gradient-to-b from-orange-500 to-red-500 px-4 py-3 rounded-xl items-center gap-2  cursor-pointer"
             >
-              <span className="text-lg text-white font-semibold">Filter</span>
               <FaFilter className="text-white" size={20} />
             </span>
 
@@ -152,6 +174,7 @@ const CustomersData = () => {
               />
             </div>
           </div>
+        
         </div>
       </div>
 
