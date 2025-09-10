@@ -1,35 +1,29 @@
-// import React, { useEffect, useState } from 'react'
-// import { GetCustomerData } from '../constants/Apiurls';
-// import axios from 'axios'
+import React, { useCallback, useState } from 'react'
+import { GetCustomerData } from '../constants/Apiurls';
+import axios from 'axios';
 
-// const usegetcustomerdata = () => {
+const usegetcustomerdata = () => {
+    const [customerData, setCustomerData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [filterdata, setFilterData] = useState([]);
 
-//     const [customerdata , setcustomerdata]=useState([]); // to store the data in state 
-//     const [loding , setloding] = useState(false)
+    const fetchCustomerData = useCallback(async () => {
+        try { 
+          setLoading(true);
+          const response = await axios.get(GetCustomerData, {
+            withCredentials: true,
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          setCustomerData(response.data.customer);
+          setFilterData(response.data.customer);
+        } catch (error) {
+          console.error("Error fetching customer data:", error);
+        } finally {
+          setLoading(false);
+        }
+      }, []);
 
-//     const Apicall = async()=>{
-//         try {
-//             setloding(true)
-//             const response = await axios.get(GetCustomerData, {
-//                 withCredentials: true,
-//                 headers: { "Content-Type": "multipart/form-data" },
-//             })
-//             setcustomerdata(response.data)
-//             console.log("customerdata",response.data)
-//             setloding(false)
-            
-//         } catch (error) {
-//             console.log(error)
-//             throw error
-            
-//         }
-//     }
+      return { customerData, loading, filterdata, setFilterData, fetchCustomerData };
+}
 
-//     useEffect(()=>{
-//         Apicall()
-//     },[])
-
-//     return {customerdata , loding}
-// }
-
-// export default usegetcustomerdata
+export default usegetcustomerdata

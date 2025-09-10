@@ -3,43 +3,53 @@ import { useLocation } from "react-router-dom";
 import Filter from "../../components/customerdata/Filter";
 import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
 import Dataheading from "../../components/customerdata/Dataheading";
-import { GetCustomerData } from "../../constants/Apiurls";
 import { FaFilter } from "react-icons/fa";
 import { FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
-
-import axios from "axios";
+import useBulkupload from "../../Hooks/useBulkupload";
+import usegetcustomerdata from "../../Hooks/usegetcustomerdata";
+import { FaDeleteLeft } from "react-icons/fa6";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
-  const [file , setfile]= useState(null)
   const [filteropen, setFilterOpen] = useState(false);
-  const [filterdata, setFilterData] = useState([]);
-  const [customerData, setCustomerData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
+  const { file, setfile, handleFileChange, handlefileupload } = useBulkupload();
+  const { customerData , loading , filterdata , setFilterData, fetchCustomerData } = usegetcustomerdata();
+ 
 
-  const fetchCustomerData = useCallback(async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(GetCustomerData, {
-        withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      setCustomerData(response.data.customer);
-      setFilterData(response.data.customer);
-    } catch (error) {
-      console.error("Error fetching customer data:", error);
-    } finally {
-      setLoading(false);
+  // const fetchCustomerData = useCallback(async () => {
+  //   try { 
+  //     setLoading(true);
+  //     const response = await axios.get(GetCustomerData, {
+  //       withCredentials: true,
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
+  //     setCustomerData(response.data.customer);
+  //     setFilterData(response.data.customer);
+  //   } catch (error) {
+  //     console.error("Error fetching customer data:", error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }, []);
+
+
+  const handleupload = async()=>{
+    
+    let result ;
+
+    result = await handlefileupload();
+    if(result){
+      await fetchCustomerData?.();
     }
-  }, []);
+  }
 
   useEffect(() => {
     // Check if we're coming back from a delete operation
     if (location.state?.shouldRefresh) {
-      fetchCustomerData();
+      fetchCustomerData();  
       // Clear the state to prevent unnecessary refetches
       window.history.replaceState({}, document.title);
     } else {
@@ -92,14 +102,6 @@ const CustomersData = () => {
     setFilterData(filtered);
   };
 
-  const handleFileChange= (e)=>{
-    setfile(e.target.files[0])
-  }
-
-  const handleupload=()=>{
-    
-  }
-
   return (
     <>
       <div className="flex justify-between items-center  gap-4">
@@ -130,27 +132,58 @@ const CustomersData = () => {
                   ✕
                 </button>
 
-                <CreateLeadForm close={setOpen} onSuccess={fetchCustomerData} />
+                <CreateLeadForm close={setOpen} refetch={fetchCustomerData} />
               </div>
             </div>
           )}
 
           {/* bulk upload */}
-          <div className="flex justify-center items-center mt-3 gap-2">
-           <div className="flex flex-col mb-8 gap-1">
-           <label className="text-sm text-gray-600 mt-2 font-medium">Upload data in bulk</label>
-            <input 
-            type="file"
-            accept=".xlsx,.xls" 
-            onChange={handleFileChange}
-            className="w-[150px] bg-gradient-to-r from-orange-500 to-red-500 text-white font-medium cursor-pointer border border-gray-300 rounded-xl p-2"
-             />
-           </div>
-               <button onClick={handleupload} className="bg-gradient-to-r from-orange-500 to-red-500 font-medium px-4 py-2 mr-6 text-white rounded-xl items-center gap-2 cursor-pointer">Upload</button>
-          </div>
+          {user.role == "ADMIN" && (
+            <div className="flex justify-center items-center mt-3 gap-2">
+              <div className="flex flex-col mb-8 gap-1">
+                <label className="text-sm text-gray-600 mt-2 font-medium">
+                  Upload data in bulk
+                </label>
+                <input
+                  type="file"
+                  accept=".xlsx,.xls"
+                  onChange={handleFileChange}
+                  id="bulkUpload"
+                  className="hidden"
+                />
 
-            {/* <Filter /> */}
-            <div className="relative flex justify-end mr-5 mt-4">
+                {/* Styled Label as Button */}
+                <label
+                  htmlFor="bulkUpload"
+                  className="w-[180px] text-center bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 transition-all duration-300 ease-in-out text-white font-medium cursor-pointer rounded-xl py-2 shadow-md hover:shadow-lg"
+                >
+                  Choose File
+                </label>
+
+                {file && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-wrap text-gray-600">{file.name}</span>
+                    <button
+                      onClick={() => setfile(null)}
+                      className="text-red-500 hover:text-red-600"
+                    >
+                      <FaDeleteLeft size={20}/>
+                    </button>
+                  </div>
+                )}
+              </div>
+              <button
+                disabled={loading}
+                onClick={handleupload}
+                className="bg-gradient-to-r from-orange-500 to-red-500 font-medium px-4 py-2 mr-6 text-white rounded-xl items-center hover:opacity-80 gap-2 cursor-pointer"
+              >
+                {loading ? "Uploading..." : "Upload"}
+              </button>
+            </div>
+          )}
+
+          {/* <Filter /> */}
+          <div className=" relative flex justify-end mr-5 mt-4">
             {/* Button */}
             <span
               onClick={() => setFilterOpen(!filteropen)}
@@ -161,7 +194,7 @@ const CustomersData = () => {
 
             {/* Dropdown */}
             <div
-              className={`absolute top-full mt-3 right-0 z-50 transform transition-all duration-300 ease-in-out ${
+              className={`z-50 absolute top-full mt-3 right-0 transform transition-all duration-300 ease-in-out ${
                 filteropen
                   ? "opacity-100 scale-100"
                   : "opacity-0 scale-95 pointer-events-none"
@@ -174,7 +207,6 @@ const CustomersData = () => {
               />
             </div>
           </div>
-        
         </div>
       </div>
 

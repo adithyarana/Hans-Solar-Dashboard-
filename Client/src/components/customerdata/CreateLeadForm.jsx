@@ -38,7 +38,7 @@ const indianStates = [
 
 const CreateLeadForm = ({
   close,
-  onSuccess,
+  refetch,
   closeedit,
   initialData,
   id,
@@ -183,7 +183,7 @@ const CreateLeadForm = ({
                 toast.success("Lead created successfully");
                 resetForm();
                 close?.(false);
-                onSuccess?.();
+                refetch?.();
                 setloading(false);
               }
             }

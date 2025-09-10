@@ -2,11 +2,9 @@ import express from "express";
 import validator from "validator";
 import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
-import multer from "multer";
-
-const upload = multer({
-  dest: "uploads/",
-});
+import xlsx from "xlsx";
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
 
@@ -29,6 +27,7 @@ export const BulkUploaddata = async(req, res)=>{
       const sheetData = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
 
       if(!sheetData.length){
+        fs.unlinkSync(req.file.path); // cleanup before exit
         return res.status(400).json({message:"No data found in the file"})
       }
 
@@ -51,19 +50,33 @@ export const BulkUploaddata = async(req, res)=>{
 
       const result = await prisma.customerData.createMany({
         data: customers,
-        skipDuplicates: true,
       });
 
-      fs.unlinkSync(req.file.path); // remove file after upload
+      // Remove the uploaded file
+      if (req.file && fs.existsSync(req.file.path)) {
+        try {
+          fs.unlinkSync(req.file.path);
+        } catch (fileError) {
+          console.error('Error deleting uploaded file:', fileError);
+        }
+      }
 
       return res.status(200).json({
         message: "Bulk customer data uploaded successfully",
         InsertedData: result.count,
+        
       });
    
       
   } catch (error) {
     console.log(error);
+    
+    // clear error after error also
+    if (req.file?.path) {
+      fs.unlink(req.file.path, (err) => {
+        if (err) console.error("Error deleting file:", err);
+      });
+    }
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }

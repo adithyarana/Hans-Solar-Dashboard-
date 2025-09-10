@@ -4,11 +4,12 @@ import { getallcustomerdata } from "../controllers/customerdata.js";
 import { getCustomerdataById } from "../controllers/customerdata.js";
 import { updateCustomerdata } from "../controllers/customerdata.js";
 import { deleteCustomerdata } from "../controllers/customerdata.js";
-import { upload } from "../middlewares/multer.js";
+import { upload, uploadLocal } from "../middlewares/multer.js";
 import { verifyRole } from "../middlewares/verifyadmin.js";
 import { BulkUploaddata } from "../controllers/customerdata.js";
-
 const router = Router();
+
+
 
 router.post(
   "/addcustomerdata",
@@ -20,7 +21,7 @@ router.post(
   Addcustomerdata
 );
 
-router.post("/bulkuploaddata", verifyRole(["ADMIN"]), upload.single("file"), BulkUploaddata);
+router.post("/bulkuploaddata", verifyRole(["ADMIN"]), uploadLocal.single("file"), BulkUploaddata);
 
 router.get("/getallcustomerdata", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), getallcustomerdata);
 router.get("/getcustomerbyid/:id", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), getCustomerdataById);

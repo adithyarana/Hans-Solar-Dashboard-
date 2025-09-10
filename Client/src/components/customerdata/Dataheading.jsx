@@ -18,7 +18,7 @@ const Dataheading = ({ customerData, loading }) => {
 
   return (
     <>
-    <div className="rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
+    <div className="z-30 rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
       <table className="min-w-max  shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
         {/* Table Head */}
         <thead className=" sticky  top-0 z-10 ">
