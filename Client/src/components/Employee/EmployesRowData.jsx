@@ -91,7 +91,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
                   key={emp.id}
                   className="hover:bg-gray-100 transition duration-200"
                 >
-                  <td className="p-3 font-semibold border-b border-gray-200">{emp.empid || "RECEPTIONIST"}</td>
+                  <td className="p-3 font-semibold border-b border-gray-200">{emp.empid || "RECEP"}</td>
                   <td className="p-3 border-b border-gray-200">{emp.name}</td>
                   <td className="p-3 border-b border-gray-200">{emp.email}</td>
                   <td className="p-3 border-b flex gap-4 items-center text-lg border-gray-200">

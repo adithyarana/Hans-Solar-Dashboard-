@@ -9,6 +9,8 @@ import { useSelector } from "react-redux";
 import useBulkupload from "../../Hooks/useBulkupload";
 import usegetcustomerdata from "../../Hooks/usegetcustomerdata";
 import { FaDeleteLeft } from "react-icons/fa6";
+import ExportFile from "../../components/customerdata/ExportFile.jsx";
+import { MdOutlineFileUpload } from "react-icons/md";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
@@ -95,7 +97,8 @@ const CustomersData = () => {
         (!criteria.location?.village ||
           item.location.village
             .toLowerCase()
-            .includes(criteria.location?.village.toLowerCase()))
+            .includes(criteria.location?.village.toLowerCase())) &&
+           (!criteria.createdByEmpId || item.createdByEmpId === criteria.createdByEmpId)
       );
     });
 
@@ -104,7 +107,7 @@ const CustomersData = () => {
 
   return (
     <>
-      <div className="flex justify-between items-center  gap-4">
+      <div className="flex justify-between items-center   gap-4">
         <div className=" bg-white w-full  text-gray-600 font-medium   p-5 text-xl border border-gray-300 mt-5 ml-14">
           Customer Data
         </div>
@@ -177,13 +180,15 @@ const CustomersData = () => {
                 onClick={handleupload}
                 className="bg-gradient-to-r from-orange-500 to-red-500 font-medium px-4 py-2 mr-6 text-white rounded-xl items-center hover:opacity-80 gap-2 cursor-pointer"
               >
-                {loading ? "Uploading..." : "Upload"}
+                {loading ? "Uploading..." : <MdOutlineFileUpload size={25}/>}
               </button>
             </div>
           )}
 
-          {/* <Filter /> */}
-          <div className=" relative flex justify-end mr-5 mt-4">
+       
+           {/* <Filter /> */}
+          <div className="flex items-center justify-center mt-3">
+          <div className=" relative flex justify-end mr-5 ">
             {/* Button */}
             <span
               onClick={() => setFilterOpen(!filteropen)}
@@ -207,8 +212,15 @@ const CustomersData = () => {
               />
             </div>
           </div>
+
+          {/* export file */}
+          <ExportFile data={filterdata}/>
+          </div>
+       </div>
+
+
         </div>
-      </div>
+      
 
       <Dataheading customerData={filterdata} loading={loading} />
     </>

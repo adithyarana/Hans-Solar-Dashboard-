@@ -21,7 +21,7 @@ const EmployeeForm = ({
     <div className="flex justify-center w-full items-center min-h-screen">
       <div className="w-full max-w-lg bg-white  p-8 rounded-2xl shadow-xl">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-          {initialData ? "Update Employee" : "Add New Employee"}
+         {initialData ? (initialData.role=="EMPLOYEE" ? "Update Employee" : "Update Receptionist") : "Add New Staff"}
         </h2>
 
         <Formik
@@ -46,7 +46,7 @@ const EmployeeForm = ({
          try {
           if (initialData) {
             result = await UpdateApicall(id, values);
-            toast.success("Employee Updated Successfully");
+            toast.success("Staff Updated Successfully");
             closeedit?.(false);
             refetcheditdata?.();
             resetForm();
@@ -54,7 +54,7 @@ const EmployeeForm = ({
           } else {
             setloading(true);
             result = await Postemployeedata(values);
-            toast.success("Employee Added Successfully");
+            toast.success("Staff Added Successfully");
             close?.(false);
             refetch?.();
             resetForm();
@@ -62,7 +62,7 @@ const EmployeeForm = ({
           }
           
          } catch (error) {
-          toast.error( error.response?.data?.message || "Failed to add employee. Please try again.")
+          toast.error( error.response?.data?.message || "Failed to add staff. Please try again.")
           
          }
 

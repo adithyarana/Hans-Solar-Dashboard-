@@ -4,7 +4,7 @@ import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
 import xlsx from "xlsx";
 import fs from 'fs';
-import path from 'path';
+
 
 dotenv.config();
 

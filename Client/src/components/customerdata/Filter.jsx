@@ -33,6 +33,29 @@ const indianStates = [
   "West Bengal",
 ];
 
+const empid = [
+  "HANS01",
+  "HANS02", 
+  "HANS03",
+  "HANS04",
+  "HANS05",
+  "HANS06",
+  "HANS07",
+  "HANS08",
+  "HANS09",
+  "HANS10",
+  "HANS11",
+  "HANS12",
+  "HANS13",
+  "HANS14",
+  "HANS15",
+  "HANS16",
+  "HANS17",
+  "HANS18",
+  "HANS19",
+  "HANS20",
+]
+
 const Filter = ({ handleFilter, closefilter }) => {
   const [filter, setFilter] = useState({
     name: "",
@@ -74,6 +97,7 @@ const Filter = ({ handleFilter, closefilter }) => {
       district: "",
       tehsil: "",
       village: "",
+      createdByEmpId: "",
     };
     setFilter(resetFilter);
     handleFilter(null); 
@@ -83,7 +107,7 @@ const Filter = ({ handleFilter, closefilter }) => {
     <div className="ml-6">
       <form
         onSubmit={handleSearch}
-        className="grid grid-cols-5 gap-6 bg-white shadow-lg rounded-xl p-6 w-[1000px]"
+        className="grid grid-cols-5 gap-6 bg-orange-50 shadow-lg rounded-xl p-6 w-[1000px]"
       >
         {/* Search by Name */}
         <div>
@@ -210,6 +234,24 @@ const Filter = ({ handleFilter, closefilter }) => {
           className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
           />
 
+        </div>
+
+                {/* Priority */}
+        <div>
+          <label className="block text-sm font-medium text-nowrap mb-1">Search Employee data by ID</label>
+          <select
+            type="text" 
+            placeholder="Enter employee ID"
+            name="createdByEmpId" 
+            value={filter.createdByEmpId}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+          >
+            <option value="">Select ID</option>
+            {empid.map((id , idx)=>(
+              <option key={idx} value={id}>{id}</option>
+            ))}
+          </select>
         </div>
 
         {/* Buttons - Full Row */}
