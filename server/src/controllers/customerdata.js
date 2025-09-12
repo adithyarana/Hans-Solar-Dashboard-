@@ -193,29 +193,51 @@ export const Addcustomerdata = async (req, res) => {
 
 export const getallcustomerdata = async (req, res) => {
   try {
+
+    const page = parseInt(req.query.page) ||1 ;
+    const limit = parseInt(req.query.limit) || 15 ;
+    const skip = (page - 1) * limit ;
     let customer;
+    let totalcount ;
 
-    // if role is employyee only getch his lead data
-
-    // if(req.user.role === "RECEPTIONIST"){
-    //   customer = await prisma.customerData.findMany();
-    // }
-
-    if (req.user.role === "EMPLOYEE") {
-      customer = await prisma.customerData.findMany({
-        where: {
+    if(req.user.role === "EMPLOYEE"){
+      totalcount= await prisma.customerData.count({
+        where:{
           createdById: req.user.userId,
           createdByEmpId: req.user.empid,
-        },
-      });
+        }
+      })
+
+      
+    customer = await prisma.customerData.findMany({
+      where: {
+        createdById: req.user.userId,
+        createdByEmpId: req.user.empid,
+      },
+      skip,
+      take: limit,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
     } else {
       // give all data to admin dashboard
-      customer = await prisma.customerData.findMany();
+      totalcount= await prisma.customerData.count();
+      customer = await prisma.customerData.findMany({
+        skip,
+        take: limit,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
     }
 
     return res.status(200).json({
       message: "Customer data fetched successfully",
       customer,
+      totalcount,
+      totalpages: Math.ceil(totalcount / limit),
     });
   } catch (error) {
     console.log(error);

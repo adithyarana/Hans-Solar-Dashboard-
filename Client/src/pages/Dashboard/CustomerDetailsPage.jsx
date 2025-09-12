@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams, useNavigate } from "react-router-dom";
+import { NavLink, useParams, useNavigate, useLocation } from "react-router-dom";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoLocationOutline } from "react-icons/io5";
 import { MdDeleteOutline, MdOutlineSmartphone } from "react-icons/md";
@@ -23,6 +23,8 @@ const CustomerDetailsPage = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const user = useSelector((state) => state.userdata?.user);
+  const location = useLocation();
+  const currentpage = location.state?.page;
 
 
   const { customerdatabyid, loading, refetch } = useGetCustomerDataById(id);
@@ -41,7 +43,7 @@ const CustomerDetailsPage = () => {
     try {
       await Apicall(id);
       toast.success("Lead Deleted Successfully");
-      navigate("/dashboard/customers", { state: { shouldRefresh: true } });
+      navigate(`/dashboard/customers?page=${currentpage}`, { state: { shouldRefresh: true } });
     } catch (error) {
       console.error("Delete error:", error);
       toast.error(

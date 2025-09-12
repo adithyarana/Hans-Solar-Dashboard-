@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import Filter from "../../components/customerdata/Filter";
 import CreateLeadForm from "../../components/customerdata/CreateLeadForm";
 import Dataheading from "../../components/customerdata/Dataheading";
@@ -11,14 +11,20 @@ import usegetcustomerdata from "../../Hooks/usegetcustomerdata";
 import { FaDeleteLeft } from "react-icons/fa6";
 import ExportFile from "../../components/customerdata/ExportFile.jsx";
 import { MdOutlineFileUpload } from "react-icons/md";
+import Pagination from "../../components/Dashboard/Pagination.jsx";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
+  const [searchpramas , setSearchpramas] = useSearchParams();
+
+  const pageurl = parseInt(searchpramas.get("page")) || 1;
+  const [page , setpage]= useState(pageurl);
+  const limit = 15;
   const [filteropen, setFilterOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
   const { file, setfile, handleFileChange, handlefileupload } = useBulkupload();
-  const { customerData , loading , filterdata , setFilterData, fetchCustomerData } = usegetcustomerdata();
+  const { customerData , loading , filterdata , setFilterData, fetchCustomerData , totalpages , totalcount } = usegetcustomerdata(page , limit);
  
 
   // const fetchCustomerData = useCallback(async () => {
@@ -47,6 +53,20 @@ const CustomersData = () => {
       await fetchCustomerData?.();
     }
   }
+
+  // when page and limit changes use srach pramas changes 
+
+  useEffect(()=>{
+    setSearchpramas({page , limit})
+  },[page , limit, setSearchpramas])
+
+  // // Handle empty page scenario
+  useEffect(() => {
+    if (totalcount === 15 && page > 1) {
+      setpage(1);
+      setSearchpramas({ page: 1, limit });
+    }
+  }, [filterdata, loading, page, setSearchpramas, limit , totalcount]);
 
   useEffect(() => {
     // Check if we're coming back from a delete operation
@@ -222,7 +242,16 @@ const CustomersData = () => {
         </div>
       
 
-      <Dataheading customerData={filterdata} loading={loading} />
+        {/* data */}
+      <Dataheading customerData={filterdata} loading={loading} page={page} />
+          
+          {/* pagination */}
+          {totalcount > 15 && (
+               <div className="flex justify-end items-center mb-3 mr-14">
+               <Pagination totalpages={totalpages} page={page} setpage={setpage} />
+               </div>
+          )}
+
     </>
   );
 };

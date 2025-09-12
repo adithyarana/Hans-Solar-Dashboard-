@@ -1,7 +1,7 @@
 import express from "express";
 import { registerUser, login, logout } from "../controllers/auth.js";
 import { verifyRole } from "../middlewares/verifyadmin.js";
-import { getEmployeeData , updateEmployeeData , deleteEmployeeData } from "../controllers/auth.js";
+import { getEmployeeData , updateEmployeeData , deleteEmployeeData } from "../controllers/employesdata.js";
 
 const router = express.Router();
 

@@ -3,8 +3,9 @@ import { useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
 import { stageColors } from "../../constants/Apiurls";
 import {Prioritycolor} from "../../constants/Apiurls"
+import Pagination from "../Dashboard/Pagination";
 
-const Dataheading = ({ customerData, loading }) => {
+const Dataheading = ({ customerData, loading, page = 1 }) => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.userdata?.user);
 
@@ -63,7 +64,7 @@ const Dataheading = ({ customerData, loading }) => {
             <tr
               key={index}
               className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
-              onClick={() => navigate(`/dashboard/customers/${item.id}`)}
+              onClick={() => navigate(`/dashboard/customers/${item.id}`, {state:{page:page}})}
             >
              {user.role === "ADMIN" && (
               <td className="px-4 py-2 font-semibold">{item.createdByEmpId || "ADMIN"}</td>
@@ -152,6 +153,7 @@ const Dataheading = ({ customerData, loading }) => {
         </tbody>
       </table>
     </div>
+
       {/* Bottom wave flipped */}
       <div className="absolute bottom-0 left-0 mb-1 w-full overflow-hidden">
         <svg
