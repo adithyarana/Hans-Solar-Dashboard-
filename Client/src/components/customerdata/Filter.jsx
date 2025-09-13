@@ -66,6 +66,7 @@ const Filter = ({ handleFilter, closefilter }) => {
     district: "",
     tehsil: "",
     village: "",
+    createdByEmpId: "",
   });
 
   const handleChange = (e) => {
@@ -74,17 +75,16 @@ const Filter = ({ handleFilter, closefilter }) => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // If state is selected, include it in the location object
-    const filterCriteria = {
-      ...filter,
-       location:{
-        ...(filter.state ? { state: filter.state } : null),
-        ...(filter.district ? { district: filter.district } : null),
-        ...(filter.tehsil ? { tehsil: filter.tehsil } : null),
-        ...(filter.village ? { village: filter.village } : null),
-       }
-    };
-    handleFilter(filterCriteria);
+    
+    // Create a clean filter object with only the fields that have values
+    const cleanFilter = Object.entries(filter).reduce((acc, [key, value]) => {
+      if (value) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {});
+    
+    handleFilter(cleanFilter);
   };
 
   const handleReset = () => {
@@ -93,6 +93,7 @@ const Filter = ({ handleFilter, closefilter }) => {
       leadStage: "",
       priority: "",
       customerId: "",
+      // Using string value for state as expected by the backend
       state: "",
       district: "",
       tehsil: "",
@@ -100,7 +101,7 @@ const Filter = ({ handleFilter, closefilter }) => {
       createdByEmpId: "",
     };
     setFilter(resetFilter);
-    handleFilter(null); 
+    handleFilter({}); 
   };
 
   return (
@@ -257,7 +258,9 @@ const Filter = ({ handleFilter, closefilter }) => {
         {/* Buttons - Full Row */}
         <div className="col-span-3 flex gap-4 mt-4">
           <button
-            onClick={() => closefilter(false)}
+            onClick={() => {
+              closefilter(false)
+            }}
             type="submit"
             className="px-8 py-2 cursor-pointer font-semibold bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-full hover:opacity-80 transition"
           >

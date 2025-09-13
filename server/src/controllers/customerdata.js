@@ -4,6 +4,7 @@ import prisma from "../utils/prisma.js";
 import dotenv from "dotenv";
 import xlsx from "xlsx";
 import fs from 'fs';
+import qs from "qs";
 
 
 dotenv.config();
@@ -37,12 +38,10 @@ export const BulkUploaddata = async(req, res)=>{
         email: row.Email || null,
         phoneNumber: row.PhoneNumber?.toString(),
         whatsappNumber: row.WhatsappNumber?.toString() || null,
-        location: {
-          state: row.State || null,
-          district: row.District || null,
-          tehsil: row.Tehsil || null,
-          village: row.Village || null,
-        },
+        state: row.State || null,
+        district: row.District || null,
+        tehsil: row.Tehsil || null,
+        village: row.Village || null,
         address: row.Address || null,
         createdById: req.user.userId,
         createdByEmpId: req.user.empid,
@@ -91,6 +90,10 @@ export const Addcustomerdata = async (req, res) => {
       interestAreas,
       address,
       birthday,
+      state,
+      district,
+      tehsil,
+      village,
       infoSource,
       notes,
       followUp,
@@ -132,19 +135,7 @@ export const Addcustomerdata = async (req, res) => {
       ? req.files.attachments.map((file) => file.path)
       : [];
 
-    let parsedLocation = {};
 
-    if (req.body.location) {
-      try {
-        // If location is already an object, don't parse again
-        parsedLocation =
-          typeof req.body.location === "string"
-            ? JSON.parse(req.body.location)
-            : req.body.location;
-      } catch (err) {
-        console.error("Invalid location JSON:", err);
-      }
-    }
 
     const customerdata = {
       customerId: generatecustomerId(),
@@ -155,13 +146,10 @@ export const Addcustomerdata = async (req, res) => {
       ...(interestAreas && { interestAreas }),
       ...(address && { address }),
       birthday: birthday ? new Date(birthday) : null,
-      location: {
-        state: parsedLocation?.state || null,
-        district: parsedLocation?.district || null,
-        tehsil: parsedLocation?.tehsil || null,
-        block: parsedLocation?.block || null,
-        village: parsedLocation?.village || null,
-      },
+      state,
+      district,
+      tehsil,
+      village,
       ...(infoSource && { infoSource }),
       ...(notes && { notes }),
       followUp: followUp ? new Date(followUp) : null,
@@ -191,47 +179,132 @@ export const Addcustomerdata = async (req, res) => {
   }
 };
 
+// export const getallcustomerdata = async (req, res) => {
+//   try {
+
+//     const page = parseInt(req.query.page) ||1 ;
+//     const limit = parseInt(req.query.limit) || 15 ;
+//     const skip = (page - 1) * limit ;
+
+//     const {
+//      name,
+//      leadStage,
+//      priority,
+//      customerId,
+//      createdByEmpId,
+//     } = req.query
+
+//     const {
+//       state,
+//       district,
+//       tehsil,
+//       village,
+//     } = req.query.location || {}
+
+//     let where = {};
+
+//     if(req.user.role === "EMPLOYEE"){
+//        where.createdById = req.user.userId;
+//        where.createdByEmpId = req.user.empid;
+//     }
+     
+//     if(name){
+//       where.name = {
+//         contains: name,
+//         mode: "insensitive",
+//       }
+//     }
+
+//     if (leadStage) {
+//       where.leadStage = leadStage;
+//     }
+//     if (priority) {
+//       where.priority = priority;
+//     }
+//     if (customerId) {
+//       where.customerId = { contains: customerId, mode: "insensitive" };
+//     }
+//     if (createdByEmpId) {
+//       where.createdByEmpId = createdByEmpId;
+//     }
+
+//     if (state || district || tehsil || village) {
+//       where.location = {
+//         ...(state && { state: { contains: state, mode: 'insensitive' } }),
+//         ...(district && { district: { contains: district, mode: 'insensitive' } }),
+//         ...(tehsil && { tehsil: { contains: tehsil, mode: 'insensitive' } }),
+//         ...(village && { village: { contains: village, mode: 'insensitive' } }),
+//       };
+//     }
+
+//     const totalcount = await prisma.customerData.count({
+//       where,
+//     })
+
+//     const customer = await prisma.customerData.findMany({
+//       where,
+//       skip,
+//       take: limit,
+//       orderBy:{
+//         createdAt:"desc"
+//       }
+//     })
+
+  
+//     return res.status(200).json({
+//       message: "Customer data fetched successfully",
+//       customer,
+//       totalcount,
+//       totalpages: Math.ceil(totalcount / limit),
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ message: "Internal Server Error" });
+//   }
+// };
 export const getallcustomerdata = async (req, res) => {
   try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
+    const skip = (page - 1) * limit;
 
-    const page = parseInt(req.query.page) ||1 ;
-    const limit = parseInt(req.query.limit) || 15 ;
-    const skip = (page - 1) * limit ;
-    let customer;
-    let totalcount ;
+    const {
+      name,
+      leadStage,
+      priority,
+      customerId,
+      createdByEmpId,
+      state,
+      district,
+      tehsil,
+      village,
+    } = req.query;
+    
+    let where = {};
 
-    if(req.user.role === "EMPLOYEE"){
-      totalcount= await prisma.customerData.count({
-        where:{
-          createdById: req.user.userId,
-          createdByEmpId: req.user.empid,
-        }
-      })
+    if (req.user.role === "EMPLOYEE") {
+      where.createdById = req.user.userId;
+      where.createdByEmpId = req.user.empid;
+    }
 
-      
-    customer = await prisma.customerData.findMany({
-      where: {
-        createdById: req.user.userId,
-        createdByEmpId: req.user.empid,
-      },
+    if (name) where.name = { contains: name, mode: "insensitive" };
+    if (leadStage) where.leadStage = leadStage;
+    if (priority) where.priority = priority;
+    if (customerId) where.customerId = { contains: customerId, mode: "insensitive" };
+    if (createdByEmpId) where.createdByEmpId = createdByEmpId;
+    if (state) where.state = {contains: state, mode: "insensitive"};
+    if (district) where.district = {contains: district, mode: "insensitive"};
+    if (tehsil) where.tehsil = {contains: tehsil, mode: "insensitive"};
+    if (village) where.village = {contains: village, mode: "insensitive"};
+    
+    const totalcount = await prisma.customerData.count({ where });
+
+    const customer = await prisma.customerData.findMany({
+      where,
       skip,
       take: limit,
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: { createdAt: "desc" },
     });
-
-    } else {
-      // give all data to admin dashboard
-      totalcount= await prisma.customerData.count();
-      customer = await prisma.customerData.findMany({
-        skip,
-        take: limit,
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-    }
 
     return res.status(200).json({
       message: "Customer data fetched successfully",

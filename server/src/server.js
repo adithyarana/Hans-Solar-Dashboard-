@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import customerdataRoutes from "./routes/customerdata.js";
 import publicCustomerRoutes from "./routes/publicCustomer.js";
 import cors from "cors";
+import qs from "qs";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
+app.set("query parser", str => qs.parse(str));
 app.use(express.json()); // for parsing the json data from frontend
 app.use(cookieParser()); // for parsing the cookies from frontend
 app.use(express.urlencoded({ extended: true })); // for parsing the form data from frontend

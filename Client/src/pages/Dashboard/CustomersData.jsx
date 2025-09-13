@@ -12,6 +12,7 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import ExportFile from "../../components/customerdata/ExportFile.jsx";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Pagination from "../../components/Dashboard/Pagination.jsx";
+import qs from "qs";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
@@ -20,29 +21,13 @@ const CustomersData = () => {
   const pageurl = parseInt(searchpramas.get("page")) || 1;
   const [page , setpage]= useState(pageurl);
   const limit = 15;
+  const [filter , setFilter] = useState({});
   const [filteropen, setFilterOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
   const { file, setfile, handleFileChange, handlefileupload } = useBulkupload();
-  const { customerData , loading , filterdata , setFilterData, fetchCustomerData , totalpages , totalcount } = usegetcustomerdata(page , limit);
+  const { customerData , loading , fetchCustomerData , totalpages , totalcount } = usegetcustomerdata(page , limit, filter);
  
-
-  // const fetchCustomerData = useCallback(async () => {
-  //   try { 
-  //     setLoading(true);
-  //     const response = await axios.get(GetCustomerData, {
-  //       withCredentials: true,
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //     });
-  //     setCustomerData(response.data.customer);
-  //     setFilterData(response.data.customer);
-  //   } catch (error) {
-  //     console.error("Error fetching customer data:", error);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, []);
-
 
   const handleupload = async()=>{
     
@@ -55,19 +40,18 @@ const CustomersData = () => {
   }
 
   // when page and limit changes use srach pramas changes 
-
-  useEffect(()=>{
-    setSearchpramas({page , limit})
-  },[page , limit, setSearchpramas])
-
-  // // Handle empty page scenario
   useEffect(() => {
-    if (totalcount === 15 && page > 1) {
-      setpage(1);
-      setSearchpramas({ page: 1, limit });
-    }
-  }, [filterdata, loading, page, setSearchpramas, limit , totalcount]);
-
+    const query = {
+      page: page.toString(),
+      limit: limit.toString(),
+      ...(filter || {}),
+    };
+  
+    // use qs.stringify + parse to flatten before setting
+    const flatQuery = qs.parse(qs.stringify(query, { encodeValuesOnly: true }));
+    setSearchpramas(flatQuery, { replace: true });
+  }, [page, limit, filter]);
+  
   useEffect(() => {
     // Check if we're coming back from a delete operation
     if (location.state?.shouldRefresh) {
@@ -80,50 +64,15 @@ const CustomersData = () => {
   }, [fetchCustomerData, location.state]);
 
   const handleFilter = (criteria) => {
-    if (!criteria) {
-      // reset filter
-      setFilterData(customerData);
-      return;
-    }
+     if(!criteria){
+       setFilter({});
+       setpage(1); // reset page to 1 when we seach oin other pages 
+       return;
+     }
 
-    const filtered = customerData.filter((item) => {
-      // Check if location state matches if provided in criteria
-      const stateMatch =
-        !criteria.location?.state ||
-        (item.location?.state &&
-          item.location.state.toLowerCase() ===
-            criteria.location.state.toLowerCase());
-
-      return (
-        (!criteria.name ||
-          (item.name &&
-            item.name.toLowerCase().includes(criteria.name.toLowerCase()))) &&
-        (!criteria.leadStage || item.leadStage === criteria.leadStage) &&
-        (!criteria.priority || item.priority === criteria.priority) &&
-        (!criteria.customerId ||
-          (item.customerId &&
-            item.customerId
-              .toLowerCase()
-              .includes(criteria.customerId.toLowerCase()))) &&
-        stateMatch &&
-        (!criteria.location?.district ||
-          item.location.district
-            .toLowerCase()
-            .includes(criteria.location?.district.toLowerCase())) &&
-        (!criteria.location?.tehsil ||
-          item.location.tehsil
-            .toLowerCase()
-            .includes(criteria.location?.tehsil.toLowerCase())) &&
-        (!criteria.location?.village ||
-          item.location.village
-            .toLowerCase()
-            .includes(criteria.location?.village.toLowerCase())) &&
-           (!criteria.createdByEmpId || item.createdByEmpId === criteria.createdByEmpId)
-      );
-    });
-
-    setFilterData(filtered);
-  };
+     setFilter(criteria);
+     setpage(1);
+  };                   
 
   return (
     <>
@@ -234,7 +183,7 @@ const CustomersData = () => {
           </div>
 
           {/* export file */}
-          <ExportFile data={filterdata}/>
+          <ExportFile data={customerData}/>
           </div>
        </div>
 
@@ -243,12 +192,12 @@ const CustomersData = () => {
       
 
         {/* data */}
-      <Dataheading customerData={filterdata} loading={loading} page={page} />
+      <Dataheading customerData={customerData} loading={loading} page={page} />
           
           {/* pagination */}
           {totalcount > 15 && (
                <div className="flex justify-end items-center mb-3 mr-14">
-               <Pagination totalpages={totalpages} page={page} setpage={setpage} />
+               <Pagination totalpages={totalpages} data={customerData} totalcount={totalcount} page={page} setpage={setpage} />
                </div>
           )}
 

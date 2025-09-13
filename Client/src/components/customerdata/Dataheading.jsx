@@ -108,8 +108,8 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
               </td>
 
               {/* <td className="px-4 py-2">{item.progressBoard || <span className="text-gray-500 text-2xl text-center">-</span>}</td> */}
-              <td className="px-4 py-2">{item.location?.state || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
-              <td className="px-4 py-2">{item.location?.district || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              <td className="px-4 py-2">{item.state || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
+              <td className="px-4 py-2">{item.district || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
               {/* <td className="px-4 py-2">{item.location?.tehsil || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.location?.block || <span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.location?.village || <span className="text-gray-500 text-2xl text-center">-</span>}</td> */}

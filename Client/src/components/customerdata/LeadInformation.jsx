@@ -94,20 +94,20 @@ const LeadInformation = ({ lead }) => {
 
        <div>
         <p className="text-sm text-gray-500">State </p>
-        <p className="text-gray-800 font-medium">{lead.location?.state || "-"}</p>
+        <p className="text-gray-800 font-medium">{lead.state || "-"}</p>
        </div>
 
        <div>
         <p className="text-sm text-gray-500">District </p>
-        <p className="text-gray-800 font-medium">{lead.location?.district || "-"}</p>
+        <p className="text-gray-800 font-medium">{lead.district || "-"}</p>
        </div>
        <div>
         <p className="text-sm text-gray-500">Tehsil </p>
-        <p className="text-gray-800 font-medium">{lead.location?.tehsil || "-"}</p>
+        <p className="text-gray-800 font-medium">{lead.tehsil || "-"}</p>
        </div>
        <div>
         <p className="text-sm text-gray-500">Village </p>
-        <p className="text-gray-800 font-medium">{lead.location?.village || "-"}</p>
+        <p className="text-gray-800 font-medium">{lead.village || "-"}</p>
        </div>
        
         

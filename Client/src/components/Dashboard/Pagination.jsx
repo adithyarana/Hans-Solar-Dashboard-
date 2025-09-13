@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { FaCircleChevronLeft } from "react-icons/fa6";
 import { FaCircleChevronRight } from "react-icons/fa6";
 
-const Pagination = ({totalpages , page , setpage }) => {
+const Pagination = ({totalpages , totalcount , data , page , setpage }) => {
 
-  
+
   return (
     <div className='z-30 flex gap-3 '>
 

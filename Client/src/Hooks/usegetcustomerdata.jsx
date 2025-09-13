@@ -1,35 +1,45 @@
-import React, { useCallback, useState } from 'react'
-import { GetCustomerData } from '../constants/Apiurls';
-import axios from 'axios';
-import { useSearchParams } from 'react-router-dom';
+import React, { useCallback, useState } from "react";
+import { GetCustomerData } from "../constants/Apiurls";
+import axios from "axios";
+import qs from "qs";
 
-const usegetcustomerdata = (page , limit) => {
-    const [customerData, setCustomerData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [filterdata, setFilterData] = useState([]);
-    const [totalpages , setTotalPages] = useState(1);
-    const [totalcount , setTotalCount] = useState(0);
-    const [searchpramas , setSearchpramas] = useSearchParams();
+const usegetcustomerdata = (page, limit, filter) => {
+  const [customerData, setCustomerData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [totalpages, setTotalPages] = useState(1);
+  const [totalcount, setTotalCount] = useState(0);
 
-    const fetchCustomerData = useCallback(async () => {
-        try { 
-          setLoading(true);
-          const response = await axios.get(GetCustomerData +`?page=${page}&limit=${limit}`, {
-            withCredentials: true,
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-          setCustomerData(response.data.customer);
-          setFilterData(response.data.customer);
-          setTotalPages(response.data.totalpages);
-          setTotalCount(response.data.totalcount);
-        } catch (error) {
-          console.error("Error fetching customer data:", error);
-        } finally {
-          setLoading(false);
+  const fetchCustomerData = useCallback(async () => {
+    try {
+
+      const query = {
+        page:page.toString(),
+        limit:limit.toString(),
+        ...(filter || {}),
+      };
+    
+      const querystring = qs.stringify(query,{encodeValuesOnly: true , allowDots:true});
+
+
+      setLoading(true);
+      const response = await axios.get(
+        GetCustomerData + `?${querystring}`,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" },
         }
-      }, [page, limit]);
+      );
+      setCustomerData(response.data.customer || []);
+      setTotalPages(response.data.totalpages || 1);
+      setTotalCount(response.data.totalcount || 0);
+    } catch (error) {
+      console.error("Error fetching customer data:", error);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, limit, filter]);
 
-      return { customerData, loading, filterdata, setFilterData, fetchCustomerData , totalpages , totalcount };
-}
+  return { customerData, loading, fetchCustomerData, totalpages, totalcount };
+};
 
-export default usegetcustomerdata
+export default usegetcustomerdata;

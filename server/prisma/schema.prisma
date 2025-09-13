@@ -39,7 +39,10 @@ model CustomerData {
   interestAreas  InterestAreas?  @default(ONGRID)
   address        String?
   birthday       DateTime?
-  location       Location?
+  state    String?
+  district String?
+  tehsil   String?
+  village  String?
 
   // admin can see full form
   infoSource    String?
@@ -62,13 +65,6 @@ model CustomerData {
   createdByEmpId String?  
 }
 
-type Location {
-  state    String?
-  district String?
-  tehsil   String?
-  block    String?
-  village  String?
-}
 
 enum LeadStage {
   NEW_LEAD

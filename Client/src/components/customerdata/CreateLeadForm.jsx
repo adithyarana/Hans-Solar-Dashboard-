@@ -74,13 +74,10 @@ const CreateLeadForm = ({
           leadStage: initialData?.leadStage || "NEW_LEAD",
           priority: initialData?.priority || "LOW",
           progressBoard: initialData?.progressBoard || "",
-          location: {
-            state: initialData?.location?.state || "",
-            district: initialData?.location?.district || "",
-            tehsil: initialData?.location?.tehsil || "",
-            block: initialData?.location?.block || "",
-            village: initialData?.location?.village || "",
-          },
+          state: initialData?.state || "",
+          district: initialData?.district || "",
+          tehsil: initialData?.tehsil || "",
+          village: initialData?.village || "",
           images: initialData?.images || [],
           attachments: initialData?.attachments || [],
         }}
@@ -102,7 +99,6 @@ const CreateLeadForm = ({
                 ![
                   "images",
                   "attachments",
-                  "location",
                   "birthday",
                   "followUp",
                   "startDate",
@@ -129,17 +125,7 @@ const CreateLeadForm = ({
                 new Date(values.startDate).toISOString()
               );
 
-            // Append location object as JSON string
-            formData.append(
-              "location",
-              JSON.stringify({
-                state: values.location?.state || "",
-                district: values.location?.district || "",
-                tehsil: values.location?.tehsil || "",
-                block: values.location?.block || "",
-                village: values.location?.village || "",
-              })
-            );
+       
 
             // Handle images
             if (values.images && values.images.length > 0) {
@@ -479,7 +465,7 @@ const CreateLeadForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
-                name="location.state"
+                name="state"
                 id=""
               >
                 <option>Select State</option>
@@ -494,7 +480,7 @@ const CreateLeadForm = ({
               <label className="block font-medium mb-1">District</label>
               <Field
                 type="text"
-                name="location.district"
+                name="district"
                 placeholder="Enter district"
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
               />
@@ -503,7 +489,7 @@ const CreateLeadForm = ({
               <label className="block font-medium mb-1">Tehsil</label>
               <Field
                 type="text"
-                name="location.tehsil"
+                name="tehsil"
                 placeholder="Enter tehsil"
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
               />
@@ -512,7 +498,7 @@ const CreateLeadForm = ({
               <label className="block font-medium mb-1">Village</label>
               <Field
                 type="text"
-                name="location.village"
+                name="village"
                 placeholder="Enter village"
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
               />

@@ -105,7 +105,7 @@ const CustomerDetailsPage = () => {
                 </p>
                 <p className="text-gray-600 mt-1 flex gap-1 items-center">
                   <IoLocationOutline size={16} />
-                  {data?.location?.state || "India"}
+                  {data?.state || "India"}
                 </p>
                 <p className="text-gray-600 mt-1 flex gap-1 items-center">
                   <MdOutlineSmartphone size={16} />
