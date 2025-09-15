@@ -1,21 +1,25 @@
 import {configureStore} from "@reduxjs/toolkit";
 import userReducer from "./UserSlice";
 
-// Load from localStorage
-const persistedUser = localStorage.getItem("user")
-  ? JSON.parse(localStorage.getItem("user"))
-  : null;
+// Load from localStorage with better error handling
+const getStoredUser = () => {
+  try {
+    const user = localStorage.getItem("user");
+    return user && user !== 'undefined' ? JSON.parse(user) : null;
+  } catch (error) {
+    console.error("Error parsing user from localStorage:", error);
+    return null;
+  }
+};
 
-const persistedToken = localStorage.getItem("token")
-  ? localStorage.getItem("token")
-  : null;
-
+const persistedUser = getStoredUser();
+const persistedToken = localStorage.getItem("token") || null;
 
 const store = configureStore({
     reducer: {
     userdata:userReducer
     },
-    preloadedState: {
+    preloadedState: {   // after refrsh data is gone from store from local strorege data is pushed in store 
       userdata: {
         user: persistedUser,
         token: persistedToken,

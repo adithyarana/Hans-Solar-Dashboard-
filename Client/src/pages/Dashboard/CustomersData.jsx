@@ -48,7 +48,7 @@ const CustomersData = () => {
     };
   
     // use qs.stringify + parse to flatten before setting
-    const flatQuery = qs.parse(qs.stringify(query, { encodeValuesOnly: true }));
+    const flatQuery = qs.parse(qs.stringify(query, { encodeValuesOnly: true , allowDots:true}));
     setSearchpramas(flatQuery, { replace: true });
   }, [page, limit, filter]);
   

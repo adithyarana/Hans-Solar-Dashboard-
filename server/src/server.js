@@ -6,6 +6,7 @@ import customerdataRoutes from "./routes/customerdata.js";
 import publicCustomerRoutes from "./routes/publicCustomer.js";
 import cors from "cors";
 import qs from "qs";
+import analyticsRoutes from "./routes/analyticsroutes.js";
 
 dotenv.config();
 
@@ -28,9 +29,12 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+// app.use("/", (req, res) => {
+//   res.send("Hello World!");
+// });
+
+app.use("/api", analyticsRoutes); // for handling the analytics routes
+
 
 // admin routes
 app.use("/api", authRoutes); // for handling the admin routes
