@@ -27,7 +27,6 @@ export const getEmployeeData = async (req, res) => {
     }
   };
   
-  
 export const updateEmployeeData = async (req, res) => {
     try {
       const { id } = req.params;

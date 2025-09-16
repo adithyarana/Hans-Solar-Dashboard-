@@ -32,7 +32,7 @@ export const verifyRole = (allowedRoles) => {
   return (req, res, next) => {
     verifyUser(req, res, () => {
       if (!allowedRoles.includes(req.user.role)) {
-        return res.status(403).json({ message: "Forbidden - Access denied cannot delete" });
+        return res.status(403).json({ message: "Forbidden - Access denied not Allowed !" });
       }
       next();
     });
