@@ -11,6 +11,7 @@ export const PostEmployeeData = `${Baseurl}/registerEmployee`
 export const GetEmployeeData = `${Baseurl}/getEmployeeData`
 export const DeleteEmployeeData = `${Baseurl}/deleteEmployeeData/`
 export const UpdateEmployeeData = `${Baseurl}/updateEmployeeData/`
+export const AdminAnalytics = `${Baseurl}/adminanalytics`
 
 
 

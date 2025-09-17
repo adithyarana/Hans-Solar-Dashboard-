@@ -25,18 +25,20 @@ const CustomersData = () => {
   const [filteropen, setFilterOpen] = useState(false);
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
+  const [uploadloading , setuploadloading] = useState(false);
   const { file, setfile, handleFileChange, handlefileupload } = useBulkupload();
   const { customerData , loading , fetchCustomerData , totalpages , totalcount } = usegetcustomerdata(page , limit, filter);
  
 
   const handleupload = async()=>{
     
+    setuploadloading(true);
     let result ;
-
     result = await handlefileupload();
     if(result){
       await fetchCustomerData?.();
     }
+    setuploadloading(false);
   }
 
   // when page and limit changes use srach pramas changes 
@@ -145,11 +147,11 @@ const CustomersData = () => {
                 )}
               </div>
               <button
-                disabled={loading}
+                disabled={uploadloading}
                 onClick={handleupload}
                 className="bg-gradient-to-r from-orange-500 to-red-500 font-medium px-4 py-2 mr-6 text-white rounded-xl items-center hover:opacity-80 gap-2 cursor-pointer"
               >
-                {loading ? "Uploading..." : <MdOutlineFileUpload size={25}/>}
+                {uploadloading ? "Uploading..." : <MdOutlineFileUpload size={25}/>}
               </button>
             </div>
           )}

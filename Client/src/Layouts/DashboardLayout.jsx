@@ -10,7 +10,7 @@ const DashboardLayout = () => {
        <div className='w-[15vw] h-screen'>
        <Sidebar/>
        </div>
-         <div className='flex flex-col gap-5 overflow-hidden bg-gray-50  '>
+         <div className='flex flex-col gap-5 overflow-hidden   '>
          <Navbar/>
          <Outlet/>
          </div>

@@ -39,14 +39,17 @@ export const Analytics= async(req, res)=>{
             return acc;
         },{})
 
-
-        res.status(200).json({
-            message: "Analytics fetched successfully",
+        const data={
             totalcustomer,
             totalemployee,
             totalreceptionist,
             leadstage,
             priority
+        }
+
+        res.status(200).json({
+            message: "Analytics fetched successfully",
+            data
         })
         
     } catch (error) {

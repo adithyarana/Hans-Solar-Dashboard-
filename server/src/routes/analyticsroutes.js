@@ -4,7 +4,7 @@ import { verifyRole } from "../middlewares/verifyadmin.js";
 
 const router = express.Router();    
 
-router.get("/analytics", verifyRole(["ADMIN"]), Analytics);
+router.get("/adminanalytics", verifyRole(["ADMIN"]), Analytics);
 router.get("/employeeanalytics/:empid", verifyRole(["EMPLOYEE"]), EmployeeAnalytics);
 
 export default router;

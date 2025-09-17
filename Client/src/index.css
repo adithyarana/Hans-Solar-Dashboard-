@@ -82,11 +82,13 @@
 
 /* Custom styled scrollbar */
 /* make color orange */
-.styled-scrollbar {
+.styled-scrollbar {  
     scrollbar-width: thin;
     scrollbar-color:#f97316 #FFFDD0; 
     position: relative;
+   
   }
+
 
 /* Right-side wave divider */
 .clip-wave {

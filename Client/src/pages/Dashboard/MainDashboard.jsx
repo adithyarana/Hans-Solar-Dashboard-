@@ -1,36 +1,23 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import AdminAnalytics from "../../components/Dashboard/AdminAnalytics";
+import EmployeeAnalytics from "../../components/Dashboard/EmployeeAnalytics";
+import useAdminAnalytics from "../../Hooks/AnalyticsApi/useAdmin";
 
 const MainDashboard = () => {
   const user = useSelector((state) => state.userdata?.user);
 
+  const {analyticsdata,loading} = useAdminAnalytics()
+
+
   return (
     <>
-      <div className="flex items-center justify-center h-full  p-6">
-        <div className="bg-white shadow-2xl rounded-2xl p-10 text-center max-w-2xl w-full">
-          {/* Welcome Text */}
-          <h1 className="text-4xl font-extrabold text-gray-800 mb-4">
-            <span className="text-orange-500">Welcome to</span>{" "}
-            {user.role === "ADMIN" ? "Admin Dashboard" : ""}
-            {user.role === "RECEPTIONIST" ? "Receptionist Dashboard" : ""}
-            {user.role === "EMPLOYEE" ? "Employee Dashboard" : ""}
-          </h1>
-
-          {/* User Name Highlight */}
-          <p className="text-2xl font-semibold text-gray-700">
-            Glad to see you,{" "}
-            <span className="text-orange-500 font-bold">{user.name}</span> 👋
-          </p>
-
-          {/* Subtext */}
-          <p className="mt-4 text-lg text-gray-500">
-            Manage your tasks and explore insights easily from here.
-          </p>
-
-          {/* Animated underline for style */}
-          <div className="mt-6 w-24 h-1 bg-orange-500 mx-auto rounded-full animate-pulse"></div>
-        </div>
+     {user.role === "ADMIN" && (
+      <div className="overflow-y-auto styled-scrollbar">
+        <AdminAnalytics data={analyticsdata} loading={loading} />
       </div>
+     )}
+     {user.role === "EMPLOYEE" && <EmployeeAnalytics />}
 
       {/* Bottom wave flipped */}
       <div className="absolute bottom-0 left-0 mb-1 w-full overflow-hidden">
