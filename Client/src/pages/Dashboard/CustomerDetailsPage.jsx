@@ -56,7 +56,7 @@ const CustomerDetailsPage = () => {
 
 
   return (
-     <div className="overflow-y-scroll">
+     <div className="overflow-y-scroll styled-scrollbar">
     
       <div className="flex items-center gap-2  ml-14 mt-5">
         <NavLink to="/dashboard/customers">

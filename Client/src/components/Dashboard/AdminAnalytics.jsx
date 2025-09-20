@@ -2,12 +2,20 @@ import React from "react";
 import { SiGoogleanalytics } from "react-icons/si";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import Leadstages from "./AnalyticsComponents/Leadstages";
+import { useNavigate } from "react-router-dom";
 
 const AdminAnalytics = ({ data, loading }) => {
+  const navigate = useNavigate();
   const { totalcustomer, totalemployee, totalreceptionist } = data;
   const { LEAD_LOST, LEAD_WON } = data?.leadstage || {};
   console.log("LEAD_LOST", LEAD_LOST);
   console.log("LEAD_WON", LEAD_WON);
+
+
+
+  const handleleadstage = (leadstage)=>{
+    navigate(`/dashboard/customers?page=1&limit=15&leadStage=${leadstage}`);
+  }
 
   return (
     <>
@@ -38,7 +46,7 @@ const AdminAnalytics = ({ data, loading }) => {
             <div className="px-5 py-3 overflow-x-auto styled-scrollbar">
               <div className="flex gap-5 flex-nowrap md:flex-wrap justify-start md:justify-start min-w-max">
                 {/* box1 */}
-                <div className="bg-white flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
+                <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Total Customer
                   </p>
@@ -52,7 +60,7 @@ const AdminAnalytics = ({ data, loading }) => {
                 </div>
 
                 {/* box2 */}
-                <div className="bg-white flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-yellow-500 rounded-lg shadow shrink-0">
+                <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-yellow-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Total Employee
                   </p>
@@ -66,7 +74,7 @@ const AdminAnalytics = ({ data, loading }) => {
                 </div>
 
                 {/* box3 */}
-                <div className="bg-white flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-blue-500 rounded-lg shadow shrink-0">
+                <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-blue-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Total Receptionist
                   </p>
@@ -83,11 +91,11 @@ const AdminAnalytics = ({ data, loading }) => {
                 <div className="hidden md:block w-[1px] h-[120px] bg-gray-300 mx-5"></div>
 
                 {/* box4 */}
-                <div className="bg-white flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-green-500 rounded-lg shadow shrink-0">
+                <div onClick={()=>handleleadstage("LEAD_WON")} className="bg-white cursor-pointer flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-green-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Lead Won
                   </p>
-                  <p className="text-yellow-500 font-semibold text-lg">
+                  <p className="text-green-500 font-semibold text-lg">
                     {loading ? (
                       <span className="inline-block w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
                     ) : (
@@ -97,11 +105,11 @@ const AdminAnalytics = ({ data, loading }) => {
                 </div>
 
                 {/* box5 */}
-                <div className="bg-white flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-red-500 rounded-lg shadow shrink-0">
+                <div onClick={()=>handleleadstage("LEAD_LOST")} className="bg-white cursor-pointer flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-red-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Lead Lost
                   </p>
-                  <p className="text-orange-500 font-semibold text-lg">
+                  <p className="text-red-500 font-semibold text-lg">
                     {loading ? (
                       <span className="inline-block w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
                     ) : (

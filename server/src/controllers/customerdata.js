@@ -105,6 +105,8 @@ export const Addcustomerdata = async (req, res) => {
       progressBoard,
     } = req.body;
 
+ 
+
     if (!name) {
       return res.status(400).json({ message: "All fields are required" });
     }

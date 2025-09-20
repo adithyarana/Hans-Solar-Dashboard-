@@ -33,7 +33,7 @@ const Leadstages = ({data,loading , prioritydata}) => {
             <div
               key={idx}
               className={`bg-gray-50 cursor-pointer flex flex-col justify-center items-center h-[100px] border-l-4 ${item.color} rounded-lg shadow`}
-            
+              onClick={()=>navigate(`/dashboard/customers?page=1&limit=15&leadStage=${item.key}`)}
             >
               <p className="text-gray-600 font-semibold text-md">{item.label}</p>
               <p className="text-blue-600 font-semibold text-lg">{loading ? (

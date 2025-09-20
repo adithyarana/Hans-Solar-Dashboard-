@@ -86,6 +86,7 @@ const CreateLeadForm = ({
           let errors = {};
 
           if (!value.name) errors.name = "Name is required";
+          if(!value.phoneNumber) errors.phoneNumber = "Phone number is required";
           return errors;
         }}
         onSubmit={async (values, { resetForm }) => {
@@ -222,7 +223,7 @@ const CreateLeadForm = ({
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               />
               {errors.email && touched.email && (
-                <div className="text-red-500">{errors.email}</div>
+                <div className=" text-sm text-red-500">{errors.email}</div>
               )}
             </div>
 
@@ -239,8 +240,12 @@ const CreateLeadForm = ({
                 placeholder="Enter phone number"
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               />
-            </div>
+                 {errors.phoneNumber && touched.phoneNumber && (
+              <div className="text-red-500">{errors.phoneNumber}</div>
+            )}
 
+            </div>
+         
             {/* WhatsApp Number */}
             <div>
               <label className="block font-medium mb-1">WhatsApp Number</label>

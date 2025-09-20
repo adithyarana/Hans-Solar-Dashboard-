@@ -84,7 +84,7 @@
 /* make color orange */
 .styled-scrollbar {  
     scrollbar-width: thin;
-    scrollbar-color:#f97316 #FFFDD0; 
+    scrollbar-color:#E5E5E5 #F5F5F5; 
     position: relative;
    
   }

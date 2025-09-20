@@ -136,7 +136,7 @@ const Filter = ({ handleFilter, closefilter }) => {
             <option value="NEW_LEAD">New Lead</option>
             <option value="IN_PROCESS">In Process</option>
             <option value="QUALIFIED">Qualified</option>
-            <option value="SITE_VISIT_SCHEDULED">Site Visit Scheduled</option>
+            <option value="SITE_VISIT_SCHEDULE">Site Visit Scheduled</option>
             <option value="SITE_VISIT_DONE">Site Visit Done</option>
             <option value="ESTIMATE_SENT">Estimate Sent</option>
             <option value="NEGOTIATION">Negotiation</option>

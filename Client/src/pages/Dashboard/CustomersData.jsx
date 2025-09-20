@@ -12,47 +12,77 @@ import { FaDeleteLeft } from "react-icons/fa6";
 import ExportFile from "../../components/customerdata/ExportFile.jsx";
 import { MdOutlineFileUpload } from "react-icons/md";
 import Pagination from "../../components/Dashboard/Pagination.jsx";
-import qs from "qs";
 
 const CustomersData = () => {
   const [open, setOpen] = useState(false);
-  const [searchpramas , setSearchpramas] = useSearchParams();
-
-  const pageurl = parseInt(searchpramas.get("page")) || 1;
-  const [page , setpage]= useState(pageurl);
-  const limit = 15;
-  const [filter , setFilter] = useState({});
-  const [filteropen, setFilterOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
-  const [uploadloading , setuploadloading] = useState(false);
+  
+  // Get initial values from URL or use defaults
+  const pageFromUrl = parseInt(searchParams.get("page")) || 1;
+  const leadStageFromUrl = searchParams.get("leadStage") || "";
+  const limit = 15;
+  
+  const [page, setPage] = useState(pageFromUrl);
+  const [filter, setFilter] = useState(leadStageFromUrl ? { leadStage: leadStageFromUrl } : {});
+  const [filteropen, setFilterOpen] = useState(false);
+  const [uploadloading, setUploadLoading] = useState(false);
+  
+  // hooks
   const { file, setfile, handleFileChange, handlefileupload } = useBulkupload();
-  const { customerData , loading , fetchCustomerData , totalpages , totalcount } = usegetcustomerdata(page , limit, filter);
- 
+  const { customerData, loading, fetchCustomerData, totalpages, totalcount } = 
+    usegetcustomerdata(page, limit, filter);
+  
+  // Update URL when filter or page changes
+  useEffect(() => {
+    const params = new URLSearchParams();
+    params.set('page', page.toString());
+    
+    if (filter.leadStage) {
+      params.set('leadStage', filter.leadStage);
+    } else {
+      params.delete('leadStage');
+    }
+    
+    // Only update if there are actual changes to prevent infinite loops
+    if (params.toString() !== searchParams.toString()) {
+      setSearchParams(params, { replace: true });
+    }
+  }, [page, filter, setSearchParams, searchParams]);
+  
+  // Handle initial load and URL changes
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const leadStageParam = params.get('leadStage');
+    const pageParam = parseInt(params.get('page')) || 1;
+    
+    // Update local state from URL
+    if (leadStageParam && leadStageParam !== filter.leadStage) {
+      setFilter({ leadStage: leadStageParam });
+    } else if (!leadStageParam && Object.keys(filter).length > 0) {
+      setFilter({});
+    }
+    
+    if (pageParam !== page) {
+      setPage(pageParam);
+    }
+  }, [location.search]);
+  
 
+  // handle bulk uploads
   const handleupload = async()=>{
     
-    setuploadloading(true);
+    setUploadLoading(true);
     let result ;
     result = await handlefileupload();
     if(result){
       await fetchCustomerData?.();
     }
-    setuploadloading(false);
+    setUploadLoading(false);
   }
 
-  // when page and limit changes use srach pramas changes 
-  useEffect(() => {
-    const query = {
-      page: page.toString(),
-      limit: limit.toString(),
-      ...(filter || {}),
-    };
-  
-    // use qs.stringify + parse to flatten before setting
-    const flatQuery = qs.parse(qs.stringify(query, { encodeValuesOnly: true , allowDots:true}));
-    setSearchpramas(flatQuery, { replace: true });
-  }, [page, limit, filter]);
+  // This effect is now handled by the URL update effect above
   
   useEffect(() => {
     // Check if we're coming back from a delete operation
@@ -66,15 +96,16 @@ const CustomersData = () => {
   }, [fetchCustomerData, location.state]);
 
   const handleFilter = (criteria) => {
-     if(!criteria){
-       setFilter({});
-       setpage(1); // reset page to 1 when we seach oin other pages 
-       return;
-     }
-
-     setFilter(criteria);
-     setpage(1);
+    if (!criteria || Object.keys(criteria).length === 0) {
+      setFilter({});
+      setPage(1);
+      return;
+    }
+    
+    setFilter(criteria);
+    setPage(1);
   };                   
+
 
   return (
     <>
@@ -199,7 +230,7 @@ const CustomersData = () => {
           {/* pagination */}
           {totalcount > 15 && (
                <div className="flex justify-end items-center mb-3 mr-14">
-               <Pagination totalpages={totalpages} data={customerData} totalcount={totalcount} page={page} setpage={setpage} />
+               <Pagination totalpages={totalpages} data={customerData} totalcount={totalcount} page={page} setpage={setPage} />
                </div>
           )}
 
