@@ -13,6 +13,7 @@ import useGetCustomerDataById from "../../Hooks/usegetcustomerdatabyId";
 import LeadInformation from "../../components/customerdata/LeadInformation";
 import Attachment from "../../components/customerdata/Attachment";
 import { stageColors } from "../../constants/Apiurls";
+import Timeline from "../../components/customerdata/Timeline";
 
 
 
@@ -25,6 +26,7 @@ const CustomerDetailsPage = () => {
   const user = useSelector((state) => state.userdata?.user);
   const location = useLocation();
   const currentpage = location.state?.page;
+  const currentSearch = location.state?.search || "";
 
 
   const { customerdatabyid, loading, refetch } = useGetCustomerDataById(id);
@@ -43,7 +45,11 @@ const CustomerDetailsPage = () => {
     try {
       await Apicall(id);
       toast.success("Lead Deleted Successfully");
-      navigate(`/dashboard/customers?page=${currentpage}`, { state: { shouldRefresh: true } });
+      if (currentSearch) {
+        navigate(`/dashboard/customers${currentSearch}`, { state: { shouldRefresh: true } });
+      } else {
+        navigate(`/dashboard/customers?page=${currentpage || 1}`, { state: { shouldRefresh: true } });
+      }
     } catch (error) {
       console.error("Delete error:", error);
       toast.error(
@@ -55,11 +61,13 @@ const CustomerDetailsPage = () => {
 
 
 
+
   return (
-     <div className="overflow-y-scroll styled-scrollbar">
+     <div className="overflow-y-scroll h-screen styled-scrollbar">
     
       <div className="flex items-center gap-2  ml-14 mt-5">
-        <NavLink to="/dashboard/customers">
+        <NavLink to={`/dashboard/customers${currentSearch}`}
+        >
           <span className="text-xl font-semibold text-gray-600">Leads</span>
         </NavLink>
         <span className="text-gray-600 mt-1">
@@ -77,12 +85,12 @@ const CustomerDetailsPage = () => {
       </div>
 
       {loading ? (
-        <div className="flex  items-center justify-center h-full">
+        <div className="flex   items-center justify-center h-full">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
         </div>
       ) : (
         // upper section
-        <div className="bg-white border mt-5 border-gray-50 shadow  h-[300px] w-[80vw] ml-14">
+        <div className="bg-white border mt-5 border-gray-200 rounded shadow  h-[300px] w-[80vw] ml-14">
           <div className="flex gap-3 justify-between p-3 ">
             {/* image and name */}
             <div className="flex ">
@@ -200,10 +208,18 @@ const CustomerDetailsPage = () => {
 
       )}
 
-      <div className="ml-14 mt-5 flex gap-6 flex-col">
-        <LeadInformation lead={data}/>
-        <Attachment attachments={data?.attachments || []} />
-      </div>
+<div className="flex ml-14 mt-5 gap-6">
+  
+  <div className="w-1/4">
+    <Timeline updatedTimeLine={lead?.updateHistory} createdAt={lead?.createdAt} />
+  </div>
+
+  <div className="flex-1 w-[60vw] flex flex-col gap-6">
+    <LeadInformation lead={data} />
+    <Attachment attachments={data?.attachments || []} />
+  </div>
+</div>
+
     </div>
   );
 };

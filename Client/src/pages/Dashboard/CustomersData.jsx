@@ -19,13 +19,30 @@ const CustomersData = () => {
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
   
+  // Define all supported filter keys that we will persist in URL
+  const FILTER_KEYS = [
+    "leadStage",
+    "priority",
+    "name",
+    "customerId",
+    "createdByEmpId",
+    "state",
+    "district",
+    "tehsil",
+    "village",
+  ];
+
   // Get initial values from URL or use defaults
   const pageFromUrl = parseInt(searchParams.get("page")) || 1;
-  const leadStageFromUrl = searchParams.get("leadStage") || "";
+  const initialFilterFromUrl = FILTER_KEYS.reduce((acc, key) => {
+    const val = searchParams.get(key);
+    if (val !== null && val !== "") acc[key] = val;
+    return acc;
+  }, {});
   const limit = 15;
   
   const [page, setPage] = useState(pageFromUrl);
-  const [filter, setFilter] = useState(leadStageFromUrl ? { leadStage: leadStageFromUrl } : {});
+  const [filter, setFilter] = useState(initialFilterFromUrl);
   const [filteropen, setFilterOpen] = useState(false);
   const [uploadloading, setUploadLoading] = useState(false);
   
@@ -38,13 +55,15 @@ const CustomersData = () => {
   useEffect(() => {
     const params = new URLSearchParams();
     params.set('page', page.toString());
-    
-    if (filter.leadStage) {
-      params.set('leadStage', filter.leadStage);
-    } else {
-      params.delete('leadStage');
-    }
-    
+
+    // push all active filter keys to URL
+    FILTER_KEYS.forEach((key) => {
+      const value = filter?.[key];
+      if (value !== undefined && value !== null && value !== "") {
+        params.set(key, String(value));
+      }
+    });
+
     // Only update if there are actual changes to prevent infinite loops
     if (params.toString() !== searchParams.toString()) {
       setSearchParams(params, { replace: true });
@@ -54,21 +73,27 @@ const CustomersData = () => {
   // Handle initial load and URL changes
   useEffect(() => {
     const params = new URLSearchParams(location.search);
-    const leadStageParam = params.get('leadStage');
     const pageParam = parseInt(params.get('page')) || 1;
-    
-    // Update local state from URL
-    if (leadStageParam && leadStageParam !== filter.leadStage) {
-      setFilter({ leadStage: leadStageParam });
-    } else if (!leadStageParam && Object.keys(filter).length > 0) {
-      setFilter({});
+
+    // Build filter object from URL
+    const nextFilter = FILTER_KEYS.reduce((acc, key) => {
+      const val = params.get(key);
+      if (val !== null && val !== "") acc[key] = val;
+      return acc;
+    }, {});
+
+    // Update local state from URL if changed
+    const currentStr = JSON.stringify(filter || {});
+    const nextStr = JSON.stringify(nextFilter || {});
+    if (currentStr !== nextStr) {
+      setFilter(nextFilter);
     }
-    
+
     if (pageParam !== page) {
       setPage(pageParam);
     }
   }, [location.search]);
-  
+
 
   // handle bulk uploads
   const handleupload = async()=>{

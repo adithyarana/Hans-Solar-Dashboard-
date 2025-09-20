@@ -14,7 +14,6 @@ const usegetcustomerdata = (page, limit, filter) => {
 
       const query = {
         page:page.toString(),
-        limit:limit.toString(),
         ...(filter || {}),
       };
     

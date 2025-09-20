@@ -165,6 +165,10 @@ export const Addcustomerdata = async (req, res) => {
       attachments: attachmentUrls,
       createdById: req.user.userId,
       createdByEmpId: req.user.empid,
+      updateHistory:[{
+        createdAt: new Date(),
+        empId: req.user.empid || "Admin",
+      }],
     };
 
     const newcustomer = await prisma.customerData.create({
@@ -308,6 +312,7 @@ export const getallcustomerdata = async (req, res) => {
       orderBy: { createdAt: "desc" },
     });
 
+
     return res.status(200).json({
       message: "Customer data fetched successfully",
       customer,
@@ -359,9 +364,13 @@ export const updateCustomerdata = async (req, res) => {
   try {
     const { id } = req.params;
 
+    
+
     const customer = await prisma.customerData.findUnique({
       where: { id },
     });
+
+
 
     if (!customer) {
       return res.status(404).json({ message: "Customer not found" });
@@ -429,6 +438,14 @@ export const updateCustomerdata = async (req, res) => {
         location: parsedLocation ? parsedLocation : undefined,
         attachments: attachmentsUpdate,
         images: imagesUpdate,
+
+        // store update history 
+        updateHistory:{
+          push:{
+            empId: req.user.empid || "Admin",
+            updatedAt: new Date(),
+          }
+        }
       },
     });
 

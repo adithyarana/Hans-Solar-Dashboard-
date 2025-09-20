@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
 import { stageColors } from "../../constants/Apiurls";
 import {Prioritycolor} from "../../constants/Apiurls"
@@ -7,6 +7,7 @@ import Pagination from "../Dashboard/Pagination";
 
 const Dataheading = ({ customerData, loading, page = 1 }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
 
   if(!customerData || customerData.length === 0){
@@ -64,7 +65,7 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
             <tr
               key={index}
               className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
-              onClick={() => navigate(`/dashboard/customers/${item.id}`, {state:{page:page}})}
+              onClick={() => navigate(`/dashboard/customers/${item.id}`, { state: { page, search: location.search } })}
             >
              {user.role === "ADMIN" && (
               <td className="px-4 py-2 font-semibold">{item.createdByEmpId || "ADMIN"}</td>

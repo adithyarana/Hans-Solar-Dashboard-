@@ -7,18 +7,21 @@ const AttachmentsSection = ({ attachments }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className=" rounded-lg shadow w-[80vw] bg-white overflow-hidden mb-4">
+    <div className=" rounded-lg shadow border border-gray-200  bg-white overflow-hidden mb-4">
       <button
         className="flex items-center justify-between cursor-pointer w-full px-5 py-4 font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>Attachments ({attachments.length})</span>
-        <IoIosArrowForward
-          size={20}
-          className={`transition-transform duration-300 ${
-            isOpen ? "rotate-90 text-orange-500" : "text-gray-500"
-          }`}
-        />
+        <span className="flex items-center gap-2">
+          {" "}
+          <IoIosArrowForward
+            size={20}
+            className={`transition-transform duration-300 ${
+              isOpen ? "rotate-90 text-orange-500" : "text-gray-500"
+            }`}
+          />
+          Attachments ({attachments.length})
+        </span>
       </button>
 
       <div
@@ -42,7 +45,13 @@ const AttachmentsSection = ({ attachments }) => {
                       rel="noreferrer"
                       className=""
                     >
-                     <span className="flex items-center gap-2"> <span className="text-gray-500 no-underline">Attachment</span> {i + 1} <FaEye className="text-orange-500" size={26} /></span>
+                      <span className="flex items-center gap-2">
+                        {" "}
+                        <span className="text-gray-500 no-underline">
+                          Attachment
+                        </span>{" "}
+                        {i + 1} <FaEye className="text-orange-500" size={26} />
+                      </span>
                     </a>
                   </div>
                 </li>

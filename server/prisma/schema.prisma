@@ -63,6 +63,10 @@ model CustomerData {
   createdBy     User?     @relation("UserLeads", fields: [createdById], references: [id])
   createdById   String?   @db.ObjectId
   createdByEmpId String?  
+
+   // Track updates
+  updateHistory Json[] @default([])
+
 }
 
 

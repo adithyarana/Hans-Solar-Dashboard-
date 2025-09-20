@@ -1,26 +1,28 @@
 import React, { useState } from "react";
 import { IoIosArrowForward } from "react-icons/io";
 import { stageColors } from "../../constants/Apiurls";
-import {Prioritycolor} from "../../constants/Apiurls"
-
+import { Prioritycolor } from "../../constants/Apiurls";
 
 const LeadInformation = ({ lead }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="rounded-xl shadow w-[80vw] bg-white overflow-hidden transition-all duration-300">
+    <div className="rounded-xl shadow border border-gray-200  bg-white overflow-hidden transition-all duration-300">
       {/* Header with dropdown toggle */}
       <button
         className="flex items-center justify-between cursor-pointer  px-5 py-4 w-[80vw] font-semibold text-gray-700 bg-gray-50 hover:bg-gray-100 transition"
         onClick={() => setIsOpen(!isOpen)}
       >
-        <span>Lead Information</span>
-        <IoIosArrowForward
-          size={20}
-          className={`transition-transform duration-300 ${
-            isOpen ? "rotate-90 text-orange-500" : "text-gray-500"
-          }`}
-        />
+        <span className="flex items-center gap-2">
+          {" "}
+          <IoIosArrowForward
+            size={20}
+            className={`transition-transform duration-300 ${
+              isOpen ? "rotate-90 text-orange-500" : "text-gray-500"
+            }`}
+          />
+          Lead Information
+        </span>
       </button>
 
       {/* Expandable Content */}
@@ -33,10 +35,10 @@ const LeadInformation = ({ lead }) => {
           <p className="text-sm text-gray-500">Name</p>
           <p className="text-gray-800 font-medium">{lead.name || "-"}</p>
         </div>
-         <div>
+        <div>
           <p className="text-sm text-gray-500">Email</p>
           <p className="text-gray-800 font-medium">{lead.email || "-"}</p>
-         </div>
+        </div>
         <div>
           <p className="text-sm text-gray-500">Lead Stage</p>
           <span
@@ -55,7 +57,7 @@ const LeadInformation = ({ lead }) => {
             }`}
           >
             {lead.priority || "LOW"}
-          </span>   
+          </span>
         </div>
         <div>
           <p className="text-sm text-gray-500">Phone no</p>
@@ -79,38 +81,42 @@ const LeadInformation = ({ lead }) => {
 
         <div>
           <p className="text-sm text-gray-500">Follow Up</p>
-          <p className="text-gray-800 font-medium">{lead.followUp ? lead.followUp.split("T")[0] : "-"}</p>
+          <p className="text-gray-800 font-medium">
+            {lead.followUp ? lead.followUp.split("T")[0] : "-"}
+          </p>
         </div>
 
         <div>
           <p className="text-sm text-gray-500">Work Category</p>
-          <p className="text-gray-800 font-medium">{lead.workCategory || "-"}</p>
+          <p className="text-gray-800 font-medium">
+            {lead.workCategory || "-"}
+          </p>
         </div>
 
-       <div>
-        <p className="text-sm text-gray-500">Progress Board</p>
-        <p className="text-gray-800 font-medium">{lead.progressBoard || "-"}</p>
-       </div>
+        <div>
+          <p className="text-sm text-gray-500">Progress Board</p>
+          <p className="text-gray-800 font-medium">
+            {lead.progressBoard || "-"}
+          </p>
+        </div>
 
-       <div>
-        <p className="text-sm text-gray-500">State </p>
-        <p className="text-gray-800 font-medium">{lead.state || "-"}</p>
-       </div>
+        <div>
+          <p className="text-sm text-gray-500">State </p>
+          <p className="text-gray-800 font-medium">{lead.state || "-"}</p>
+        </div>
 
-       <div>
-        <p className="text-sm text-gray-500">District </p>
-        <p className="text-gray-800 font-medium">{lead.district || "-"}</p>
-       </div>
-       <div>
-        <p className="text-sm text-gray-500">Tehsil </p>
-        <p className="text-gray-800 font-medium">{lead.tehsil || "-"}</p>
-       </div>
-       <div>
-        <p className="text-sm text-gray-500">Village </p>
-        <p className="text-gray-800 font-medium">{lead.village || "-"}</p>
-       </div>
-       
-        
+        <div>
+          <p className="text-sm text-gray-500">District </p>
+          <p className="text-gray-800 font-medium">{lead.district || "-"}</p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Tehsil </p>
+          <p className="text-gray-800 font-medium">{lead.tehsil || "-"}</p>
+        </div>
+        <div>
+          <p className="text-sm text-gray-500">Village </p>
+          <p className="text-gray-800 font-medium">{lead.village || "-"}</p>
+        </div>
       </div>
     </div>
   );
