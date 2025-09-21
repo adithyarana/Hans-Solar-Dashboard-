@@ -8,9 +8,7 @@ const AdminAnalytics = ({ data, loading }) => {
   const navigate = useNavigate();
   const { totalcustomer, totalemployee, totalreceptionist } = data;
   const { LEAD_LOST, LEAD_WON } = data?.leadstage || {};
-  console.log("LEAD_LOST", LEAD_LOST);
-  console.log("LEAD_WON", LEAD_WON);
-
+  
 
 
   const handleleadstage = (leadstage)=>{

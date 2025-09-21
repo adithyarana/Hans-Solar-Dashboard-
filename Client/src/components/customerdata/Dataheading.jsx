@@ -13,7 +13,7 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
   if(!customerData || customerData.length === 0){
     return (
       <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-600  text-2xl">No data available</p>
+        <p className="text-gray-600  text-2xl">No data available !</p>
       </div>
     )
   }

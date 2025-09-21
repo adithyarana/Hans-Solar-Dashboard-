@@ -45,6 +45,10 @@ export const BulkUploaddata = async(req, res)=>{
         address: row.Address || null,
         createdById: req.user.userId,
         createdByEmpId: req.user.empid,
+        updateHistory:[{
+          createdAt:new Date(),
+          empId:"Admin",
+        }]
       }));
 
       const result = await prisma.customerData.createMany({

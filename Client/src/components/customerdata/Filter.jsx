@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const indianStates = [
   "Select State",
@@ -57,6 +58,9 @@ const empid = [
 ]
 
 const Filter = ({ handleFilter, closefilter }) => {
+
+  const user = useSelector((state)=>state?.userdata?.user)
+
   const [filter, setFilter] = useState({
     name: "",
     leadStage: "",
@@ -238,22 +242,24 @@ const Filter = ({ handleFilter, closefilter }) => {
         </div>
 
                 {/* Priority */}
-        <div>
-          <label className="block text-sm font-medium text-nowrap mb-1">Search Employee data by ID</label>
-          <select
-            type="text" 
-            placeholder="Enter employee ID"
-            name="createdByEmpId" 
-            value={filter.createdByEmpId}
-            onChange={handleChange}
-            className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-          >
-            <option value="">Select ID</option>
-            {empid.map((id , idx)=>(
-              <option key={idx} value={id}>{id}</option>
-            ))}
-          </select>
-        </div>
+       {user.role==="ADMIN" &&(
+         <div>
+         <label className="block text-sm font-medium text-nowrap mb-1">Search Employee data by ID</label>
+         <select
+           type="text" 
+           placeholder="Enter employee ID"
+           name="createdByEmpId" 
+           value={filter.createdByEmpId}
+           onChange={handleChange}
+           className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+         >
+           <option value="">Select ID</option>
+           {empid.map((id , idx)=>(
+             <option key={idx} value={id}>{id}</option>
+           ))}
+         </select>
+       </div>
+       )}
 
         {/* Buttons - Full Row */}
         <div className="col-span-3 flex gap-4 mt-4">

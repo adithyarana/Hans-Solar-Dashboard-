@@ -3,21 +3,34 @@ import { useSelector } from "react-redux";
 import AdminAnalytics from "../../components/Dashboard/AdminAnalytics";
 import EmployeeAnalytics from "../../components/Dashboard/EmployeeAnalytics";
 import useAdminAnalytics from "../../Hooks/AnalyticsApi/useAdmin";
+import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
 
 const MainDashboard = () => {
   const user = useSelector((state) => state.userdata?.user);
 
-  const {analyticsdata,loading} = useAdminAnalytics()
+  const {empid} = useSelector((state) => state.userdata?.user);
+ 
+  const IsAdmin= user?.role === "ADMIN"
+  const IsEmployee= user?.role === "EMPLOYEE"
+
+  const {analyticsdata,loading} = useAdminAnalytics(IsAdmin)
+  const {EmployeeAnalyticsData,Eloading} = useEmployeeAnalytics(empid, IsEmployee)
+  console.log("EmployeeAnalyticsData",EmployeeAnalyticsData)
+  
 
 
   return (
     <>
-     {user.role === "ADMIN" && (
-      <div className="overflow-y-auto styled-scrollbar">
+     {IsAdmin && (
+      <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">
         <AdminAnalytics data={analyticsdata} loading={loading} />
       </div>
      )}
-     {user.role === "EMPLOYEE" && <EmployeeAnalytics />}
+     {IsEmployee && (
+      <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">
+        <EmployeeAnalytics data={EmployeeAnalyticsData} loading={Eloading} />
+      </div>
+     )}
 
       {/* Bottom wave flipped */}
       <div className="absolute bottom-0 left-0 mb-1 w-full overflow-hidden">

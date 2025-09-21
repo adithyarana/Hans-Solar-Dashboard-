@@ -84,7 +84,7 @@ export const EmployeeAnalytics = async (req, res) => {
             },
         });
 
-        const leadStage = leadStageraw.reduce((acc, curr) => {
+        const leadstage = leadStageraw.reduce((acc, curr) => {
             acc[curr.leadStage] = curr._count.leadStage;
             return acc;
         }, {});
@@ -106,7 +106,7 @@ export const EmployeeAnalytics = async (req, res) => {
             message: "Analytics fetched successfully",
             empid: loggedInempid,
             countcustomer,
-            leadStage,
+            leadstage,
             priority
         })
 

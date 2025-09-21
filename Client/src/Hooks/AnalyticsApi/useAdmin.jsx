@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { AdminAnalytics } from '../../constants/Apiurls'
 
-const useAdminAnalytics = () => {
+const useAdminAnalytics = (enabled = true) => {
 
     const [analyticsdata, setAnalyticsdata] = useState([])
     const [loading, setLoading] = useState(false)
@@ -28,7 +28,7 @@ const useAdminAnalytics = () => {
 
     useEffect(()=>{
         Adminanalytics()
-    },[])
+    },[enabled])
 
     return {analyticsdata,loading}
 
