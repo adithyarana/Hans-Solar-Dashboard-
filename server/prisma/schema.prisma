@@ -14,35 +14,35 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  name      String
-  email     String   @unique
-  password  String
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  email      String   @unique
+  password   String
   normalpass String
-  role      Role     @default(EMPLOYEE)
-  empid     String?  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role       Role     @default(EMPLOYEE)
+  empid      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   // Relations
   leads CustomerData[] @relation("UserLeads")
 }
 
 model CustomerData {
-  id             String    @id @default(auto()) @map("_id") @db.ObjectId
-  customerId     String    @unique
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  customerId     String         @unique
   // this form detaisl for customer only 
   name           String
   email          String?
   phoneNumber    String
   whatsappNumber String?
-  interestAreas  InterestAreas?  @default(ONGRID)
+  interestAreas  InterestAreas? @default(ONGRID)
   address        String?
   birthday       DateTime?
-  state    String?
-  district String?
-  tehsil   String?
-  village  String?
+  state          String?
+  district       String?
+  tehsil         String?
+  village        String?
 
   // admin can see full form
   infoSource    String?
@@ -54,20 +54,35 @@ model CustomerData {
   leadStage     LeadStage @default(NEW_LEAD)
   priority      Priority  @default(LOW)
   progressBoard String?
-  images        String[] // Cloudinary URLs
-  attachments   String[] // Extra documents
+  // images        String[] // Cloudinary URLs
+  // attachments   String[] // Extra documents
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
- 
-  // Relation to the user (Employee/Admin who created the lead)
-  createdBy     User?     @relation("UserLeads", fields: [createdById], references: [id])
-  createdById   String?   @db.ObjectId
-  createdByEmpId String?  
 
-   // Track updates
+  // Relation to the user (Employee/Admin who created the lead)
+  createdBy      User?   @relation("UserLeads", fields: [createdById], references: [id])
+  createdById    String? @db.ObjectId
+  createdByEmpId String?
+
+  // Track updates
   updateHistory Json[] @default([])
 
+  mediaFolder MediaFolder[]
 }
+
+model MediaFolder {
+  id           String       @id @default(auto()) @map("_id") @db.ObjectId
+  folderName   String
+  description  String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  // Relation to the customer
+  customerData CustomerData @relation(fields: [customerId], references: [id])
+  customerId  String       @db.ObjectId
+  attachments  String[]
+}
+
 
 
 enum LeadStage {
@@ -85,12 +100,12 @@ enum LeadStage {
 
 enum InterestAreas {
   ONGRID // ⚡ Ongrid: Low cost, no backup
-  HYBRID  // ⚡ Hybrid: Backup, high cost
+  HYBRID // ⚡ Hybrid: Backup, high cost
   OFFGRID // ⚡ Off Grid: Electricity in remote areas
-  KW_1   // 1 kW
-  KW_2   // 2 kW
-  KW_3   // 3 kW
-  KW_4   // 4 kW
+  KW_1 // 1 kW
+  KW_2 // 2 kW
+  KW_3 // 3 kW
+  KW_4 // 4 kW
 }
 
 enum Priority {

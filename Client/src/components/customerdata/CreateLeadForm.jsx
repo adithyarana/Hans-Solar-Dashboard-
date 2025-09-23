@@ -78,8 +78,8 @@ const CreateLeadForm = ({
           district: initialData?.district || "",
           tehsil: initialData?.tehsil || "",
           village: initialData?.village || "",
-          images: initialData?.images || [],
-          attachments: initialData?.attachments || [],
+          // images: initialData?.images || [],
+          // attachments: initialData?.attachments || [],
         }}
         enableReinitialize
         validate={(value) => {
@@ -128,27 +128,27 @@ const CreateLeadForm = ({
 
        
 
-            // Handle images
-            if (values.images && values.images.length > 0) {
-              Array.from(values.images).forEach((file) => {
-                if (file instanceof File) {
-                  formData.append("images", file); // ✅ new files
-                } else {
-                  formData.append("images", file); // ✅ keep old URLs
-                }
-              });
-            }
+            // // Handle images
+            // if (values.images && values.images.length > 0) {
+            //   Array.from(values.images).forEach((file) => {
+            //     if (file instanceof File) {
+            //       formData.append("images", file); // ✅ new files
+            //     } else {
+            //       formData.append("images", file); // ✅ keep old URLs
+            //     }
+            //   });
+            // }
 
-            // Handle attachments
-            if (values.attachments && values.attachments.length > 0) {
-              Array.from(values.attachments).forEach((file) => {
-                if (file instanceof File) {
-                  formData.append("attachments", file); // ✅ new files
-                } else {
-                  formData.append("attachments", file); // ✅ keep old URLs
-                }
-              });
-            }
+            // // Handle attachments
+            // if (values.attachments && values.attachments.length > 0) {
+            //   Array.from(values.attachments).forEach((file) => {
+            //     if (file instanceof File) {
+            //       formData.append("attachments", file); // ✅ new files
+            //     } else {
+            //       formData.append("attachments", file); // ✅ keep old URLs
+            //     }
+            //   });
+            // }
 
             let result;
             setloading(true);
@@ -510,7 +510,7 @@ const CreateLeadForm = ({
             </div>
 
             {/* Images */}
-            <div>
+            {/* <div>
               <label className="block font-medium mb-1">
                 Lead Photo <span>(Optional)</span>
               </label>
@@ -526,10 +526,10 @@ const CreateLeadForm = ({
                   ])
                 }
               />
-            </div>
+            </div> */}
 
             {/* Attachments */}
-            <div>
+            {/* <div>
               <label className="block font-medium mb-1">Attachments</label>
               <input
                 type="file"
@@ -543,10 +543,10 @@ const CreateLeadForm = ({
                   ])
                 }
               />
-            </div>
+            </div> */}
 
             {/* Submit */}
-            <div className="md:col-span-2  flex justify-center">
+            <div className="  flex justify-center">
               <button
                 type="submit"
                 disabled={loading}

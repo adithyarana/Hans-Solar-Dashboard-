@@ -20,7 +20,7 @@ const AttachmentsSection = ({ attachments }) => {
               isOpen ? "rotate-90 text-orange-500" : "text-gray-500"
             }`}
           />
-          Attachments ({attachments.length})
+          Attachments Under Maintainance ❌
         </span>
       </button>
 

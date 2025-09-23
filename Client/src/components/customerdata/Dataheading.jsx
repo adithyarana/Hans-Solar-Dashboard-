@@ -20,10 +20,10 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
 
   return (
     <>
-    <div className="z-30 rounded-lg overflow-x-auto ml-7 h-screen styled-scrollbar">
-      <table className="min-w-max  shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
+    <div className="z-30 rounded-lg styled-scrollbar overflow-x-auto  ml-7 h-screen ">
+      <table className="min-w-max   shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
         {/* Table Head */}
-        <thead className=" sticky  top-0 z-10 ">
+        <thead className=" sticky   top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
           {user.role === "ADMIN" && (
             <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Created By</th>
@@ -64,7 +64,7 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
           ) : customerData?.map((item, index) => (
             <tr
               key={index}
-              className="hover:bg-orange-100 transition border-b cursor-pointer border-gray-300"
+              className="hover:bg-orange-100  transition border-b cursor-pointer border-gray-300"
               onClick={() => navigate(`/dashboard/customers/${item.id}`, { state: { page, search: location.search } })}
             >
              {user.role === "ADMIN" && (

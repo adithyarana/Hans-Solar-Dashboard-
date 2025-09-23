@@ -133,13 +133,13 @@ export const Addcustomerdata = async (req, res) => {
     // add images|| attachments to cloudinary
     // i have made only one folder all files will be in that
 
-    const imageUrls = req.files?.images
-      ? req.files.images.map((file) => file.path)
-      : [];
+    // const imageUrls = req.files?.images
+    //   ? req.files.images.map((file) => file.path)
+    //   : [];
 
-    const attachmentUrls = req.files?.attachments
-      ? req.files.attachments.map((file) => file.path)
-      : [];
+    // const attachmentUrls = req.files?.attachments
+    //   ? req.files.attachments.map((file) => file.path)
+    //   : [];
 
 
 
@@ -165,8 +165,8 @@ export const Addcustomerdata = async (req, res) => {
       leadStage,
       priority,
       progressBoard,
-      images: imageUrls,
-      attachments: attachmentUrls,
+      // images: imageUrls,
+      // attachments: attachmentUrls,
       createdById: req.user.userId,
       createdByEmpId: req.user.empid,
       updateHistory:[{
@@ -412,36 +412,36 @@ export const updateCustomerdata = async (req, res) => {
     }
 
     // Handle uploads
-    let attachmentsUpdate = customer.attachments || [];
-    let imagesUpdate = customer.images || [];
+    // let attachmentsUpdate = customer.attachments || [];
+    // let imagesUpdate = customer.images || [];
 
-    if (req.files) {
-      if (req.files.attachments) {
-        attachmentsUpdate = req.files.attachments.map(f => f.path);
-      }
-      if (req.files.images) {
-        imagesUpdate = req.files.images.map(f => f.path);
-      }
-    }
+    // if (req.files) {
+    //   if (req.files.attachments) {
+    //     attachmentsUpdate = req.files.attachments.map(f => f.path);
+    //   }
+    //   if (req.files.images) {
+    //     imagesUpdate = req.files.images.map(f => f.path);
+    //   }
+    // }
 
-    // Clear if explicitly passed as "[]"
-    if (req.body?.attachments === "[]") {
-      attachmentsUpdate = [];
-    }
-    if (req.body?.images === "[]") {
-      imagesUpdate = [];
-    }
+    // // Clear if explicitly passed as "[]"
+    // if (req.body?.attachments === "[]") {
+    //   attachmentsUpdate = [];
+    // }
+    // if (req.body?.images === "[]") {
+    //   imagesUpdate = [];
+    // }
 
     // ✅ safe destructure
-    const { attachments, images, ...rest } = req.body || {};
+    const { ...rest } = req.body || {};
 
     const updatedCustomer = await prisma.customerData.update({
       where: { id },
       data: {
         ...rest,
         location: parsedLocation ? parsedLocation : undefined,
-        attachments: attachmentsUpdate,
-        images: imagesUpdate,
+        // attachments: attachmentsUpdate,
+        // images: imagesUpdate,
 
         // store update history 
         updateHistory:{

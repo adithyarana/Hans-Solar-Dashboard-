@@ -7,6 +7,7 @@ import publicCustomerRoutes from "./routes/publicCustomer.js";
 import cors from "cors";
 import qs from "qs";
 import analyticsRoutes from "./routes/analyticsroutes.js";
+import mediafolderRoutes from "./routes/mediafolder.js";
 
 dotenv.config();
 
@@ -40,6 +41,8 @@ app.use("/api", analyticsRoutes); // for handling the analytics routes
 app.use("/api", authRoutes); // for handling the admin routes
 // customer data routes
 app.use("/api/customer", customerdataRoutes); // for handling the customer data routes
+// media folder routes
+app.use("/api/mediafolder", mediafolderRoutes); // for handling the media folder routes
 
 // public routes
 app.use("/api/public", publicCustomerRoutes); // for handling the public customer data routes
