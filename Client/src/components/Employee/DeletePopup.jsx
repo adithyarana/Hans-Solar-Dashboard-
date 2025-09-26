@@ -1,6 +1,8 @@
 import React from 'react'
 
-const DeletePopup = ({close , onDelete}) => {
+const DeletePopup = ({close , onDelete , loading}) => {
+
+  
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm z-50">
     <div className="bg-white p-6 rounded-2xl shadow-xl w-[400px] text-center">
@@ -26,7 +28,7 @@ const DeletePopup = ({close , onDelete}) => {
           onClick={()=>onDelete()}
           className="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded-md font-semibold"
         >
-          Yes, delete it!
+          {loading ? "Deleting..." : "Yes, delete it!"}
         </button>
         <button
           onClick={()=>close(false)}

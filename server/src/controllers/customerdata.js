@@ -411,27 +411,6 @@ export const updateCustomerdata = async (req, res) => {
       }
     }
 
-    // Handle uploads
-    // let attachmentsUpdate = customer.attachments || [];
-    // let imagesUpdate = customer.images || [];
-
-    // if (req.files) {
-    //   if (req.files.attachments) {
-    //     attachmentsUpdate = req.files.attachments.map(f => f.path);
-    //   }
-    //   if (req.files.images) {
-    //     imagesUpdate = req.files.images.map(f => f.path);
-    //   }
-    // }
-
-    // // Clear if explicitly passed as "[]"
-    // if (req.body?.attachments === "[]") {
-    //   attachmentsUpdate = [];
-    // }
-    // if (req.body?.images === "[]") {
-    //   imagesUpdate = [];
-    // }
-
     // ✅ safe destructure
     const { ...rest } = req.body || {};
 
@@ -483,7 +462,11 @@ export const deleteCustomerdata = async (req, res) => {
       });
     }
 
-    await prisma.customerData.delete({ where: { id } });
+    // Atomically delete related media folders first, then the customer
+    await prisma.$transaction([
+      prisma.mediaFolder.deleteMany({ where: { customerId: id } }),
+      prisma.customerData.delete({ where: { id } }),
+    ]);
 
     return res
       .status(200)

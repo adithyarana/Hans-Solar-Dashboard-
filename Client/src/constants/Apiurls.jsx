@@ -15,6 +15,8 @@ export const UpdateEmployeeData = `${Baseurl}/updateEmployeeData/`
 export const AdminAnalytics = `${Baseurl}/adminanalytics`
 export const EmployeeAnalytics = `${Baseurl}/employeeanalytics/:`
 export const CreateAttachment = `${BaseUrl2}/createfolder`
+export const GetallFolder = `${BaseUrl2}/getallmediafolderdata`
+export const DeleteFolderApi = `${BaseUrl2}/deletefolder/`
 
 
 

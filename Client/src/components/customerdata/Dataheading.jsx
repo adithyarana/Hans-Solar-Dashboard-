@@ -1,14 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
 import { stageColors } from "../../constants/Apiurls";
 import {Prioritycolor} from "../../constants/Apiurls"
 import Pagination from "../Dashboard/Pagination";
 
+const heading =[
+  "Customer ID",
+  "Name",
+  "Email",
+  "Phone Number",
+  "WhatsApp Number",
+  "Interest Areas",
+  "Address",
+  "DOB",
+  "Lead Source",
+  "Start Date",
+  "Lead Stage",
+  "Priority",
+  "State",
+  "District",
+]
+
 const Dataheading = ({ customerData, loading, page = 1 }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const user = useSelector((state) => state.userdata?.user);
+
+
+
+
 
   if(!customerData || customerData.length === 0){
     return (
@@ -26,30 +47,11 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
         <thead className=" sticky   top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
           {user.role === "ADMIN" && (
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Created By</th>
+            <th className="px-4 py-2 sticky top-0 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl z-10 text-left">Created By</th>
           )}
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Customer ID</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Name</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Email</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Phone Number</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">WhatsApp Number</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Interest Areas</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Address</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">DOB</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Source</th>
-            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Notes</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Follow Up</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Work Category</th> */}
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Start Date</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Stage</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Priority</th>
-            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Progress Board</th> */}
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">State</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">District</th>
-            {/* <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Tehsil</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Block</th>
-            <th className="px-4 py-2 sticky top-0 bg-orange-200 rounded-2xl z-10 text-left">Village</th> */}
-            {/* <th className="px-4 py-2 sticky top-0 bg-orange-500 text-white rounded-2xl z-10 text-left">Lead Photo</th> */}
+            {heading.map((item,index)=>(
+              <th key={index} className="px-4 py-2 sticky top-0 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-2xl z-10 text-left">{item}</th>
+            ))}
           </tr>
         </thead>
 
@@ -76,7 +78,17 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
               <td className="px-4 py-2">{item.phoneNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.whatsappNumber ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.interestAreas ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
-              <td className="px-4 py-2 break-words truncate">{item.address ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
+
+              <td className="px-4 py-2 break-words truncate">
+                {item?.address ? (
+                  <div>
+                    <p>{item.address.slice(0, 25) + "..."}</p>
+                  </div>
+                ) : (
+                  <span className="text-gray-500 text-2xl text-center">-</span>
+                )}
+              </td>
+
               <td className="px-4 py-2">
                 {item.birthday ? item.birthday.split("T")[0] : <span className="text-gray-500 text-2xl text-center">-</span>}
               </td>

@@ -60,6 +60,12 @@ const LeadInformation = ({ lead }) => {
           </span>
         </div>
         <div>
+          <p className="text-sm text-gray-500">Address</p>
+          <p className="text-gray-800 font-medium text-sm">
+            {lead.address || "-"}
+          </p>
+        </div>
+        <div>
           <p className="text-sm text-gray-500">Phone no</p>
           <p className="text-gray-800 font-medium">{lead.phoneNumber || "-"}</p>
         </div>
@@ -67,6 +73,13 @@ const LeadInformation = ({ lead }) => {
           <p className="text-sm text-gray-500">Whatsapp no</p>
           <p className="text-gray-800 font-medium">
             {lead.whatsappNumber || "-"}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-sm text-gray-500">Interest Areas</p>
+          <p className="text-gray-800 font-medium">
+            {lead.interestAreas || "-"}
           </p>
         </div>
         <div>
@@ -83,6 +96,13 @@ const LeadInformation = ({ lead }) => {
           <p className="text-sm text-gray-500">Follow Up</p>
           <p className="text-gray-800 font-medium">
             {lead.followUp ? lead.followUp.split("T")[0] : "-"}
+          </p>
+        </div>
+
+        <div>
+          <p className="text-sm text-gray-500">DOB</p>
+          <p className="text-gray-800 font-medium">
+            {lead.birthday ? lead.birthday.split("T")[0] : "-"}
           </p>
         </div>
 

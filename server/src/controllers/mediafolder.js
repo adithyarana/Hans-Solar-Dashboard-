@@ -21,6 +21,7 @@ export const CreateFolder = async (req, res) => {
 
     // attachments is optional
     const attachmentsUrl = req.files.attachments?.map((file) => file.path) || [];
+    const count = attachmentsUrl?.length || 0;
 
     const folder = await prisma.mediaFolder.create({
       data: {
@@ -28,8 +29,12 @@ export const CreateFolder = async (req, res) => {
         description,
         customerData: { connect: { id } },
         attachments:attachmentsUrl,
+        attachmentsCount:count,
       },
     });
+
+
+
 
     return res.status(200).json({
       folder,
@@ -41,11 +46,42 @@ export const CreateFolder = async (req, res) => {
   }
 };
 
+export const Getallmediafolderdata = async (req, res) => {
+
+  try {
+
+    const {id}= req.params
+
+    const data = await prisma.mediaFolder.findMany({
+      where:{
+        customerData:{
+          id:id
+        }
+      }
+    })
+
+  
+
+    if(!data){
+      return res.status(404).json({ message: "Data not found" });
+    }
+
+    return res.status(200).json({
+      data,
+      message: "Data fetched successfully",
+    })
+    
+  } catch (error) {
+    console.error("Getallmediafolderdata error:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
 export const GetFolderDataById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    console.log("GetFolderDataById -> id:", id);
+
 
     if (!id) {
       return res.status(400).json({ message: "folderId is required in route params" });

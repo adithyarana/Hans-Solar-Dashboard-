@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import { RxCross2 } from "react-icons/rx";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-const UploadAttachments = ({close, CreateFolder}) => {
+const UploadAttachments = ({close, CreateFolder, loading, setloading, refetch}) => {
+
+  
 
 
   return (
@@ -30,6 +32,7 @@ const UploadAttachments = ({close, CreateFolder}) => {
             return errors;
           }}
           onSubmit={async (values, { resetForm }) => {
+            setloading(true);
 
             try {
               const formData = new FormData();
@@ -51,10 +54,12 @@ const UploadAttachments = ({close, CreateFolder}) => {
                 toast.success("Folder Created Successfully");
                 close();
                 resetForm();
+                refetch();
               }
             } catch (error) {
               console.log(error);
               toast.error(error?.response?.data?.message);
+              setloading(false);
             }
           }}
         >
@@ -109,11 +114,16 @@ const UploadAttachments = ({close, CreateFolder}) => {
                   className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
                   onChange={(e) => setFieldValue("attachments", e.currentTarget.files)}
                 />
+                {errors.attachments && touched.attachments && (
+                  <div className="text-red-500 text-sm italic">
+                    {errors.attachments}
+                  </div>
+                )}
               </div>
 
               <div className="flex justify-center  ">
                 <button type="submit" className=" w-full cursor-pointer bg-gradient-to-l from-orange-500 to-red-500 text-white py-3 px-4 rounded-lg font-semibold shadow hover:bg-indigo-700 transition duration-300">
-                  <span className="flex items-center justify-center gap-2"><FaCloudUploadAlt size={20}/>Upload</span>
+                  <span className="flex items-center justify-center gap-2"><FaCloudUploadAlt size={20}/>{loading ? "Uploading..." : "Upload"}</span>
                 </button>
               </div>
             </Form>
