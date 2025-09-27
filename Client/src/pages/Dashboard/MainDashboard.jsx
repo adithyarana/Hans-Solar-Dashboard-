@@ -5,18 +5,17 @@ import EmployeeAnalytics from "../../components/Dashboard/EmployeeAnalytics";
 import useAdminAnalytics from "../../Hooks/AnalyticsApi/useAdmin";
 import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
 
-const MainDashboard = () => {
-  const user = useSelector((state) => state.userdata?.user);
+  const MainDashboard = () => {
+    const user = useSelector((state) => state.userdata?.user);
 
-  const {empid} = useSelector((state) => state.userdata?.user);
+    const {empid} = useSelector((state) => state.userdata?.user);
  
-  const IsAdmin= user?.role === "ADMIN"
+  const IsAdmin = user?.role === "ADMIN" || user?.role === "RECEPTIONIST";
   const IsEmployee= user?.role === "EMPLOYEE"
 
   const {analyticsdata,loading} = useAdminAnalytics(IsAdmin)
   const {EmployeeAnalyticsData,Eloading} = useEmployeeAnalytics(empid, IsEmployee)
   console.log("EmployeeAnalyticsData",EmployeeAnalyticsData)
-  
 
 
   return (

@@ -33,9 +33,6 @@ export const CreateFolder = async (req, res) => {
       },
     });
 
-
-
-
     return res.status(200).json({
       folder,
       message: "Folder created successfully",

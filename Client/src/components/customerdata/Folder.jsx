@@ -3,15 +3,20 @@ import DeletePopup from "../Employee/DeletePopup";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import FolderdataById from "./FolderdataById";
+import usegetmediabyid from "../../Hooks/CreateAttachments/usegetmediabyid.jsx";
 
-export default function FolderCard({ data , loading, leadId , deleteFolder , refetch}) {
+export default function FolderCard({ data , loading, leadId , deleteFolder , refetch }) {
 
   const user = useSelector((state) => state.userdata.user);
   const [OpenDeleteFolder, setOpenDeleteFolder] = useState(false);
   const [Deleteloading , setDeleteloading] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState(null);
+  const [openModale , setopenModale] = useState(null);
   const items = Array.isArray(data) ? data : [];
   const filtered = items.filter((item) => String(item?.customerId) === String(leadId));
+
+  const { getfolderdata, loadingId } = usegetmediabyid(openModale || ""); // api call
 
   const handledelete = async () => {
     if (!selectedFolder) return;
@@ -54,7 +59,11 @@ export default function FolderCard({ data , loading, leadId , deleteFolder , ref
   return (
    <>
    {filtered.map((item) => (
-    <div key={item?.id} className="flex cursor-pointer w-[300px] items-center justify-between border border-gray-300 rounded-lg p-3 shadow-sm hover:shadow-md transition">
+    <div
+      key={item?.id}
+      className="flex cursor-pointer w-[300px] items-center justify-between border border-gray-300 rounded-lg p-3 shadow-sm hover:shadow-md transition"
+      onClick={() => setopenModale(item?.id)}
+    >
     {/* Left side */}
     <div className="flex items-center space-x-3">
       <div className="p-2 rounded bg-orange-100">
@@ -83,8 +92,9 @@ export default function FolderCard({ data , loading, leadId , deleteFolder , ref
    {user.role === "ADMIN" && (
     <button
       className="text-red-500 cursor-pointer hover:text-red-600 transition"
+      onClick={(e) => { e.stopPropagation(); openDeleteDialog(item); }}
     >
-      <MdDeleteOutline onClick={()=>openDeleteDialog(item)} size={20} />
+      <MdDeleteOutline size={20} />
     </button>
    )}
   </div>
@@ -99,6 +109,15 @@ export default function FolderCard({ data , loading, leadId , deleteFolder , ref
         />
       </div>
     )}
+
+  {/* open modale for the folder data */}
+
+  {openModale && (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+      <FolderdataById close={setopenModale} data={getfolderdata} loadingId={loadingId} />
+    </div>
+  )}
+    
    </>
   );
 }

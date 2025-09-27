@@ -35,7 +35,7 @@ const EmployeeForm = ({
             const errors = {};
             if (!values.name) errors.name = "Name is required";
             if (!values.email) errors.email = "Email is required";
-            if (!values.password) errors.password = "Password is required";
+           {!initialData && (!values.password) ? errors.password = "Password is required" : null}
             if (!values.role) errors.role = "Role is required";
             return errors;
           }}
@@ -135,7 +135,7 @@ const EmployeeForm = ({
                   <Field
                     type={seepass ? "text" : "password"}
                     name="password"
-                    placeholder="Enter password"
+                    placeholder={initialData ? "Update password" : "Enter password"}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-indigo-400 focus:outline-none"

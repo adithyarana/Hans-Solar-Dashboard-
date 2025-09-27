@@ -17,6 +17,7 @@ export const EmployeeAnalytics = `${Baseurl}/employeeanalytics/:`
 export const CreateAttachment = `${BaseUrl2}/createfolder`
 export const GetallFolder = `${BaseUrl2}/getallmediafolderdata`
 export const DeleteFolderApi = `${BaseUrl2}/deletefolder/`
+export const GetFolderdatabyId = `${BaseUrl2}/getfolder/`
 
 
 

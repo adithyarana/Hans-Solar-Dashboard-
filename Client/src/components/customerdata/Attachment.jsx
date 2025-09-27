@@ -7,17 +7,20 @@ import useCreateAttachments from "../../Hooks/CreateAttachments/useCreateAttachm
 import FolderCard from "./Folder.jsx";
 import usegetallfolder from "../../Hooks/CreateAttachments/usegetallfolder.jsx";
 import usedelete from "../../Hooks/CreateAttachments/usedelete.jsx";
-
+import { useSelector } from "react-redux";
 
 const AttachmentsSection = () => {
+  const user = useSelector((state) => state.userdata?.user);
   const { id } = useParams();
   const [isOpen, setIsOpen] = useState(false);
   const [Openfolder, setOpenFolder] = useState(false);
   const { CreateFolder } = useCreateAttachments(id);
   const [loading, setloading] = useState(false);
-  const { getallfolderData, Loading , refetch}= usegetallfolder();
+  const { getallfolderData, Loading, refetch } = usegetallfolder();
   const { DeleteFolder } = usedelete();
  
+
+
 
   return (
     <>
@@ -40,17 +43,19 @@ const AttachmentsSection = () => {
 
         <div className={` ${isOpen ? "py-6 max-h-[500px]" : "max-h-0 py-0"}`}>
           <div className="flex justify-end px-5">
-            <button
-              onClick={() => setOpenFolder(true)}
-              className=" cursor-pointer bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded"
-            >
-              <span className="font-semibold flex items-center gap-1">
-                <span>
-                  <TiAttachmentOutline size={20} className="mr-2" />
+            {user?.role === "ADMIN" || user?.role === "EMPLOYEE" ? (
+              <button
+                onClick={() => setOpenFolder(true)}
+                className=" cursor-pointer bg-gradient-to-r from-orange-500 to-red-500 text-white px-5 py-2 rounded"
+              >
+                <span className="font-semibold flex items-center gap-1">
+                  <span>
+                    <TiAttachmentOutline size={20} className="mr-2" />
+                  </span>
+                  Upload Attachments
                 </span>
-                Upload Attachments
-              </span>
-            </button>
+              </button>
+            ) : null}
 
             {Openfolder && (
               <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
@@ -64,15 +69,17 @@ const AttachmentsSection = () => {
               </div>
             )}
           </div>
-            {/* // folder structure in the 2 grop wise when admin create the folder it shows here  */}
-        <div className="grid grid-cols-2 gap-4 px-5 py-6">
-          <FolderCard data={getallfolderData} loading={Loading} leadId={id} deleteFolder={DeleteFolder} refetch={refetch} />
+          {/* // folder structure in the 2 grop wise when admin create the folder it shows here  */}
+          <div className="grid grid-cols-2 gap-4 px-5 py-6">
+            <FolderCard
+              data={getallfolderData}
+              loading={Loading}
+              leadId={id}
+              deleteFolder={DeleteFolder}
+              refetch={refetch}
+            />
+          </div>
         </div>
-
-
-        </div>
-
-      
       </div>
     </>
   );

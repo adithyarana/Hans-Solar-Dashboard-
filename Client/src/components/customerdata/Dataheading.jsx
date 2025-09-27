@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {useSelector} from "react-redux"
 import { stageColors } from "../../constants/Apiurls";
 import {Prioritycolor} from "../../constants/Apiurls"
-import Pagination from "../Dashboard/Pagination";
+
 
 const heading =[
   "Customer ID",

@@ -46,7 +46,7 @@ const EmployeeAnalytics = ({data,loading}) => {
                     {/* box1 */}
                     <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[300px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
                       <p className="text-gray-600 font-semibold text-md">
-                        Total Customer
+                        Total Leads
                       </p>
                       <p className="text-orange-500 font-semibold text-lg">
                         {loading ? (

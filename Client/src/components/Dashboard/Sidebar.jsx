@@ -93,7 +93,7 @@ const Sidebar = () => {
               animate={{ opacity: toggle ? 1 : 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
             >
-              {toggle && "Customers"}
+              {toggle && "Leads"}
             </motion.span>
           </NavLink>
 

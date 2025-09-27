@@ -1,4 +1,5 @@
 import prisma from "../utils/prisma.js";
+import bcrypt from "bcrypt";
 
 // get all employee data
 

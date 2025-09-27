@@ -3,8 +3,11 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { IoAnalyticsSharp } from "react-icons/io5";
 import Leadstages from "./AnalyticsComponents/Leadstages";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const AdminAnalytics = ({ data, loading }) => {
+
+  const user = useSelector((state)=>state.userdata?.user)
   const navigate = useNavigate();
   const { totalcustomer, totalemployee, totalreceptionist } = data;
   const { LEAD_LOST, LEAD_WON } = data?.leadstage || {};
@@ -33,12 +36,21 @@ const AdminAnalytics = ({ data, loading }) => {
               OPR Dashboard
             </h2>
 
-            <div className="flex flex-col md:flex-row md:justify-between md:items-center px-5">
-              <h2 className="text-md text-gray-600 font-semibold py-1">OPEN</h2>
-              <h2 className="text-md text-gray-600 font-semibold py-1 md:mr-[370px] hidden md:block">
-                RESULT
-              </h2>
-            </div>
+           {user.role ==="ADMIN" ? (
+             <div className="flex flex-col md:flex-row md:justify-between md:items-center px-5">
+             <h2 className="text-md text-gray-600 font-semibold py-1">OPEN</h2>
+             <h2 className="text-md text-gray-600 font-semibold py-1 md:mr-[370px] hidden md:block">
+               RESULT
+             </h2>
+           </div>
+           ):(
+            <div className="flex flex-col md:flex-row md:justify-items-start gap-[280px] md:items-center px-5">
+            <h2 className="text-md text-gray-600 font-semibold py-1">OPEN</h2>
+            <h2 className="text-md text-gray-600 font-semibold py-1 md:mr-[370px] hidden md:block">
+              RESULT
+            </h2>
+          </div>
+           )}
 
             {/* boxes with horizontal scroll on mobile */}
             <div className="px-5 py-3 overflow-x-auto styled-scrollbar">
@@ -46,7 +58,7 @@ const AdminAnalytics = ({ data, loading }) => {
                 {/* box1 */}
                 <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
-                    Total Customer
+                    Total Leads
                   </p>
                   <p className="text-orange-500 font-semibold text-lg">
                     {loading ? (
@@ -58,20 +70,23 @@ const AdminAnalytics = ({ data, loading }) => {
                 </div>
 
                 {/* box2 */}
-                <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-yellow-500 rounded-lg shadow shrink-0">
-                  <p className="text-gray-600 font-semibold text-md">
-                    Total Employee
-                  </p>
-                  <p className="text-orange-500 font-semibold text-lg">
-                    {loading ? (
-                      <span className="inline-block w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
-                    ) : (
-                      totalemployee || "0"
-                    )}
-                  </p>
-                </div>
+                {user?.role === "ADMIN" && (
+                  <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-yellow-500 rounded-lg shadow shrink-0">
+                    <p className="text-gray-600 font-semibold text-md">
+                      Total Employee
+                    </p>
+                    <p className="text-orange-500 font-semibold text-lg">
+                      {loading ? (
+                        <span className="inline-block w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></span>
+                      ) : (
+                        totalemployee || "0"
+                      )}
+                    </p>
+                  </div>
+                )}
 
                 {/* box3 */}
+               {user?.role === "ADMIN" && (
                 <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-blue-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Total Receptionist
@@ -84,6 +99,7 @@ const AdminAnalytics = ({ data, loading }) => {
                     )}
                   </p>
                 </div>
+               )}
 
                 {/* Vertical line (only for desktop) */}
                 <div className="hidden md:block w-[1px] h-[120px] bg-gray-300 mx-5"></div>
