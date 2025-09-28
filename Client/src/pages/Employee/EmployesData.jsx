@@ -30,7 +30,7 @@ const EmployesData = () => {
       )}
     </div>
 
-    <div>
+    <div className="h-screen">
        <EmployesRowData employeeData={employeeData} loading={loading} refetch={refetch}/>
     </div>
 

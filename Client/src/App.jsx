@@ -57,17 +57,29 @@ function App() {
   <Provider store={store}>
   <RouterProvider router={Router}/>
   <ToastContainer
-  position="top-right"
-  autoClose={5000}
+  position="top-center"
+  autoClose={4000}
   hideProgressBar={false}
-  newestOnTop={false}
+  newestOnTop={true}
   closeOnClick
   rtl={false}
   pauseOnFocusLoss
   draggable
   pauseOnHover
   theme="colored"
-  />
+  toastStyle={{
+    background: "linear-gradient(135deg, #ff7b54, #ffb347)",
+    color: "#fff",
+    borderRadius: "12px",
+    padding: "14px 20px",
+    fontSize: "15px",
+    fontWeight: "500",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+  }}
+  bodyClassName={() => "flex items-center text-sm font-medium"}
+  progressStyle={{ background: "#fff176" }} 
+/>
+
   </Provider>
   </div>
   )

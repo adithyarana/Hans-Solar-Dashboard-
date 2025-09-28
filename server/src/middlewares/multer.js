@@ -3,12 +3,27 @@ import cloudinary from "../utils/cloudinary.js";
 import { CloudinaryStorage } from "multer-storage-cloudinary";
 import path from "path";
 
+
 const Storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: "hans-solar",
-    allowed_formats: ["mp4", "mov", "avi", "pdf", "docx", "txt" , "jpg", "jpeg", "png", "webp", "xlsx", "xls"],
-    resource_type: "auto",
+  params: async (req, file) => {
+    let resourceType = "auto";
+
+    // Force PDFs, docs, and text into raw
+    if (/\.(pdf|docx|txt|xlsx|xls)$/i.test(file.originalname)) {
+      resourceType="raw";
+    }
+
+    return {
+      folder: "hans-solar",
+      allowed_formats: [
+        "mp4", "mov", "avi", 
+        "pdf", "docx", "txt",
+        "jpg", "jpeg", "png", "webp",
+        "xlsx", "xls"
+      ],
+      resource_type: resourceType,
+    };
   },
 });
 

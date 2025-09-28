@@ -12,7 +12,7 @@ const Profile = () => {
 
   return (
     <>
-    <div className="p-6">
+    <div className="p-6 h-screen">
       <div className="flex items-center gap-4 border-b border-gray-300 pb-4">
         {/* Profile Icon */}
         <FaUserCircle className="text-orange-500" size={80} />

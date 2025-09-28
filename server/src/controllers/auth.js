@@ -121,17 +121,18 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "INVALID CREDENTIALS" });
     }
 
-    // Check role based on route
-    if (req.baseUrl.includes("/admin") && user.role !== "ADMIN") {
-      return res
-        .status(403)
-        .json({ message: "Forbidden - Admins only can Login" });
-    }
-    if (req.baseUrl.includes("/employee") && user.role !== "EMPLOYEE") {
-      return res
-        .status(403)
-        .json({ message: "Forbidden - Employees only can Login" });
-    }
+    // // Check role based on route
+    // if (req.baseUrl.includes("/admin") && user.role !== "ADMIN") {
+    //   return res
+    //     .status(403)
+    //     .json({ message: "Forbidden - Admins only can Login" });
+    // }
+
+    // if (req.baseUrl.includes("/employee") && user.role !== "EMPLOYEE") {
+    //   return res
+    //     .status(403)
+    //     .json({ message: "Forbidden - Employees only can Login" });
+    // }
 
     // token and jwt logic here
 

@@ -2,6 +2,8 @@ import React from "react";
 import { PiSpinnerLight } from "react-icons/pi";
 import { FiDownload } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
+import { MdPermMedia } from "react-icons/md";
+import { FaRegFilePdf } from "react-icons/fa6";
 
 const FolderdataById = ({ data, loadingId, close }) => {
   if (!data) {
@@ -38,13 +40,12 @@ const handleDownload = async (fileUrl, index) => {
     return parts.length > 1 ? "." + parts.pop().split(/\#|\?/)[0] : "";
   };
 
-  const getFileNameFromUrl = (url) => {
-    return url.split("/").pop().split("?")[0].split("#")[0];
-  };
+ const Ispdf = (url)=>getFileExtension(url) === ".pdf";
+ 
   
 
   return (
-    <div className="w-[520px] flex flex-col gap-4 p-6 bg-white rounded-2xl shadow-xl">
+    <div className="w-[520px] max-h-[80vh] flex flex-col gap-4 p-6 bg-white rounded-2xl shadow-xl overflow-hidden">
       {/* Header */}
       <div className="flex justify-between items-center border-b pb-3">
         <h2 className="text-orange-500 text-2xl font-bold">📂 Attachments</h2>
@@ -62,7 +63,7 @@ const handleDownload = async (fileUrl, index) => {
           <PiSpinnerLight size={32} className="animate-spin text-gray-600" />
         </div>
       ) : (
-        <>
+        <div className="flex flex-col gap-3 overflow-hidden">
           {/* Folder Info */}
           <div className="bg-orange-50 flex flex-col gap-1 border border-orange-200 w-full p-4 rounded-lg">
             <p className="text-sm text-gray-500 font-medium">
@@ -99,21 +100,19 @@ const handleDownload = async (fileUrl, index) => {
           </div>
 
           {/* Attachments List */}
-          <div className="flex flex-col gap-3">
+          <div className="flex-1 min-h-0 flex flex-col gap-3 overflow-y-auto pr-1">
             {data?.attachments?.length > 0 ? (
               data.attachments.map((file, index) => (
                 <div
                   key={index}
-                  className="flex items-center justify-between bg-gray-50 border border-gray-300 rounded-lg p-3 shadow-sm hover:shadow-md transition"
+                  className="flex items-center justify-between  bg-gray-50 border border-gray-300 rounded-lg p-3 shadow-sm hover:shadow-md transition"
                 >
                   {/* File Preview & Name */}
                   <div className="flex items-center gap-3">
                     <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
-                      <img
-                        src={file || "/placeholder.png"}
-                        alt="File preview"
-                        className="w-8 h-8 object-contain"
-                      />
+                   <span className="text-orange-600">
+                   {Ispdf(file)?<FaRegFilePdf size={20} /> :  <MdPermMedia size={20} />}
+                   </span>
                     </div>
                     <p className="text-sm font-semibold text-gray-500 truncate w-40">
                       { `Attachment-${index + 1}`}
@@ -137,7 +136,7 @@ const handleDownload = async (fileUrl, index) => {
               </p>
             )}
           </div>
-        </>
+        </div>
       )}
     </div>
   );
