@@ -1,5 +1,6 @@
-const Baseurl = "http://localhost:3000/api"
-const BaseUrl2 = "http://localhost:3000/api/mediafolder"  
+const API_ORIGIN = import.meta.env.VITE_BACKEND_URL;
+const Baseurl = `${API_ORIGIN}/api`
+const BaseUrl2 = `${API_ORIGIN}/api/mediafolder`  
 
 export const LoginApi = `${Baseurl}/login`
 export const PostBulkUpload = `${Baseurl}/customer/bulkuploaddata`
