@@ -4,7 +4,6 @@ import { Navigate } from "react-router-dom";
 
 const Protectedroutes = ({children} ) => {
   const token = useSelector((state) => state.userdata?.token);
-  console.log("token",token)
 
   if (!token) {
     return <Navigate to="/" />;

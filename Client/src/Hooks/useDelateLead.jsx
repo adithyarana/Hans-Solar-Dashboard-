@@ -12,7 +12,7 @@ const useDeleteLead = () => {
       });
       return response.data;
     } catch (error) {
-      console.error("Delete API error:", error);
+      toast.error(error?.response?.data?.message);
       throw error;
     }
   };

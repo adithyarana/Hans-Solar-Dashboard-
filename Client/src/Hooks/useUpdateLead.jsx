@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { UpdateLead } from '../constants/Apiurls';
+import { toast } from 'react-toastify';
 
 const useUpdateLead = () => {
 
@@ -15,7 +16,7 @@ const useUpdateLead = () => {
             return response.data
             
         } catch (error) {
-            console.error("Update API error:", error);
+            toast.error(error?.response?.data?.message);
             throw error;
         }
     }

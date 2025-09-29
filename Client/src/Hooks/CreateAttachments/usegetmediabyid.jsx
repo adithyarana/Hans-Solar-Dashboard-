@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { GetFolderdatabyId } from '../../constants/Apiurls'
 import axios from 'axios'
+import { toast } from 'react-toastify';
 
 const usegetmediabyid = (id) => {
     
@@ -21,7 +22,7 @@ const usegetmediabyid = (id) => {
             })
             setgetfolderdata(response.data?.folder)
         } catch (error) {
-            console.log(error)
+            toast.error(error?.response?.data?.message)
             throw error
         }
         finally{

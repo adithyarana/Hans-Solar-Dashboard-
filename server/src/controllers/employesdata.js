@@ -23,7 +23,6 @@ export const getEmployeeData = async (req, res) => {
         employee,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   };
@@ -67,7 +66,6 @@ export const updateEmployeeData = async (req, res) => {
         employee: updatedEmployee,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   };
@@ -97,7 +95,6 @@ export const deleteEmployeeData = async (req, res) => {
         employee: deletedEmployee,
       });
     } catch (error) {
-      console.log(error);
       return res.status(500).json({ message: "Internal Server Error" });
     }
   };

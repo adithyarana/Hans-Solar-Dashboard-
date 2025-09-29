@@ -28,7 +28,6 @@ export default function FolderCard({ data , loading, leadId , deleteFolder , ref
       setOpenDeleteFolder(false);
       refetch();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(
         error.response?.data?.message ||
           "Failed to delete folder. Please try again."

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { PostEmployeeData } from '../../constants/Apiurls'
+import { toast } from 'react-toastify';
 
 const usePostemployeedata = () => {
 const Postemployeedata = async (employeeData) => {
@@ -12,7 +13,7 @@ const Postemployeedata = async (employeeData) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Post API error:", error);
+        toast.error(error?.response?.data?.message);
         throw error;
     }
 }

@@ -34,7 +34,6 @@ const useBulkupload = () => {
         return true;
       }
     } catch (error) {
-      console.log(error);
       toast.error(error?.message?.response?.data || "File uploaded failed");
       setloading(false);
       setfile(null);

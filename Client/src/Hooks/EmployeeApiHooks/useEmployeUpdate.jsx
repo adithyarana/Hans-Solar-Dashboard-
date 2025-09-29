@@ -1,5 +1,6 @@
 import axios from "axios";
 import { UpdateEmployeeData } from "../../constants/Apiurls";
+import { toast } from "react-toastify";
 
 const useEmployeUpdate = () => {
   const UpdateApicall = async (id, updatedata) => {
@@ -16,7 +17,7 @@ const useEmployeUpdate = () => {
       );
       return Apicall.data;
     } catch (error) {
-      console.error("Update API error:", error);
+      toast.error(error?.response?.data?.message);
       throw error;
     }
   };

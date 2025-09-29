@@ -38,7 +38,6 @@ export const CreateFolder = async (req, res) => {
       message: "Folder created successfully",
     });
   } catch (error) {
-    console.error("CreateFolder error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -69,7 +68,6 @@ export const Getallmediafolderdata = async (req, res) => {
     })
     
   } catch (error) {
-    console.error("Getallmediafolderdata error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 }
@@ -99,7 +97,6 @@ export const GetFolderDataById = async (req, res) => {
       message: "Folder Data  fetched successfully",
     });
   } catch (error) {
-    console.error("GetFolderDataById error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -146,7 +143,6 @@ export const DeleteFolder = async (req, res) => {
      
     })
   } catch (error) {
-    console.error("DeleteFolder error:", error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

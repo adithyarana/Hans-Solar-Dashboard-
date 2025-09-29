@@ -9,8 +9,6 @@ import { FaUser, FaEnvelope, FaLock, FaSolarPanel } from "react-icons/fa";
 const Login = () => {
   const { Apicall } = useauth();
   const navigate = useNavigate();
-  // const userdata = useSelector((state)=>state.userdata?.user)
-  // console.log("user data",userdata)
 
   // Animation variants
   const containerVariants = {

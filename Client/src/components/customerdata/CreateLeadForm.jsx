@@ -36,6 +36,30 @@ const indianStates = [
   "West Bengal",
 ];
 
+const Leadstages =[
+   {lable:"New Lead" , value:"NEW_LEAD"},
+   {lable:"In Process" , value:"IN_PROCESS"},
+   {lable:"Qualified" , value:"QUALIFIED"},
+   {lable:"Site Visit Scheduled" , value:"SITE_VISIT_SCHEDULE"},
+   {lable:"Site Visit Done" , value:"SITE_VISIT_DONE"},
+   {lable:"Estimate Sent" , value:"ESTIMATE_SENT"},
+   {lable:"Negotiation" , value:"NEGOTIATION"},
+   {lable:"Lead Lost" , value:"LEAD_LOST"},
+   {lable:"On Hold" , value:"ON_HOLD"},
+   {lable:"Lead Won" , value:"LEAD_WON"},
+  // subsidy process
+   {lable:"Registration" , value:"Registration"},
+   {lable:"Application" , value:"Application"},
+   {lable:"Feasibility" , value:"Feasibility"},
+   {lable:"Vendor Selection" , value:"Vendor_Selection"},
+   {lable:"Upload Agreement" , value:"Upload_Agreement"},
+   {lable:"Installation" , value:"Installation"},
+   {lable:"Inspection" , value:"Inspection"},
+   {lable:"Project Commissioning" , value:"Project_Commissioning"},
+   {lable:"Subsidy Request" , value:"Subsidy_Request"},
+   {lable:"Subsidy Disbursal" , value:"Subsidy_Disbursal"},
+]
+
 const CreateLeadForm = ({
   close,
   refetch,
@@ -126,29 +150,6 @@ const CreateLeadForm = ({
                 new Date(values.startDate).toISOString()
               );
 
-       
-
-            // // Handle images
-            // if (values.images && values.images.length > 0) {
-            //   Array.from(values.images).forEach((file) => {
-            //     if (file instanceof File) {
-            //       formData.append("images", file); // ✅ new files
-            //     } else {
-            //       formData.append("images", file); // ✅ keep old URLs
-            //     }
-            //   });
-            // }
-
-            // // Handle attachments
-            // if (values.attachments && values.attachments.length > 0) {
-            //   Array.from(values.attachments).forEach((file) => {
-            //     if (file instanceof File) {
-            //       formData.append("attachments", file); // ✅ new files
-            //     } else {
-            //       formData.append("attachments", file); // ✅ keep old URLs
-            //     }
-            //   });
-            // }
 
             let result;
             setloading(true);
@@ -358,16 +359,6 @@ const CreateLeadForm = ({
               />
             </div>
 
-            {/* Reels Video */}
-            {/* <div>
-              <label className="block font-medium mb-1">Reels Video</label>
-              <Field
-                type="text"
-                name="reelsVideo"
-                placeholder="Enter reels video"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              />
-            </div> */}
 
             {/* Start Date */}
             <div>
@@ -390,36 +381,12 @@ const CreateLeadForm = ({
                 onBlur={handleBlur}
                 className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
               >
-                <option className="text-gray-500" value="NEW_LEAD">
-                  New Lead
-                </option>
-                <option className="text-gray-500" value="IN_PROCESS">
-                  In Process
-                </option>
-                <option className="text-gray-500" value="QUALIFIED">
-                  Qualified
-                </option>
-                <option className="text-gray-500" value="SITE_VISIT_SCHEDULE">
-                  Site Visit Scheduled
-                </option>
-                <option className="text-gray-500" value="SITE_VISIT_DONE">
-                  Site Visit Done
-                </option>
-                <option className="text-gray-500" value="ESTIMATE_SENT">
-                  Estimate Sent
-                </option>
-                <option className="text-gray-500" value="NEGOTIATION">
-                  Negotiation
-                </option>
-                <option className="text-gray-500" value="LEAD_LOST">
-                  Lead Lost
-                </option>
-                <option className="text-gray-500" value="ON_HOLD">
-                  On Hold
-                </option>
-                <option className="text-gray-500" value="LEAD_WON">
-                  Lead Won
-                </option>
+                {Leadstages.map((stage) => (
+                  <option key={stage.value} value={stage.value}>
+                    {stage.lable}
+                  </option>
+                ))}
+        
               </Field>
               {errors.leadStage && touched.leadStage && (
                 <div className="text-red-500">{errors.leadStage}</div>

@@ -4,6 +4,7 @@ import { FiDownload } from "react-icons/fi";
 import { RxCross2 } from "react-icons/rx";
 import { MdPermMedia } from "react-icons/md";
 import { FaRegFilePdf } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 const FolderdataById = ({ data, loadingId, close }) => {
   if (!data) {
@@ -16,24 +17,33 @@ const FolderdataById = ({ data, loadingId, close }) => {
 
 // Handle file download
 const handleDownload = async (fileUrl, index) => {
-    try {
-      const response = await fetch(fileUrl, { mode: "cors" });
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-  
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = `attachment-${index + 1}${getFileExtension(fileUrl)}`; // nice filename
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-  
-      window.URL.revokeObjectURL(url); // cleanup
-    } catch (error) {
-      console.error("Download failed:", error);
-    }
-  };
-  
+  try {
+    const isPdf = getFileExtension(fileUrl) === ".pdf";
+    const finalUrl = isPdf ? `${fileUrl}` : fileUrl;
+
+    const response = await fetch(finalUrl, { mode: "cors" });
+    const blob = await response.blob();
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+
+    // ✅ Force .pdf extension if needed
+    const extension = getFileExtension(fileUrl);
+    const filename = isPdf
+      ? `attachment-${index + 1}.pdf`
+      : `attachment-${index + 1}${extension}`;
+
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    window.URL.revokeObjectURL(url);
+  } catch (error) {
+    toast.error("Download failed:");
+  }
+};
   // Helper to extract extension
   const getFileExtension = (url) => {
     const parts = url.split(".");

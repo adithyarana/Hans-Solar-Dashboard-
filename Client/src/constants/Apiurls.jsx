@@ -33,6 +33,16 @@ export const GetFolderdatabyId = `${BaseUrl2}/getfolder/`
     "LEAD_LOST": "bg-red-200 text-red-700",        
     "ON_HOLD": "bg-pink-100 text-pink-700",          
     "LEAD_WON": "bg-green-200 text-green-900 font-semibold", 
+    "Registration": "bg-blue-100 text-blue-700",          
+    "Application": "bg-yellow-100 text-yellow-800",   
+    "Feasibility": "bg-green-100 text-green-700",      
+    "Vendor_Selection": "bg-purple-100 text-purple-700", 
+    "Upload_Agreement": "bg-indigo-100 text-indigo-700",     
+    "Installation": "bg-teal-100 text-teal-700",    
+    "Inspection": "bg-orange-100 text-orange-700", 
+    "Project_Commissioning": "bg-red-200 text-red-700",        
+    "Subsidy_Request": "bg-pink-100 text-pink-700",          
+    "Subsidy_Disbursal": "bg-green-200 text-green-900 font-semibold", 
   };
 
   export const Prioritycolor ={

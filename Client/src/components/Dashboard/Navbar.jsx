@@ -4,7 +4,6 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 
 const Navbar = () => {
   const user = useSelector((state) => state.userdata?.user);
-  console.log("user data", user);
 
   return (
     <>

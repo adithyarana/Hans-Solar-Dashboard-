@@ -1,5 +1,6 @@
 import axios from "axios";
 import { PostCustomerData } from "../constants/Apiurls";
+import { toast } from "react-toastify";
 
 const usePostcustomerData = () => {
   const Apicall = async (customerData) => {
@@ -11,7 +12,7 @@ const usePostcustomerData = () => {
 
       return response.data;
     } catch (error) {
-      console.log(error);
+      toast.error(error?.response?.data?.message);
       throw error;
     }
   };

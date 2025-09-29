@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { CreateAttachment } from "../../constants/Apiurls";
+import { toast } from "react-toastify";
 
 const useCreateAttachments = (id) => {
   const CreateFolder = async (formData) => {
@@ -17,7 +18,7 @@ const useCreateAttachments = (id) => {
       );
       return Response;
     } catch (error) {
-      console.error("Post API error:", error);
+      toast.error(error?.response?.data?.message);
       throw error;
     }
   };

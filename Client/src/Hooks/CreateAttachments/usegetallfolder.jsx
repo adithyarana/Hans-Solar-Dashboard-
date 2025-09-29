@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { GetallFolder } from "../../constants/Apiurls";
+import { toast } from "react-toastify";
 
 const usegetallfolder = () => { 
 
@@ -17,7 +18,7 @@ const usegetallfolder = () => {
       setgetallfolderData(response.data?.data || []);
     
     } catch (error) {
-      console.error("Error fetching data:", error);
+      toast.error(error?.response?.data?.message);
       return null;
     }
     finally {

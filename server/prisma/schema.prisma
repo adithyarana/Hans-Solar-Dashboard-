@@ -97,6 +97,17 @@ enum LeadStage {
   LEAD_LOST
   ON_HOLD
   LEAD_WON
+  // subsidy process
+  Registration
+  Application
+  Feasibility
+  Vendor_Selection
+  Upload_Agreement
+  Installation
+  Inspection
+  Project_Commissioning
+  Subsidy_Request
+  Subsidy_Disbursal
 }
 
 enum InterestAreas {

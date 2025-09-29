@@ -23,11 +23,9 @@ const useauth = () => {
           token: userdata?.data?.token,
         })
       );
-      console.log("Login success:", userdata.data);
 
       return userdata.data;
     } catch (error) {
-      console.error("Login error:", error);
       throw error;
     }
   };

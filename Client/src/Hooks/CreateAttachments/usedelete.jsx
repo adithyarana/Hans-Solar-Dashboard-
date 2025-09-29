@@ -1,6 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { DeleteFolderApi } from "../../constants/Apiurls";
+import { toast } from "react-toastify";
 
 
 const usedelete = () => {
@@ -13,7 +14,7 @@ const usedelete = () => {
 
       return response.data;
     } catch (error) {
-      console.error("Delete API error:", error);
+      toast.error(error?.response?.data?.message);
       throw error;
     }
   };

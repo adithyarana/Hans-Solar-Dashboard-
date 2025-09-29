@@ -32,7 +32,7 @@ const usegetcustomerdata = (page, limit, filter) => {
       setTotalPages(response.data.totalpages || 1);
       setTotalCount(response.data.totalcount || 0);
     } catch (error) {
-      console.error("Error fetching customer data:", error);
+      toast.error(error?.response?.data?.message);
     } finally {
       setLoading(false);
     }

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { GetEmployeeData } from "../../constants/Apiurls"
 import axios from "axios"
+import { toast } from "react-toastify";
 
 // In useGetEmployee.jsx
 const useGetEmployee = () => {
@@ -20,7 +21,7 @@ const useGetEmployee = () => {
             setEmployeeData(response.data.employee || [])
             setLoading(false)            
         } catch (error) {
-            console.error("Error fetching employee data:", error)
+            toast.error(error?.response?.data?.message)
             setEmployeeData([]) 
             setLoading(false)
         }

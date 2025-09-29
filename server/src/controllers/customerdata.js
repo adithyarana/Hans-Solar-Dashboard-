@@ -60,7 +60,7 @@ export const BulkUploaddata = async(req, res)=>{
         try {
           fs.unlinkSync(req.file.path);
         } catch (fileError) {
-          console.error('Error deleting uploaded file:', fileError);
+          return res.status(500).json({ message: "Internal Server Error" });
         }
       }
 
@@ -72,12 +72,11 @@ export const BulkUploaddata = async(req, res)=>{
    
       
   } catch (error) {
-    console.log(error);
     
     // clear error after error also
     if (req.file?.path) {
       fs.unlink(req.file.path, (err) => {
-        if (err) console.error("Error deleting file:", err);
+        if (err) return res.status(500).json({ message: "Internal Server Error" });
       });
     }
     return res.status(500).json({ message: "Internal Server Error" });
@@ -184,94 +183,11 @@ export const Addcustomerdata = async (req, res) => {
       customer: newcustomer,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
 
-//   try {
-
-//     const page = parseInt(req.query.page) ||1 ;
-//     const limit = parseInt(req.query.limit) || 15 ;
-//     const skip = (page - 1) * limit ;
-
-//     const {
-//      name,
-//      leadStage,
-//      priority,
-//      customerId,
-//      createdByEmpId,
-//     } = req.query
-
-//     const {
-//       state,
-//       district,
-//       tehsil,
-//       village,
-//     } = req.query.location || {}
-
-//     let where = {};
-
-//     if(req.user.role === "EMPLOYEE"){
-//        where.createdById = req.user.userId;
-//        where.createdByEmpId = req.user.empid;
-//     }
-     
-//     if(name){
-//       where.name = {
-//         contains: name,
-//         mode: "insensitive",
-//       }
-//     }
-
-//     if (leadStage) {
-//       where.leadStage = leadStage;
-//     }
-//     if (priority) {
-//       where.priority = priority;
-//     }
-//     if (customerId) {
-//       where.customerId = { contains: customerId, mode: "insensitive" };
-//     }
-//     if (createdByEmpId) {
-//       where.createdByEmpId = createdByEmpId;
-//     }
-
-//     if (state || district || tehsil || village) {
-//       where.location = {
-//         ...(state && { state: { contains: state, mode: 'insensitive' } }),
-//         ...(district && { district: { contains: district, mode: 'insensitive' } }),
-//         ...(tehsil && { tehsil: { contains: tehsil, mode: 'insensitive' } }),
-//         ...(village && { village: { contains: village, mode: 'insensitive' } }),
-//       };
-//     }
-
-//     const totalcount = await prisma.customerData.count({
-//       where,
-//     })
-
-//     const customer = await prisma.customerData.findMany({
-//       where,
-//       skip,
-//       take: limit,
-//       orderBy:{
-//         createdAt:"desc"
-//       }
-//     })
-
-  
-//     return res.status(200).json({
-//       message: "Customer data fetched successfully",
-//       customer,
-//       totalcount,
-//       totalpages: Math.ceil(totalcount / limit),
-//     });
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ message: "Internal Server Error" });
-//   }
-// };
 export const getallcustomerdata = async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 1;
@@ -324,7 +240,6 @@ export const getallcustomerdata = async (req, res) => {
       totalpages: Math.ceil(totalcount / limit),
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -359,7 +274,6 @@ export const getCustomerdataById = async (req, res) => {
       customer,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -406,7 +320,6 @@ export const updateCustomerdata = async (req, res) => {
           village: parsedLocation?.village || null,
         };
       } catch (err) {
-        console.error("Error parsing location:", err);
         return res.status(400).json({ message: "Invalid location format" });
       }
     }
@@ -437,7 +350,6 @@ export const updateCustomerdata = async (req, res) => {
       customer: updatedCustomer,
     });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -472,7 +384,6 @@ export const deleteCustomerdata = async (req, res) => {
       .status(200)
       .json({ message: "Customer data deleted successfully" });
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

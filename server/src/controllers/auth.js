@@ -111,7 +111,6 @@ export const login = async (req, res) => {
     }
 
     const passwordvalid = await bcrypt.compare(password, user.password);
-    console.log(passwordvalid);
 
     if (!passwordvalid) {
       return res.status(401).json({ message: "INVALID CREDENTIALS" });
@@ -121,21 +120,9 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "INVALID CREDENTIALS" });
     }
 
-    // // Check role based on route
-    // if (req.baseUrl.includes("/admin") && user.role !== "ADMIN") {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Forbidden - Admins only can Login" });
-    // }
-
-    // if (req.baseUrl.includes("/employee") && user.role !== "EMPLOYEE") {
-    //   return res
-    //     .status(403)
-    //     .json({ message: "Forbidden - Employees only can Login" });
-    // }
 
     // token and jwt logic here
-
+    
     // generate token
     const token = jwt.sign(
       { 
@@ -170,7 +157,6 @@ export const login = async (req, res) => {
 
       });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -184,7 +170,6 @@ export const logout = async (req, res) => {
     });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

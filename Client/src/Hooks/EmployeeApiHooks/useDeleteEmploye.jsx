@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { DeleteEmployeeData } from '../../constants/Apiurls'
+import { toast } from 'react-toastify';
 
 const useDeleteEmploye = () => {
     const Apicall = async (id) => {
@@ -12,7 +13,7 @@ const useDeleteEmploye = () => {
         });
         return response.data;
       } catch (error) {
-        console.error("Delete API error:", error);
+        toast.error(error?.response?.data?.message);
         throw error;
       }
     };

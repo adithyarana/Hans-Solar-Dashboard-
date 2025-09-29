@@ -51,7 +51,6 @@ const CustomerDetailsPage = () => {
         navigate(`/dashboard/customers?page=${currentpage || 1}`, { state: { shouldRefresh: true } });
       }
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(
         error.response?.data?.message ||
           "Failed to delete lead. Please try again."

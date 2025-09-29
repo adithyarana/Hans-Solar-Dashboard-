@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { GetCustomerDataById } from "../constants/Apiurls";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const useGetCustomerDataById = (id) => {
   const [customerdatabyid, setCustomerDataById] = useState(null);
@@ -15,9 +16,8 @@ const useGetCustomerDataById = (id) => {
         withCredentials: true,
       });
       setCustomerDataById(response.data);
-      console.log("response", response?.data);
     } catch (err) {
-      console.error("Error fetching customer:", err);
+      toast.error(err?.response?.data?.message);
     } finally {
       setLoading(false);
     }

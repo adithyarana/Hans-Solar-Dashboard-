@@ -35,7 +35,6 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
       setOpen(false);
       refetch();
     } catch (error) {
-      console.error("Delete error:", error);
       toast.error(
         error.response?.data?.message ||
           "Failed to delete employee. Please try again."

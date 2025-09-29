@@ -7,7 +7,6 @@ import { FaPlus } from "react-icons/fa";
 const EmployesData = () => {
   const [open, setOpen] = useState(false);
   const {employeeData , loading , refetch} = useGetEmployee()
-  console.log("employeeData", employeeData);
   return (
     <>
     <div className="z-30 flex gap-3">

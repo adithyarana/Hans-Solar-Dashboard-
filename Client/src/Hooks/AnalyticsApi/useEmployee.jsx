@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { EmployeeAnalytics } from "../../constants/Apiurls";
+import { toast } from "react-toastify";
 
 const useEmployeeAnalytics = (empid, enabled = true) => {
   const [EmployeeAnalyticsData, setEmployeeAnalyticsData] = useState([]);
@@ -17,7 +18,7 @@ const useEmployeeAnalytics = (empid, enabled = true) => {
       });
       setEmployeeAnalyticsData(response.data);
     } catch (error) {
-      console.error("Failed to fetch employee analytics:", error?.response?.data || error?.message);
+      toast.error(error?.response?.data?.message);
     } finally {
       EsetLoading(false);
     }

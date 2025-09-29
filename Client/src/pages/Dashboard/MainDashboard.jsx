@@ -15,12 +15,11 @@ import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
 
   const {analyticsdata,loading} = useAdminAnalytics(IsAdmin)
   const {EmployeeAnalyticsData,Eloading} = useEmployeeAnalytics(empid, IsEmployee)
-  console.log("EmployeeAnalyticsData",EmployeeAnalyticsData)
 
 
   return (
     <>
-   <div className="overflow-auto styled-scrollbar ">
+   <div className="overflow-auto styled-scrollbar h-screen ">
 
    {IsAdmin && (
       <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">

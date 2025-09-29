@@ -57,7 +57,6 @@ const UploadAttachments = ({close, CreateFolder, loading, setloading, refetch}) 
                 refetch();
               }
             } catch (error) {
-              console.log(error);
               toast.error(error?.response?.data?.message);
               setloading(false);
             }

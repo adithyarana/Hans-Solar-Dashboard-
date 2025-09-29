@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { AdminAnalytics } from '../../constants/Apiurls'
+import { toast } from 'react-toastify';
 
 const useAdminAnalytics = (enabled = true) => {
 
@@ -21,7 +22,7 @@ const useAdminAnalytics = (enabled = true) => {
             setLoading(false)
             
         } catch (error) {
-            console.log(error)
+            toast.error(error?.response?.data?.message)
             setLoading(false)
         }
     }

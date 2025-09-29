@@ -7,7 +7,6 @@ const getStoredUser = () => {
     const user = localStorage.getItem("user");
     return user && user !== 'undefined' ? JSON.parse(user) : null;
   } catch (error) {
-    console.error("Error parsing user from localStorage:", error);
     return null;
   }
 };
