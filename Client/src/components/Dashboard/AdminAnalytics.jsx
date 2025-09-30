@@ -53,7 +53,7 @@ const AdminAnalytics = ({ data, loading }) => {
            )}
 
             {/* boxes with horizontal scroll on mobile */}
-            <div className="px-5 py-3 overflow-x-auto styled-scrollbar">
+            <div className="px-5 py-3 ">
               <div className="flex gap-5 flex-nowrap md:flex-wrap justify-start md:justify-start min-w-max">
                 {/* box1 */}
                 <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
