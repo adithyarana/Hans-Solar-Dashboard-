@@ -25,6 +25,7 @@ const useAdminAnalytics = (enabled = true) => {
   };
 
   useEffect(() => {
+    if (!enabled) return;
     Adminanalytics();
   }, [enabled]);
 

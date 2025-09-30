@@ -18,7 +18,8 @@ const useEmployeeAnalytics = (empid, enabled = true) => {
       });
       setEmployeeAnalyticsData(response.data);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+       toast.error(error?.response?.data?.message);
+    
     } finally {
       EsetLoading(false);
     }
