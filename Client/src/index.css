@@ -1,6 +1,12 @@
 @import "tailwindcss";
 
 /* Animations */
+/* Ensure the app fills the viewport and disable outer page scroll */
+html, body, #root {
+  height: 100%;
+  overflow-y: hidden;
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0);

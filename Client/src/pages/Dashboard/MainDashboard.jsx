@@ -19,7 +19,7 @@ import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
 
   return (
     <>
-   <div className="overflow-auto styled-scrollbar h-screen ">
+   <div className="overflow-y-auto styled-scrollbar h-screen ">
 
    {IsAdmin && (
       <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">
