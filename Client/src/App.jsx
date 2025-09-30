@@ -5,7 +5,7 @@ import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Provider } from "react-redux";
-import store from "./utils/store";
+import store from "./utils/Store.jsx";
 import DashboadLayout from "./Layouts/DashboardLayout.jsx";
 import Protectedroutes from "./utils/Protectedroutes";
 import { lazy, Suspense } from "react";
