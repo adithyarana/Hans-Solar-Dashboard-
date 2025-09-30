@@ -131,14 +131,14 @@ export const login = async (req, res) => {
         empid: user.empid  // Include empid in the token payload
       },
       process.env.JWT_SECRET,
-      { expiresIn: "1h" }
+      { expiresIn: "1d" }
     );
 
     res.cookie("token", token, {
       httpOnly: true,
       secure: true,
       sameSite: "None",
-      maxAge: 60 * 60 * 1000,
+      maxAge: 24 * 60 * 60 * 1000,
     });
 
     res

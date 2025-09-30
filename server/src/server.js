@@ -23,12 +23,24 @@ app.use(express.urlencoded({ extended: true })); // for parsing the form data fr
 // app.use(cors());
 
 // frontedn url to access the server
+const allowedOrigins = [
+  process.env.CLIENT_URL, 
+  "http://localhost:5173",
+];
+
 app.use(cors({
-  origin: process.env.CLIENT_URL || "https://hans-solar-dashboard.vercel.app",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
+
 
 // app.use("/", (req, res) => {
 //   res.send("Hello World!");
