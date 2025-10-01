@@ -87,10 +87,10 @@ const LeadInformation = ({ lead }) => {
           <p className="text-gray-800 font-medium">{lead.infoSource || "-"}</p>
         </div>
 
-        <div>
+        {/* <div>
           <p className="text-sm text-gray-500">Notes</p>
           <p className="text-gray-800 font-medium">{lead.notes || "-"}</p>
-        </div>
+        </div> */}
 
         <div>
           <p className="text-sm text-gray-500">Follow Up</p>

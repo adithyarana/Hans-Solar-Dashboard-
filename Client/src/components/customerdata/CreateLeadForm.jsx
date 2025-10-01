@@ -3,6 +3,8 @@ import { Formik, Form, Field } from "formik";
 import usePostcustomerData from "../../Hooks/usePostcustomerData";
 import { toast } from "react-toastify";
 import useUpdateLead from "../../Hooks/useUpdateLead";
+import ReactQuill from "react-quill-new";
+import "react-quill-new/dist/quill.snow.css";
 
 const indianStates = [
   "Andhra Pradesh",
@@ -36,29 +38,57 @@ const indianStates = [
   "West Bengal",
 ];
 
-const Leadstages =[
-   {lable:"New Lead" , value:"NEW_LEAD"},
-   {lable:"In Process" , value:"IN_PROCESS"},
-   {lable:"Qualified" , value:"QUALIFIED"},
-   {lable:"Site Visit Scheduled" , value:"SITE_VISIT_SCHEDULE"},
-   {lable:"Site Visit Done" , value:"SITE_VISIT_DONE"},
-   {lable:"Estimate Sent" , value:"ESTIMATE_SENT"},
-   {lable:"Negotiation" , value:"NEGOTIATION"},
-   {lable:"Lead Lost" , value:"LEAD_LOST"},
-   {lable:"On Hold" , value:"ON_HOLD"},
-   {lable:"Lead Won" , value:"LEAD_WON"},
+const Leadstages = [
+  { lable: "New Lead", value: "NEW_LEAD" },
+  { lable: "In Process", value: "IN_PROCESS" },
+  { lable: "Qualified", value: "QUALIFIED" },
+  { lable: "Site Visit Scheduled", value: "SITE_VISIT_SCHEDULE" },
+  { lable: "Site Visit Done", value: "SITE_VISIT_DONE" },
+  { lable: "Estimate Sent", value: "ESTIMATE_SENT" },
+  { lable: "Negotiation", value: "NEGOTIATION" },
+  { lable: "Lead Lost", value: "LEAD_LOST" },
+  { lable: "On Hold", value: "ON_HOLD" },
+  { lable: "Lead Won", value: "LEAD_WON" },
   // subsidy process
-   {lable:"Registration" , value:"Registration"},
-   {lable:"Application" , value:"Application"},
-   {lable:"Feasibility" , value:"Feasibility"},
-   {lable:"Vendor Selection" , value:"Vendor_Selection"},
-   {lable:"Upload Agreement" , value:"Upload_Agreement"},
-   {lable:"Installation" , value:"Installation"},
-   {lable:"Inspection" , value:"Inspection"},
-   {lable:"Project Commissioning" , value:"Project_Commissioning"},
-   {lable:"Subsidy Request" , value:"Subsidy_Request"},
-   {lable:"Subsidy Disbursal" , value:"Subsidy_Disbursal"},
-]
+  { lable: "Registration", value: "Registration" },
+  { lable: "Application", value: "Application" },
+  { lable: "Feasibility", value: "Feasibility" },
+  { lable: "Vendor Selection", value: "Vendor_Selection" },
+  { lable: "Upload Agreement", value: "Upload_Agreement" },
+  { lable: "Installation", value: "Installation" },
+  { lable: "Inspection", value: "Inspection" },
+  { lable: "Project Commissioning", value: "Project_Commissioning" },
+  { lable: "Subsidy Request", value: "Subsidy_Request" },
+  { lable: "Subsidy Disbursal", value: "Subsidy_Disbursal" },
+];
+
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, false] }],           // headings
+      ["bold", "italic", "underline", "strike"],
+      [{ list: "ordered" }, { list: "bullet" }], // bullet points
+      ["emoji"],                                  // emoji button
+      ["clean"],
+    ],
+  },
+  "emoji-toolbar": true,     // toolbar emoji picker
+  "emoji-textarea": true,    // textarea emoji picker
+  "emoji-shortname": true,   // :shortname support
+};
+
+const formats = [
+  "header",
+  "bold",
+  "italic",
+  "underline",
+  "strike",
+  "list",
+  "bullet",
+  "emoji",
+  "clean",
+];
+
 
 const CreateLeadForm = ({
   close,
@@ -72,7 +102,7 @@ const CreateLeadForm = ({
   const { Apicall } = usePostcustomerData(); // custom hook for post customer data
   const { UpdateApicall } = useUpdateLead();
   return (
-    <div className="max-w-6xl mx-auto p-6  bg-white rounded-2xl">
+    <div className="max-w-6xl mx-auto p-6  bg-gray-50 rounded-2xl">
       <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
         <span className="text-orange-500 font-semibold">
           {" "}
@@ -110,7 +140,8 @@ const CreateLeadForm = ({
           let errors = {};
 
           if (!value.name) errors.name = "Name is required";
-          if(!value.phoneNumber) errors.phoneNumber = "Phone number is required";
+          if (!value.phoneNumber)
+            errors.phoneNumber = "Phone number is required";
           return errors;
         }}
         onSubmit={async (values, { resetForm }) => {
@@ -149,7 +180,6 @@ const CreateLeadForm = ({
                 "startDate",
                 new Date(values.startDate).toISOString()
               );
-
 
             let result;
             setloading(true);
@@ -204,7 +234,7 @@ const CreateLeadForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Enter name"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
               {errors.name && touched.name && (
                 <div className="text-red-500">{errors.name}</div>
@@ -221,13 +251,12 @@ const CreateLeadForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Enter email"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
               {errors.email && touched.email && (
                 <div className=" text-sm text-red-500">{errors.email}</div>
               )}
             </div>
-
 
             {/* Phone Number */}
             <div>
@@ -239,14 +268,13 @@ const CreateLeadForm = ({
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder="Enter phone number"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
-                 {errors.phoneNumber && touched.phoneNumber && (
-              <div className="text-red-500">{errors.phoneNumber}</div>
-            )}
-
+              {errors.phoneNumber && touched.phoneNumber && (
+                <div className="text-red-500">{errors.phoneNumber}</div>
+              )}
             </div>
-         
+
             {/* WhatsApp Number */}
             <div>
               <label className="block font-medium mb-1">WhatsApp Number</label>
@@ -254,7 +282,7 @@ const CreateLeadForm = ({
                 type="number"
                 name="whatsappNumber"
                 placeholder="Enter WhatsApp number"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -265,12 +293,12 @@ const CreateLeadForm = ({
                 type="text"
                 name="address"
                 placeholder="Enter address"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
-                {/* Interest Areas */}
-                <div>
+            {/* Interest Areas */}
+            <div>
               <label className="block font-medium mb-1">Looking For</label>
               <Field
                 as="select"
@@ -278,7 +306,7 @@ const CreateLeadForm = ({
                 value={values.interestAreas}
                 onChange={(e) => setFieldValue("interestAreas", e.target.value)}
                 onBlur={handleBlur}
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               >
                 <option value="">Select what you are looking for</option>
                 <option className="text-gray-500" value="ONGRID">
@@ -312,7 +340,7 @@ const CreateLeadForm = ({
               <Field
                 type="date"
                 name="birthday"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -323,20 +351,11 @@ const CreateLeadForm = ({
                 type="text"
                 name="infoSource"
                 placeholder="Enter info source"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
-            {/* Notes */}
-            <div>
-              <label className="block font-medium mb-1">Notes</label>
-              <Field
-                type="text"
-                name="notes"
-                placeholder="Enter notes"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              />
-            </div>
+          
 
             {/* Follow Up */}
             <div>
@@ -344,7 +363,7 @@ const CreateLeadForm = ({
               <Field
                 type="date"
                 name="followUp"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -355,10 +374,9 @@ const CreateLeadForm = ({
                 type="text"
                 name="workCategory"
                 placeholder="Enter work category"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
-
 
             {/* Start Date */}
             <div>
@@ -366,7 +384,7 @@ const CreateLeadForm = ({
               <Field
                 type="date"
                 name="startDate"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -379,14 +397,13 @@ const CreateLeadForm = ({
                 value={values.leadStage}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               >
                 {Leadstages.map((stage) => (
                   <option key={stage.value} value={stage.value}>
                     {stage.lable}
                   </option>
                 ))}
-        
               </Field>
               {errors.leadStage && touched.leadStage && (
                 <div className="text-red-500">{errors.leadStage}</div>
@@ -402,7 +419,7 @@ const CreateLeadForm = ({
                 value={values.priority}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               >
                 <option className="text-gray-500" value="LOW">
                   Low
@@ -419,24 +436,13 @@ const CreateLeadForm = ({
               )}
             </div>
 
-            {/* Progress Board */}
-            <div>
-              <label className="block font-medium mb-1">Progress Board</label>
-              <Field
-                type="text"
-                name="progressBoard"
-                placeholder="Enter progress board"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
-              />
-            </div>
-
             {/* Location (State, District, Tehsil, Village) */}
             <div>
               <label className="block font-medium mb-1">State</label>
               <select
                 onChange={handleChange}
                 onBlur={handleBlur}
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
                 name="state"
                 id=""
               >
@@ -454,7 +460,7 @@ const CreateLeadForm = ({
                 type="text"
                 name="district"
                 placeholder="Enter district"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
               />
             </div>
             <div>
@@ -463,7 +469,7 @@ const CreateLeadForm = ({
                 type="text"
                 name="tehsil"
                 placeholder="Enter tehsil"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
               />
             </div>
             <div>
@@ -472,52 +478,37 @@ const CreateLeadForm = ({
                 type="text"
                 name="village"
                 placeholder="Enter village"
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
               />
             </div>
 
-            {/* Images */}
-            {/* <div>
-              <label className="block font-medium mb-1">
-                Lead Photo <span>(Optional)</span>
-              </label>
-              <input
-                type="file"
-                name="images"
-                multiple
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
-                onChange={(e) =>
-                  setFieldValue("images", [
-                    ...(values.images || []),   // keep old ones
-                    ...Array.from(e.currentTarget.files),
-                  ])
-                }
-              />
-            </div> */}
+            {/* notes */}
+            <div className="md:col-span-3">
+              <label className="block font-medium mb-1">Notes</label>
+              <div className="border rounded-lg overflow-hidden shadow-sm focus-within:ring-2 focus-within:ring-orange-300">
+                <ReactQuill
+                  theme="snow"
+                  value={values.notes}
+                  onChange={(val) => setFieldValue("notes", val)}
+                  className="bg-white"
+                  style={{ height: 180 }}
+                  placeholder="Write important notes, context, or next steps..."
+                  modules={modules}
+                  formats={formats}
+                />
+              </div>
+              <div className="text-xs text-gray-500 mt-1 text-right">
+                {((values.notes || "").replace(/<[^>]+>/g, "").trim()).length} characters
+              </div>
+            </div>
 
-            {/* Attachments */}
-            {/* <div>
-              <label className="block font-medium mb-1">Attachments</label>
-              <input
-                type="file"
-                name="attachments"
-                multiple
-                className="w-full p-2 border rounded-lg focus:ring focus:ring-orange-300"
-                onChange={(e) =>
-                  setFieldValue("attachments", [
-                    ...(values.attachments || []),
-                    ...Array.from(e.currentTarget.files),
-                  ])
-                }
-              />
-            </div> */}
-
+  
             {/* Submit */}
-            <div className="  flex justify-center">
+            <div className="md:col-span-3 flex justify-end items-end">
               <button
                 type="submit"
                 disabled={loading}
-                className={`px-6 py-2 mt-4 w-full font-semibold cursor-pointer hover:opacity-80 transition-all text-white rounded-lg bg-gradient-to-r from-orange-500 to-red-500 flex justify-center items-center gap-2 ${
+                className={`px-6 py-2 mt-4 font-semibold cursor-pointer hover:opacity-90 transition-all text-white rounded-full shadow bg-gradient-to-r from-orange-500 to-red-500 flex justify-center items-center gap-2 ${
                   loading ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >

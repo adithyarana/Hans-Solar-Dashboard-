@@ -5,7 +5,9 @@ import { useNavigate } from "react-router-dom";
 const Leadstages = ({data,loading , prioritydata}) => {
   const navigate = useNavigate();
   // Example data (replace with your backend data)
-  const{NEW_LEAD,IN_PROCESS,QUALIFIED,SITE_VISIT_SCHEDULE,SITE_VISIT_DONE,ESTIMATE_SENT,NEGOTIATION,LEAD_LOST,ON_HOLD,LEAD_WON} = data|| {};
+  const{NEW_LEAD,IN_PROCESS,QUALIFIED,SITE_VISIT_SCHEDULE,SITE_VISIT_DONE,ESTIMATE_SENT,NEGOTIATION,LEAD_LOST,ON_HOLD,LEAD_WON,
+    Registration,Application,Feasibility,Vendor_Selection,Upload_Agreement,Installation,Inspection,Project_Commissioning,Subsidy_Request,Subsidy_Disbursal
+  } = data|| {};
 
   const leadstagesData = [
     { label: "New Lead", value: NEW_LEAD, color: "border-blue-500", key:"NEW_LEAD" },
@@ -18,13 +20,23 @@ const Leadstages = ({data,loading , prioritydata}) => {
     { label: "Lead Lost", value: LEAD_LOST, color: "border-gray-500", key:"LEAD_LOST" },
     { label: "On Hold", value: ON_HOLD, color: "border-pink-500", key:"ON_HOLD" },
     { label: "Lead Won", value: LEAD_WON, color: "border-green-500", key:"LEAD_WON" },
-  
+    { label: "Registration", value: Registration, color: "border-blue-500", key:"Registration" },
+    { label: "Application", value: Application, color: "border-yellow-500", key:"Application" },
+    { label: "Feasibility", value: Feasibility, color: "border-green-500", key:"Feasibility" },
+    { label: "Vendor Selection", value: Vendor_Selection, color: "border-purple-500", key:"Vendor_Selection" },
+    { label: "Upload Agreement", value: Upload_Agreement, color: "border-indigo-500", key:"Upload_Agreement" },
+    { label: "Installation", value: Installation, color: "border-teal-500", key:"Installation" },
+    { label: "Inspection", value: Inspection, color: "border-orange-500", key:"Inspection" },
+    { label: "Project Commissioning", value: Project_Commissioning, color: "border-red-500", key:"Project_Commissioning" },
+    { label: "Subsidy Request", value: Subsidy_Request, color: "border-pink-500", key:"Subsidy_Request" },
+    { label: "Subsidy Disbursal", value: Subsidy_Disbursal, color: "border-green-500", key:"Subsidy_Disbursal" },
+
   ];
 
   return (
     <div className="flex flex-col lg:flex-row gap-4">
       {/* Lead Stages */}
-      <div className=" z-30 w-full lg:w-1/2 shadow-xl rounded-lg p-4 h-[350px] overflow-y-auto">
+      <div className=" z-30 w-full lg:w-1/2 shadow-xl rounded-lg p-4 h-[350px] 2xl:h-[550px] overflow-y-auto">
         <h2 className="text-md font-semibold text-gray-600 mb-4">
           Lead Stages 
         </h2>
@@ -48,7 +60,7 @@ const Leadstages = ({data,loading , prioritydata}) => {
 
       {/* Priority Chart */}
       <div className="w-full lg:w-1/2">
-        <div className=" rounded-lg p-4 h-[350px] overflow-hidden">
+        <div className=" rounded-lg p-4 h-[350px] 2xl:h-[550px] overflow-hidden">
           <PriorityChart data={prioritydata}/>
         </div>
       </div>

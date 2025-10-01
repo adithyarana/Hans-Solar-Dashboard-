@@ -174,7 +174,7 @@ const CustomerDetailsPage = () => {
 
             {OpenEdit && (
             <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
-              <div className="relative bg-white w-full max-w-5xl h-[90vh] rounded-2xl shadow-xl overflow-y-auto p-6">
+              <div className="relative bg-gray-50 w-full max-w-5xl h-[90vh] rounded-2xl shadow-xl overflow-y-auto p-6">
                 <button
                   onClick={() => setOpenEdit(false)}
                   className="absolute top-3 right-3 cursor-pointer text-gray-500 hover:text-red-500 text-xl"

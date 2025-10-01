@@ -29,20 +29,27 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
 
 
 
+if(!customerData || customerData.length === 0){
+  return (
+    <div className="flex items-center justify-center h-screen">
+      <p className="text-gray-600  text-2xl">No data available !</p>
+    </div>
+  )
+}
 
+if(loading){
+  return (
+    <div className="flex items-center justify-center h-screen">
+     <div className="animate-spin  rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+    </div>
+  )
+}
 
-  if(!customerData || customerData.length === 0){
-    return (
-      <div className="flex items-center justify-center h-screen">
-        <p className="text-gray-600  text-2xl">No data available !</p>
-      </div>
-    )
-  }
 
   return (
     <>
     <div className="z-30 rounded-lg styled-scrollbar overflow-x-auto  ml-7 h-screen ">
-      <table className="min-w-max   shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
+      <table className="min-w-max ml-7  shadow  rounded-2xl text-md border-separate border-spacing-x-10 border-spacing-y-3 w-full">
         {/* Table Head */}
         <thead className=" sticky   top-0 z-10 ">
           <tr className="text-gray-800 font-medium ">
@@ -57,13 +64,7 @@ const Dataheading = ({ customerData, loading, page = 1 }) => {
 
         {/* Table Body */}
         <tbody>
-          {loading ? (
-            <tr>
-              <td colSpan={20} className="text-center py-5">
-                <div className="animate-spin  rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-              </td>
-            </tr>
-          ) : customerData?.map((item, index) => (
+           {customerData?.map((item, index) => (
             <tr
               key={index}
               className="hover:bg-orange-100  transition border-b cursor-pointer border-gray-300"
