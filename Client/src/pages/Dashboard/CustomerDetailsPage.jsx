@@ -30,7 +30,7 @@ const CustomerDetailsPage = () => {
 
 
   const { customerdatabyid, loading, refetch } = useGetCustomerDataById(id);
-  const { Apicall } = useDeleteLead();
+  const { Apicall , loading:deleteloading } = useDeleteLead();
   
 
   useEffect(() => {
@@ -198,7 +198,7 @@ const CustomerDetailsPage = () => {
 
               {open && (
                 <div className="fixed inset-0 z-50 flex  items-center justify-center bg-black/40 backdrop-blur-sm">
-                  <DeletePopup close={setopen} onSuccess={handleDelete} />
+                  <DeletePopup close={setopen} onSuccess={handleDelete} loading={deleteloading} />
                 </div>
               )}
             </div>

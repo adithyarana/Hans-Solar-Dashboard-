@@ -9,7 +9,7 @@ dotenv.config();
 async function countEmployee() {
   const lastemployee = await prisma.user.findFirst({
     where: {
-      role: "EMPLOYEE",
+      role: { in: ["EMPLOYEE", "RECEPTIONIST"] },
     },
     orderBy: {
       empid: "desc",
@@ -59,7 +59,7 @@ export const registerUser = async (req, res) => {
     const LowerCaseName = name.toLowerCase();
 
     let empId;
-    if(role === "EMPLOYEE"){
+    if(role === "EMPLOYEE" || role === "RECEPTIONIST"){
       empId = await countEmployee();
     }
 

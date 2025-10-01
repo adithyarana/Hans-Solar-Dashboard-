@@ -12,7 +12,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   const [openedit, setopenedit] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
   const [showPasswords, setShowPasswords] = useState({});
-  const { Apicall } = useDeleteEmploye();
+  const { Apicall, loading:deleteloading } = useDeleteEmploye();
 
   if(!employeeData || employeeData.length === 0){
     return (
@@ -150,6 +150,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
           <DeletePopup 
             close={closeDeleteDialog} 
             onDelete={handleDelete} 
+            loading={deleteloading}
           />
         </div>
       )}
