@@ -1,5 +1,3 @@
-Here’s a clean, animated-style README you can paste into your repo that includes the provided screenshots and your announcement text. Replace any placeholder notes if needed.
-
 # ☀️ HANS SOLAR Dashboard ♻️
 
 A comprehensive CRM application with RBAC and real-time dashboards for solar operations, built to enhance customer management, streamline lead tracking, and drive data‑informed decisions.[1]
