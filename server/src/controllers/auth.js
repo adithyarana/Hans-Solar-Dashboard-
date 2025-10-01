@@ -19,11 +19,11 @@ async function countEmployee() {
   let newempid = 1;
 
   if (lastemployee?.empid) {
-    const num = parseInt(lastemployee.empid.replace("HANS", ""), 10);
+    const num = parseInt(lastemployee.empid.replace("HUM", ""), 10);
     newempid = num + 1;
   }
 
-  return `HANS${String(newempid).padStart(2, "0")}`;
+  return `HUM${String(newempid).padStart(2, "0")}`;
 }
 
 export const registerUser = async (req, res) => {

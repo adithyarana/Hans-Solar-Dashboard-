@@ -4,14 +4,14 @@ import prisma from "../src/utils/prisma.js";
 // main admin data saved in databse 
 
 async function main() {
-  const passwordHash = await bcrypt.hash("adithya@123", 10);
+  const passwordHash = await bcrypt.hash("hanssolar12", 10);
 
   await prisma.user.create({
     data: {
-      name: "Adithya".toLowerCase(),
-      email: "adithya@hanssolar.com",
+      name: "HANS SOLAR",
+      email: "hum@hanssolar.in",
       password:passwordHash,
-      normalpass:"adithya@123",
+      normalpass:"hanssolar12",
       role: "ADMIN",
     },
   });
