@@ -2,19 +2,18 @@ import React from "react";
 import { RxCross2 } from "react-icons/rx";
 import { data } from "react-router-dom";
 
-const FormateDate = (datestring)=>{
-  if(!datestring) return "";
+const FormateDate = (datestring) => {
+  if (!datestring) return "";
   try {
     return new Date(datestring).toLocaleString("en-GB", {
       day: "2-digit",
       month: "short",
       year: "numeric",
-     
     });
   } catch {
     return datestring; // fallback if invalid date
   }
-}
+};
 
 const UpdatedData = ({ changes, close }) => {
   if (
@@ -47,7 +46,7 @@ const UpdatedData = ({ changes, close }) => {
       {Object.entries(changes)
         .filter(([field]) => field !== "notes")
         .map(([field, { old, new: newVal }]) => {
-            const formattedOld =
+          const formattedOld =
             field === "birthday" || field === "startDate"
               ? FormateDate(old)
               : old || "New Created";
@@ -56,28 +55,27 @@ const UpdatedData = ({ changes, close }) => {
             field === "birthday" || field === "startDate"
               ? FormateDate(newVal)
               : newVal;
-        
 
-        return (
-          <div
-            key={field}
-            className="mb-5 p-4 rounded-lg bg-gray-50 shadow-sm "
-          >
-            <div className="text-base font-semibold text-gray-700 capitalize">
-              {field}
+          return (
+            <div
+              key={field}
+              className="mb-5 p-4 rounded-lg bg-gray-50 shadow-sm "
+            >
+              <div className="text-base font-semibold text-gray-700 capitalize">
+                {field}
+              </div>
+              <div className="flex items-center mt-3">
+                <span className="text-red-600 font-semibold bg-red-50 px-2 py-1 rounded-md text-sm min-w-[100px] text-center">
+                  {formattedOld}
+                </span>
+                <span className="mx-4 text-blue-400 font-bold text-lg">→</span>
+                <span className="text-green-700 font-semibold bg-green-50 px-2 py-1 rounded-md text-sm min-w-[100px] text-center">
+                  {formattedNew}
+                </span>
+              </div>
             </div>
-            <div className="flex items-center mt-3">
-              <span className="text-red-600 font-semibold bg-red-50 px-2 py-1 rounded-md text-sm min-w-[100px] text-center">
-                {formattedOld}
-              </span>
-              <span className="mx-4 text-blue-400 font-bold text-lg">→</span>
-              <span className="text-green-700 font-semibold bg-green-50 px-2 py-1 rounded-md text-sm min-w-[100px] text-center">
-                {formattedNew}
-              </span>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
     </div>
   );
 };

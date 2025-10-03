@@ -375,6 +375,15 @@ const CreateLeadForm = ({
               />
             </div>
 
+            <div>
+              <label className="block font-medium mb-1">Follow Up Date</label>
+              <Field
+                type="date"
+                name="followUp"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
+              />
+            </div>
+
             {/* Lead Stage */}
             <div>
               <label className="block font-medium mb-1">Lead Stage</label>

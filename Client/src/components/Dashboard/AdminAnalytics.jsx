@@ -39,9 +39,7 @@ const AdminAnalytics = ({ data, loading }) => {
            {user.role ==="ADMIN" ? (
              <div className="flex flex-col md:flex-row md:justify-between md:items-center px-5">
              <h2 className="text-md text-gray-600 font-semibold py-1">OPEN</h2>
-             <h2 className="text-md text-gray-600 font-semibold py-1 md:mr-[370px] hidden md:block">
-               RESULT
-             </h2>
+            
            </div>
            ):(
             <div className="flex flex-col md:flex-row md:justify-items-start gap-[280px] md:items-center px-5">
@@ -53,7 +51,7 @@ const AdminAnalytics = ({ data, loading }) => {
            )}
 
             {/* boxes with horizontal scroll on mobile */}
-            <div className="px-5 py-3 ">
+            <div className="px-5 py-3 overflow-x-scroll xl:overflow-hidden 2xl:overflow-hidden ">
               <div className="flex gap-5 flex-nowrap md:flex-wrap justify-start md:justify-start min-w-max">
                 {/* box1 */}
                 <div className="bg-white cursor-pointer flex flex-col justify-center items-center w-[240px] h-[100px] border-l-4 border-orange-500 rounded-lg shadow shrink-0">
@@ -105,6 +103,10 @@ const AdminAnalytics = ({ data, loading }) => {
                 <div className="hidden md:block w-[1px] h-[120px] bg-gray-300 mx-5"></div>
 
                 {/* box4 */}
+                
+                <h2 className="text-md text-gray-600 font-semibold py-1 ">
+               RESULT
+             </h2>
                 <div onClick={()=>handleleadstage("LEAD_WON")} className="bg-white cursor-pointer flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-green-500 rounded-lg shadow shrink-0">
                   <p className="text-gray-600 font-semibold text-md">
                     Lead Won
@@ -116,7 +118,9 @@ const AdminAnalytics = ({ data, loading }) => {
                       LEAD_WON || "0"
                     )}
                   </p>
+             
                 </div>
+                
 
                 {/* box5 */}
                 <div onClick={()=>handleleadstage("LEAD_LOST")} className="bg-white cursor-pointer flex flex-col justify-center items-center w-[200px] h-[100px] border-l-4 border-red-500 rounded-lg shadow shrink-0">
