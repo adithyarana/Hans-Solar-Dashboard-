@@ -1,4 +1,5 @@
 import prisma from "../utils/prisma.js";
+import { startOfDay, endOfDay } from "date-fns";
 
 export const Analytics= async(req, res)=>{
 
@@ -39,12 +40,33 @@ export const Analytics= async(req, res)=>{
             return acc;
         },{})
 
+        const todaayDate = new Date();
+
+        const followUpLead = await prisma.customerData.findMany({
+            where:{
+                followUp:{
+                    gte: startOfDay(todaayDate), 
+                    lte: endOfDay(todaayDate),  
+                }
+            },
+            select:{
+                id:true,
+                name:true,
+                followUp:true,
+                leadStage:true,
+                createdByEmpId:true,
+
+
+            }
+        })
+
         const data={
             totalcustomer,
             totalemployee,
             totalreceptionist,
             leadstage,
-            priority
+            priority,
+            followUpLead
         }
 
         res.status(200).json({
@@ -101,12 +123,35 @@ export const EmployeeAnalytics = async (req, res) => {
             return acc;
         }, {});
 
+        const todaayDate = new Date();
+
+        const followUpLead = await prisma.customerData.findMany({
+            where:{
+                createdByEmpId: loggedInempid,
+                followUp:{
+                    gte: startOfDay(todaayDate), 
+                    lte: endOfDay(todaayDate),  
+                }
+            },
+            select:{
+                id:true,
+                name:true,
+                followUp:true,
+                leadStage:true,
+                createdByEmpId:true,
+
+
+            }
+        })
+
+
         res.status(200).json({
             message: "Analytics fetched successfully",
             empid: loggedInempid,
             countcustomer,
             leadstage,
-            priority
+            priority,
+            followUpLead
         })
 
 

@@ -2,8 +2,9 @@ import React from "react";
 import PriorityChart from "./PriorityChart";
 import { useNavigate } from "react-router-dom";
 import SubsidyLeadstages from "./SubsidyLeadstages";
+import TodayFollowUps from "./FollowupLead";
 
-const Leadstages = ({data,loading , prioritydata}) => {
+const Leadstages = ({data,loading , prioritydata,followupdata}) => {
   const navigate = useNavigate();
   // Example data (replace with your backend data)
   const{NEW_LEAD,IN_PROCESS,QUALIFIED,SITE_VISIT_SCHEDULE,SITE_VISIT_DONE,ESTIMATE_SENT,NEGOTIATION,LEAD_LOST,ON_HOLD,LEAD_WON,
@@ -58,6 +59,10 @@ const Leadstages = ({data,loading , prioritydata}) => {
   </div>
 
   {/* Follow up design TODO */}
+
+  <div className="w-1/2 p-2">
+  <TodayFollowUps data={followupdata}/>
+  </div>
   
 </div>
 
@@ -66,7 +71,7 @@ const Leadstages = ({data,loading , prioritydata}) => {
     <SubsidyLeadstages data={data} loading={loading} />
   </div>
 
-<div className="py-8 w-1/2">
+<div className="py-8 w-full md:w-1/2 xl:w1/2 2xl:w-1/2 p-2">
    <PriorityChart data={prioritydata}/>
   </div>
 
