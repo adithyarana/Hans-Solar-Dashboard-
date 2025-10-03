@@ -14,6 +14,7 @@ import LeadInformation from "../../components/customerdata/LeadInformation";
 import Attachment from "../../components/customerdata/Attachment";
 import { stageColors } from "../../constants/Apiurls";
 import Timeline from "../../components/customerdata/Timeline";
+import NotesViwer from "../../components/customerdata/NotesViwer";
 
 
 
@@ -216,6 +217,9 @@ const CustomerDetailsPage = () => {
   <div className="flex-1 w-[60vw] flex flex-col gap-6">
     <LeadInformation lead={data} />
     <Attachment attachments={data?.attachments || []} />
+    <NotesViwer notesdata={data}/>
+
+     
   </div>
 </div>
 

@@ -67,14 +67,11 @@ const modules = {
     container: [
       [{ header: [1, 2, 3, false] }],           // headings
       ["bold", "italic", "underline", "strike"],
-      [{ list: "ordered" }, { list: "bullet" }], // bullet points
-      ["emoji"],                                  // emoji button
+      [{ list: "ordered" }, { list: "bullet" }], // bullet points                       
       ["clean"],
     ],
   },
-  "emoji-toolbar": true,     // toolbar emoji picker
-  "emoji-textarea": true,    // textarea emoji picker
-  "emoji-shortname": true,   // :shortname support
+
 };
 
 const formats = [
@@ -355,17 +352,7 @@ const CreateLeadForm = ({
               />
             </div>
 
-          
 
-            {/* Follow Up */}
-            <div>
-              <label className="block font-medium mb-1">Follow Up</label>
-              <Field
-                type="date"
-                name="followUp"
-                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
-              />
-            </div>
 
             {/* Work Category */}
             <div>
@@ -491,7 +478,7 @@ const CreateLeadForm = ({
                   value={values.notes}
                   onChange={(val) => setFieldValue("notes", val)}
                   className="bg-white"
-                  style={{ height: 180 }}
+                  style={{ height: 300 }}
                   placeholder="Write important notes, context, or next steps..."
                   modules={modules}
                   formats={formats}

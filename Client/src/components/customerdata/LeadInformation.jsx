@@ -3,6 +3,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { stageColors } from "../../constants/Apiurls";
 import { Prioritycolor } from "../../constants/Apiurls";
 
+
 const LeadInformation = ({ lead }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -87,11 +88,6 @@ const LeadInformation = ({ lead }) => {
           <p className="text-gray-800 font-medium">{lead.infoSource || "-"}</p>
         </div>
 
-        {/* <div>
-          <p className="text-sm text-gray-500">Notes</p>
-          <p className="text-gray-800 font-medium">{lead.notes || "-"}</p>
-        </div> */}
-
         <div>
           <p className="text-sm text-gray-500">Follow Up</p>
           <p className="text-gray-800 font-medium">
@@ -137,6 +133,8 @@ const LeadInformation = ({ lead }) => {
           <p className="text-sm text-gray-500">Village </p>
           <p className="text-gray-800 font-medium">{lead.village || "-"}</p>
         </div>
+
+     
       </div>
     </div>
   );

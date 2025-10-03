@@ -129,17 +129,6 @@ export const Addcustomerdata = async (req, res) => {
       return res.status(400).json({ message: "Invalid whatsapp number" });
     }
 
-    // add images|| attachments to cloudinary
-    // i have made only one folder all files will be in that
-
-    // const imageUrls = req.files?.images
-    //   ? req.files.images.map((file) => file.path)
-    //   : [];
-
-    // const attachmentUrls = req.files?.attachments
-    //   ? req.files.attachments.map((file) => file.path)
-    //   : [];
-
 
 
     const customerdata = {
@@ -171,6 +160,7 @@ export const Addcustomerdata = async (req, res) => {
       updateHistory:[{
         createdAt: new Date(),
         empId: req.user.empid || "Admin",
+        
       }],
     };
 
@@ -327,6 +317,39 @@ export const updateCustomerdata = async (req, res) => {
     // ✅ safe destructure
     const { ...rest } = req.body || {};
 
+         // give data only what changed
+         const changes = {};
+         Object.keys(rest).forEach((key) => {
+           const newValue = rest[key];
+           const oldValue = customer[key];
+         
+           // Only include if newValue is not undefined/null/empty string and different from oldValue
+           if (
+             newValue !== undefined &&
+             newValue !== null &&
+             newValue !== "" &&
+             JSON.stringify(newValue) !== JSON.stringify(oldValue)
+           ) {
+             changes[key] = {
+               old: oldValue,
+               new: newValue,
+             };
+           }
+         });
+         
+         // Handle location separately
+         if (
+           parsedLocation &&
+           JSON.stringify(parsedLocation) !== JSON.stringify(customer.location)
+         ) {
+           changes["location"] = {
+             old: customer.location,
+             new: parsedLocation,
+           };
+         }
+         
+     
+
     const updatedCustomer = await prisma.customerData.update({
       where: { id },
       data: {
@@ -340,6 +363,7 @@ export const updateCustomerdata = async (req, res) => {
           push:{
             empId: req.user.empid || "Admin",
             updatedAt: new Date(),
+            changes,
           }
         }
       },
