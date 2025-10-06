@@ -1,13 +1,17 @@
 import prisma from "../utils/prisma.js";
 import bcrypt from "bcrypt";
 
-
-
 export const getHunsurjaData = async(req, res)=>{
     try {
 
         if(req.user.role !== "ADMIN"){
             return res.status(403).json({message: "Forbidden - Admins only can get employee data"})
+        }
+
+        // Check if prisma is available
+        if (!prisma || !prisma.hansUrja) {
+            console.error("❌ Prisma client is not initialized");
+            return res.status(500).json({message: "Database connection not available"});
         }
 
         const hunsurja = await prisma.hansUrja.findMany({
@@ -24,10 +28,12 @@ export const getHunsurjaData = async(req, res)=>{
             message: "Hunsurja data fetched successfully",
             hunsurja
         })
-        
+
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({message: "Internal Server Error"})
+        console.error("❌ Error in getHunsurjaData:", error);
+        return res.status(500).json({
+            message: "Internal Server Error",
+        });
     }
 }
 
