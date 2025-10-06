@@ -1,10 +1,9 @@
 import validator from "validator";
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import prisma from "../utils/prisma.js";
 
-dotenv.config();
+// dotenv.config(); // Removed - already called in server.js
 
 async function countHansUrja() {
   const lasthansurja = await prisma.hansUrja.findFirst({

@@ -18,7 +18,7 @@ export const verifyUser = (req, res, next) => {
           .json({ message: "Unauthorized - Invalid token" });
       }
       req.user = decoded;
-      // req.hansUrja = decoded;
+      req.hansUrja = decoded;
 
       next();
     });
@@ -32,7 +32,10 @@ export const verifyUser = (req, res, next) => {
  */
 export const verifyRole = (allowedRoles) => {
   return (req, res, next) => {
-    verifyUser(req, res, () => {
+    verifyUser(req, res, (err) => {
+      if (err) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
       if (!allowedRoles.includes(req.user.role)) {
         return res.status(403).json({ message: "Forbidden - Access denied not Allowed !" });
       }

@@ -6,8 +6,7 @@ import xlsx from "xlsx";
 import fs from 'fs';
 import qs from "qs";
 
-
-dotenv.config();
+// dotenv.config(); // Removed - already called in server.js
 
 const generatecustomerId = () => {
   return Math.floor(100000 + Math.random() * 900000).toString();

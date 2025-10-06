@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import prisma from "../utils/prisma.js";
 
-dotenv.config();
+// dotenv.config(); // Removed - already called in server.js
 
 async function countEmployee() {
   const lastemployee = await prisma.user.findFirst({
