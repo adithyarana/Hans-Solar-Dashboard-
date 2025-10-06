@@ -64,9 +64,10 @@ app.use("/api/public", publicCustomerRoutes); // for handling the public custome
 app.use("/api", hansurjamitraRoutes); // for handling the hansurja mitra routes
 
 app.use((err, req, res, next) => {
-  console.error('🔥 Runtime Error:', err.stack || err);
-  res.status(500).json({ message: 'Internal Server Error', error: err.message });
+  console.error("🔥 Server Runtime Error:", err.stack || err);
+  res.status(500).json({ success: false, error: err.message });
 });
+
 
 
 app.listen(port, () => {
