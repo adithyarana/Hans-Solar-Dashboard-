@@ -4,17 +4,20 @@ import AdminAnalytics from "../../components/Dashboard/AdminAnalytics";
 import EmployeeAnalytics from "../../components/Dashboard/EmployeeAnalytics";
 import useAdminAnalytics from "../../Hooks/AnalyticsApi/useAdmin";
 import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
+import useHansurjaAnalytics from "../../Hooks/AnalyticsApi/useHansurja";
 
   const MainDashboard = () => {
     const user = useSelector((state) => state.userdata?.user);
-
+    const {hansurjaId} = useSelector((state) => state.userdata?.user);
     const {empid} = useSelector((state) => state.userdata?.user);
  
   const IsAdmin = user?.role === "ADMIN" || user?.role === "RECEPTIONIST";
-  const IsEmployee= user?.role === "EMPLOYEE"
+  const IsEmployee= user?.role === "EMPLOYEE" 
+  const IsHansurja = user?.role === "HANSURJAMITRA";
 
   const {analyticsdata,loading} = useAdminAnalytics(IsAdmin)
   const {EmployeeAnalyticsData,Eloading} = useEmployeeAnalytics(empid, IsEmployee)
+  const {HansurjaAnalyticsData,Hloading} = useHansurjaAnalytics(hansurjaId, IsHansurja)
 
 
   return (
@@ -29,6 +32,11 @@ import useEmployeeAnalytics from "../../Hooks/AnalyticsApi/useEmployee";
      {IsEmployee && (
       <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">
         <EmployeeAnalytics data={EmployeeAnalyticsData} loading={Eloading} />
+      </div>
+     )}
+     {IsHansurja && (
+      <div className="overflow-y-auto md:overflow-hidden styled-scrollbar">
+        <EmployeeAnalytics data={HansurjaAnalyticsData} loading={Hloading} />
       </div>
      )}
 

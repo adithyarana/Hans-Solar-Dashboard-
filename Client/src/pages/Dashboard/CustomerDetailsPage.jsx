@@ -90,7 +90,7 @@ const CustomerDetailsPage = () => {
         </div>
       ) : (
         // upper section
-        <div className="bg-white border mt-5 border-gray-200 rounded shadow  h-[300px] w-[80vw] ml-14">
+        <div className="bg-white  border mt-5 border-gray-200 rounded shadow  h-[300px] w-[80vw] ml-14">
           <div className="flex gap-3 justify-between p-3 ">
             {/* image and name */}
             <div className="flex ">

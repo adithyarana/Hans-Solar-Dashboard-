@@ -13,12 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// employee schema
 model User {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
+  profilePic String?
   email      String   @unique
   password   String
   normalpass String
+  phoneNumber String?
+  whatsappNumber String?
+  address String?
+  birthday DateTime?
+  state String?
+  district String?
+  tehsil String?
+  village String?
+  infoSource String?
+  notes String?
+  followUp DateTime?
+  workCategory String?
+  startDate DateTime?
+  aadhaarNumber String?
+  panNumber String?
   role       Role     @default(EMPLOYEE)
   empid      String?
   createdAt  DateTime @default(now())
@@ -26,6 +43,35 @@ model User {
 
   // Relations
   leads CustomerData[] @relation("UserLeads")
+}
+
+
+model HansUrja {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  profilePic String?
+  email      String   @unique
+  phoneNumber String
+  whatsappNumber String?
+  password   String
+  address        String?
+  birthday       DateTime?
+  state          String?
+  district       String?
+  tehsil         String?
+  village        String?
+  infoSource    String?
+  notes         String?
+  followUp      DateTime?
+  workCategory  String?
+  startDate     DateTime?
+  aadhaarNumber String?
+  panNumber String?
+  role       Role     @default(HANSURJAMITRA)
+  hansurjaId      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
 }
 
 model CustomerData {
@@ -49,13 +95,9 @@ model CustomerData {
   notes         String?
   followUp      DateTime?
   workCategory  String?
-  reelsVideo    String?
   startDate     DateTime?
   leadStage     LeadStage @default(NEW_LEAD)
   priority      Priority  @default(LOW)
-  progressBoard String?
-  // images        String[] // Cloudinary URLs
-  // attachments   String[] // Extra documents
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -63,6 +105,7 @@ model CustomerData {
   createdBy      User?   @relation("UserLeads", fields: [createdById], references: [id])
   createdById    String? @db.ObjectId
   createdByEmpId String?
+  createdByHansUrjaId String?
 
   // Track updates
   updateHistory Json[] @default([])
@@ -130,4 +173,5 @@ enum Role {
   ADMIN
   EMPLOYEE
   RECEPTIONIST
+  HANSURJAMITRA
 }

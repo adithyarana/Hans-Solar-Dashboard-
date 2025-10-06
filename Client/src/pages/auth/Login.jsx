@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import useauth from "../../Hooks/useauth";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,14 @@ import { motion } from "framer-motion";
 import { FaUser, FaEnvelope, FaLock, FaSolarPanel } from "react-icons/fa";
 import { Checkauth } from "../../utils/Checkauth";
 import { FiLogIn } from "react-icons/fi";
+
+const options = [
+  { value: "", label: "Login as" },
+  { value: "HANSURJA", label: "Hans Urja Mitra" },
+  { value: "EMPLOYEE", label: "Employee" },
+  { value: "RECEPTIONIST", label: "Receptionist" },
+  { value: "ADMIN", label: "Admin" },
+];
 
 const Login = () => {
   const { Apicall } = useauth();
@@ -86,6 +94,7 @@ const Login = () => {
                       name: "",
                       email: "",
                       password: "",
+                      option: "",
                     }}
                     validate={(value) => {
                       let errors = {};
@@ -102,7 +111,8 @@ const Login = () => {
                         const user = await Apicall(
                           value.name,
                           value.email,
-                          value.password
+                          value.password,
+                          value.option
                         );
 
                         if (user) {
@@ -132,6 +142,40 @@ const Login = () => {
                           animate="visible"
                           className="space-y-6"
                         >
+                          <motion.div
+                            variants={itemVariants}
+                            className="relative group"
+                          >
+                            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                              {/* <FaLock className="h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" /> */}
+                            </div>
+                            <div className="mb-4">
+                              <select
+                                name="option"
+                                value={values.option}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                                className="block w-full py-2 px-3 border border-gray-300 rounded-lg"
+                              >
+                                {options.map((option) => (
+                                  <option
+                                
+                                    key={option.value}
+                                    value={option.value}
+                                  >
+                                    {option.label}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+
+                            {errors.option && touched.option && (
+                              <p className="mt-1 text-sm text-red-600">
+                                {errors.option}
+                              </p>
+                            )}
+                          </motion.div>
+
                           <motion.div
                             variants={itemVariants}
                             className="relative group"
@@ -203,6 +247,8 @@ const Login = () => {
                               </p>
                             )}
                           </motion.div>
+                          {/* 
+                          // check  */}
 
                           <motion.div variants={itemVariants} className="pt-2">
                             <motion.button

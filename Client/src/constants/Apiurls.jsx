@@ -3,6 +3,7 @@ const Baseurl = `${API_ORIGIN}/api`
 const BaseUrl2 = `${API_ORIGIN}/api/mediafolder`  
 
 export const LoginApi = `${Baseurl}/login`
+export const LoginHansUrja = `${Baseurl}/loginHansUrja`
 export const PostBulkUpload = `${Baseurl}/customer/bulkuploaddata`
 export const PostCustomerData = `${Baseurl}/customer/addcustomerdata`
 export const GetCustomerData = `${Baseurl}/customer/getallcustomerdata`
@@ -19,8 +20,12 @@ export const CreateAttachment = `${BaseUrl2}/createfolder`
 export const GetallFolder = `${BaseUrl2}/getallmediafolderdata`
 export const DeleteFolderApi = `${BaseUrl2}/deletefolder/`
 export const GetFolderdatabyId = `${BaseUrl2}/getfolder/`
-
-
+export const HansUrjaAnalytics = `${Baseurl}/hansurjaanalytics/:`
+export const PostHumData = `${Baseurl}/registerHansUrja`
+export const Getallhumdata = `${Baseurl}/getHunsurjaData`
+export const GetHumDataById = `${Baseurl}/getHunsurjaById/`
+export const UpdateHumData = `${Baseurl}/updateHunsurjaData/`
+export const DeleteHumData = `${Baseurl}/deleteHunsurjaData/`
 
 
  export const stageColors = {

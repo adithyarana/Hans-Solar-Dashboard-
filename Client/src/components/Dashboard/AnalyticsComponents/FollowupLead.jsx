@@ -3,8 +3,12 @@ import { FaCalendarAlt, FaUser } from "react-icons/fa";
 import { stageColors } from "../../../constants/Apiurls.jsx";
 import { useNavigate } from "react-router-dom";
 
+
 const TodayFollowUps = ({ data = [] }) => {
   const navigate = useNavigate();
+
+
+ 
   return (
     <div className="w-full bg-gray-50 rounded-2xl p-5">
       <h2 className="text-lg font-semibold text-gray-700 mb-4">
@@ -44,9 +48,10 @@ const TodayFollowUps = ({ data = [] }) => {
                   {lead.leadStage || "No leadStage"}
                 </span>
               </div>
+              
               <div className="flex w-full md:w-3/12 items-center gap-2 text-gray-600">
-                <span className="truncate" title={lead.createdByEmpId || "Admin"}>
-                  {lead.createdByEmpId || "Admin"}
+                <span className="truncate" title={lead.createdByHansUrjaId ? lead.createdByHansUrjaId : lead.createdByEmpId || "Admin"}>
+                  {lead.createdByHansUrjaId ? lead.createdByHansUrjaId : lead.createdByEmpId || "Admin"}
                 </span>
               </div>
 

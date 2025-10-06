@@ -8,6 +8,7 @@ import cors from "cors";
 import qs from "qs";
 import analyticsRoutes from "./routes/analyticsroutes.js";
 import mediafolderRoutes from "./routes/mediafolder.js";
+import hansurjamitraRoutes from "./routes/hansurjamitra.js";
 
 dotenv.config();
 
@@ -36,7 +37,7 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  methods: ["GET", "POST", "PUT", "DELETE","PATCH"],
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
 }));
@@ -58,6 +59,9 @@ app.use("/api/mediafolder", mediafolderRoutes); // for handling the media folder
 
 // public routes
 app.use("/api/public", publicCustomerRoutes); // for handling the public customer data routes
+
+// hansurja mitra routes
+app.use("/api", hansurjamitraRoutes); // for handling the hansurja mitra routes
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

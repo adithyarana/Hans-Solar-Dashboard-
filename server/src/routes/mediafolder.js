@@ -6,11 +6,11 @@ import { upload } from "../middlewares/multer.js";
 
 const router = express.Router();
 
-router.post("/createfolder/:id" , verifyRole(["ADMIN", "EMPLOYEE"]), upload.fields([
+router.post("/createfolder/:id" , verifyRole(["ADMIN", "EMPLOYEE","HANSURJAMITRA"]), upload.fields([
   { name: "attachments", maxCount: 10 },
 ]), CreateFolder)
-router.get("/getallmediafolderdata" , verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), Getallmediafolderdata)
-router.get("/getfolder/:id" , verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), GetFolderDataById)
+router.get("/getallmediafolderdata" , verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST","HANSURJAMITRA"]), Getallmediafolderdata)
+router.get("/getfolder/:id" , verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST","HANSURJAMITRA"]), GetFolderDataById)
 router.delete("/deletefolder/:id" , verifyRole(["ADMIN"]), DeleteFolder)
 
 export default router

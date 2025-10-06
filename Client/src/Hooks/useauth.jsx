@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { LoginApi } from "../constants/Apiurls";
+import { LoginApi, LoginHansUrja } from "../constants/Apiurls";
 import { useDispatch } from "react-redux";
 import { LoggedInUser } from "../utils/UserSlice";
 
@@ -8,10 +8,10 @@ const useauth = () => {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
 
-  const Apicall = async (name, email, password) => {
+  const Apicall = async (name, email, password, option) => {
     try {
       const userdata = await axios.post(
-        LoginApi,
+        option === "HANSURJA" ? LoginHansUrja : LoginApi,
         { name, email, password },
         { withCredentials: true }
       );

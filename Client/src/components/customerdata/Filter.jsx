@@ -57,6 +57,30 @@ const empid = [
   "HANS20",
 ]
 
+const leadstages =[
+  {value:"",label:"Select Status"},
+  {value:"NEW_LEAD",label:"New Lead"},
+  {value:"IN_PROCESS",label:"In Process"},
+  {value:"QUALIFIED",label:"Qualified"},
+  {value:"SITE_VISIT_SCHEDULE",label:"Site Visit Scheduled"},
+  {value:"SITE_VISIT_DONE",label:"Site Visit Done"},
+  {value:"ESTIMATE_SENT",label:"Estimate Sent"},
+  {value:"NEGOTIATION",label:"Negotiation"},
+  {value:"LEAD_LOST",label:"Lead Lost"},
+  {value:"ON_HOLD",label:"On Hold"},
+  {value:"LEAD_WON",label:"Lead Won"},
+  {value:"Registration",label:"Registration"},
+  {value:"Application",label:"Application"},
+  {value:"Feasibility",label:"Feasibility"},
+  {value:"Vendor_Selection",label:"Vendor Selection"},
+  {value:"Upload_Agreement",label:"Upload Agreement"},
+  {value:"Installation",label:"Installation"},
+  {value:"Inspection",label:"Inspection"},
+  {value:"Project_Commissioning",label:"Project Commissioning"},
+  {value:"Subsidy_Request",label:"Subsidy Request"},
+  {value:"Subsidy_Disbursal",label:"Subsidy Disbursal"},
+]
+
 const Filter = ({ handleFilter, closefilter }) => {
 
   const user = useSelector((state)=>state?.userdata?.user)
@@ -136,17 +160,9 @@ const Filter = ({ handleFilter, closefilter }) => {
             onChange={handleChange}
             className="w-full p-2 border rounded-lg focus:ring focus:ring-blue-300"
           >
-            <option value="">Select Status</option>
-            <option value="NEW_LEAD">New Lead</option>
-            <option value="IN_PROCESS">In Process</option>
-            <option value="QUALIFIED">Qualified</option>
-            <option value="SITE_VISIT_SCHEDULE">Site Visit Scheduled</option>
-            <option value="SITE_VISIT_DONE">Site Visit Done</option>
-            <option value="ESTIMATE_SENT">Estimate Sent</option>
-            <option value="NEGOTIATION">Negotiation</option>
-            <option value="LEAD_LOST">Lead Lost</option>
-            <option value="ON_HOLD">On Hold</option>
-            <option value="LEAD_WON">Lead Won</option>
+          {leadstages.map((leadstage,idx)=>(
+            <option  key={idx} value={leadstage.value}>{leadstage.label}</option>
+          ))}
           </select>
         </div>
 

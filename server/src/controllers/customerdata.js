@@ -101,11 +101,9 @@ export const Addcustomerdata = async (req, res) => {
       notes,
       followUp,
       workCategory,
-      reelsVideo,
       startDate,
       leadStage,
       priority,
-      progressBoard,
     } = req.body;
 
  
@@ -148,18 +146,17 @@ export const Addcustomerdata = async (req, res) => {
       ...(notes && { notes }),
       followUp: followUp ? new Date(followUp) : null,
       ...(workCategory && { workCategory }),
-      ...(reelsVideo && { reelsVideo }),
       startDate: startDate ? new Date(startDate) : null,
       leadStage,
       priority,
-      progressBoard,
-      // images: imageUrls,
-      // attachments: attachmentUrls,
       createdById: req.user.userId,
       createdByEmpId: req.user.empid,
+      ...(req.user.role === "HANSURJAMITRA" && { createdByHansUrjaId: req.hansUrja.hansurjaId }),
+
+      
       updateHistory:[{
         createdAt: new Date(),
-        empId: req.user.empid || "Admin",
+        empId: req.user.role === "HANSURJAMITRA" ? req.hansUrja.hansurjaId : (req.user.empid || "Admin"),
         
       }],
     };
@@ -198,9 +195,12 @@ export const getallcustomerdata = async (req, res) => {
     
     let where = {};
 
-    if (req.user.role === "EMPLOYEE") {
-      where.createdById = req.user.userId;
+    if (req.user.role === "EMPLOYEE" ) {
       where.createdByEmpId = req.user.empid;
+    }
+
+    if(req.user.role === "HANSURJAMITRA"){
+      where.createdByHansUrjaId = req.hansUrja.hansurjaId;
     }
 
     if (name) where.name = { contains: name, mode: "insensitive" };
@@ -248,11 +248,14 @@ export const getCustomerdataById = async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    // if role is employee only get his lead data
+    // if role is employee and hansurja only get his lead data
 
     if (
       req.user.role === "EMPLOYEE" &&
-      customer.createdById !== req.user.userId
+      customer.createdById !== req.user.userId 
+      ||
+      req.user.role === "HANSURJAMITRA" &&
+      customer.createdByHansUrjaId !== req.hansUrja?.hansurjaId
     ) {
       return res.status(403).json({
         message: "Forbidden - You are not authorized to access this data",
@@ -284,15 +287,17 @@ export const updateCustomerdata = async (req, res) => {
       return res.status(404).json({ message: "Customer not found" });
     }
 
-    if (
-      req.user.role === "EMPLOYEE" &&
-      customer.createdById !== req.user.userId
-    ) {
+    if (req.user.role === "EMPLOYEE" && customer.createdById !== req.user.userId) {
       return res.status(403).json({
-        message: "Forbidden - You are not authorized to access this data",
+        message: "Forbidden - You can only update leads you created",
       });
     }
-
+    
+    if (req.user.role === "HANSURJAMITRA" && customer.createdByHansUrjaId !== req.hansUrja.hansurjaId) {
+      return res.status(403).json({
+        message: "Forbidden - You can only update leads you created",
+      });
+    }
     // Parse location safely
     let parsedLocation = null;
     if (req.body?.location) {
@@ -355,13 +360,11 @@ export const updateCustomerdata = async (req, res) => {
       data: {
         ...rest,
         location: parsedLocation ? parsedLocation : undefined,
-        // attachments: attachmentsUpdate,
-        // images: imagesUpdate,
 
         // store update history 
         updateHistory:{
           push:{
-            empId: req.user.empid || "Admin",
+            empId: req.user.role === "EMPLOYEE" ? req.user.empid : (req.user.role === "HANSURJAMITRA" ? req.hansUrja.hansurjaId : "Admin"),
             updatedAt: new Date(),
             changes,
           }
@@ -374,6 +377,7 @@ export const updateCustomerdata = async (req, res) => {
       customer: updatedCustomer,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };

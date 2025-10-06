@@ -55,6 +55,7 @@ export const Analytics= async(req, res)=>{
                 followUp:true,
                 leadStage:true,
                 createdByEmpId:true,
+                createdByHansUrjaId:true,
 
 
             }
@@ -85,6 +86,8 @@ export const EmployeeAnalytics = async (req, res) => {
         const loggedInrole = req.user.role;
         const requestedEmpId = req.params.empid;
         const correctrequestedEmpId = requestedEmpId.slice(1); 
+
+    
 
         // For employees, they can only view their own analytics
         if (loggedInrole === "EMPLOYEE" && loggedInempid !== correctrequestedEmpId) {
@@ -144,19 +147,112 @@ export const EmployeeAnalytics = async (req, res) => {
             }
         })
 
-
-        res.status(200).json({
-            message: "Analytics fetched successfully",
+        const data ={
             empid: loggedInempid,
             countcustomer,
             leadstage,
             priority,
             followUpLead
+        }
+
+
+        res.status(200).json({
+            message: "Analytics fetched successfully",
+            data
         })
 
 
         
     } catch (error) {
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+export const HansUrjaAnalytics = async (req, res) => {
+    try {
+        const loggedInHansUrjaId = req.hansUrja?.hansurjaId;
+        const loggedInrole = req.hansUrja?.role;
+        const requestedHansUrjaId = req.params.hansurjaId;
+        const correctrequestedHansUrjaId = requestedHansUrjaId.slice(1); 
+
+    
+
+        // For employees, they can only view their own analytics
+        if (loggedInrole === "HANSURJAMITRA" && loggedInHansUrjaId !== correctrequestedHansUrjaId) {
+            return res.status(403).json({ message: "Access denied: You can only view your own analytics" });
+        }
+
+        const countcustomer = await prisma.customerData.count({
+            where: {
+                createdByHansUrjaId: loggedInHansUrjaId
+            }
+        });
+
+        const leadStageraw = await prisma.customerData.groupBy({
+            by: ["leadStage"],
+            where: { createdByHansUrjaId: loggedInHansUrjaId },
+            _count: {
+                leadStage: true,
+            },
+        });
+
+        const leadstage = leadStageraw.reduce((acc, curr) => {
+            acc[curr.leadStage] = curr._count.leadStage;
+            return acc;
+        }, {});
+
+        const priorityraw = await prisma.customerData.groupBy({
+            by: ["priority"],
+            where: { createdByHansUrjaId: loggedInHansUrjaId },
+            _count: {
+                priority: true,
+            },
+        });
+
+        const priority = priorityraw.reduce((acc, curr) => {
+            acc[curr.priority] = curr._count.priority;
+            return acc;
+        }, {});
+
+        const todaayDate = new Date();
+
+        const followUpLead = await prisma.customerData.findMany({
+            where:{
+                createdByHansUrjaId: loggedInHansUrjaId,
+                followUp:{
+                    gte: startOfDay(todaayDate), 
+                    lte: endOfDay(todaayDate),  
+                }
+            },
+            select:{
+                id:true,
+                name:true,
+                followUp:true,
+                leadStage:true,
+                createdByHansUrjaId:true,
+
+
+            }
+        })
+
+        const data ={
+            hansurjaId: loggedInHansUrjaId,
+            countcustomer,
+            leadstage,
+            priority,
+            followUpLead
+        }
+
+
+        res.status(200).json({
+            message: "Hans Urja Mitra analytics fetched successfully",
+            data
+        })
+
+
+        
+    } catch (error) {
+        console.log(error);
         return res.status(500).json({ message: "Internal Server Error" });
     }
 }

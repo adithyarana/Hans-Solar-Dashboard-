@@ -10,7 +10,6 @@ import DashboadLayout from "./Layouts/DashboardLayout.jsx";
 import Protectedroutes from "./utils/Protectedroutes";
 import { lazy, Suspense } from "react";
 
-
 // using lazy loading
 
 const MainDashboard = lazy(() => import("./pages/Dashboard/MainDashboard"));
@@ -20,12 +19,18 @@ const CustomerDetailsPage = lazy(() =>
   import("./pages/Dashboard/CustomerDetailsPage")
 );
 const Profile = lazy(() => import("./pages/Dashboard/Profile"));
+const HumPage = lazy(() => import("./pages/HUM/HumPage"));
+const HumDetailsPage = lazy(() => import("./pages/HUM/HumDetailsPage"));
 
 const Router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+        </div>
+      }>
         <Login />
       </Suspense>
     ),
@@ -33,7 +38,11 @@ const Router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="flex justify-center items-center h-40">
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+        </div>
+      }>
         <DashboadLayout />,
       </Suspense>
     ),
@@ -41,7 +50,11 @@ const Router = createBrowserRouter([
       {
         path: "/dashboard",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+            </div>
+          }>
             <Protectedroutes>
               <MainDashboard />
             </Protectedroutes>
@@ -51,7 +64,11 @@ const Router = createBrowserRouter([
       {
         path: "/dashboard/customers",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+            </div>
+          }>
             <Protectedroutes>
               <CustomersData />
             </Protectedroutes>
@@ -61,7 +78,11 @@ const Router = createBrowserRouter([
       {
         path: "/dashboard/employees",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+            </div>
+          }>
             <Protectedroutes>
               <EmployesData />
             </Protectedroutes>
@@ -69,9 +90,43 @@ const Router = createBrowserRouter([
         ),
       },
       {
+        path: "/dashboard/hum",
+        element: (
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+            </div>
+          }>
+            <Protectedroutes>
+              <HumPage />
+            </Protectedroutes>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/dashboard/hum/:id",
+        element: (
+          <Suspense fallback={
+            <div className="flex justify-center items-center h-40">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+            </div>
+          }>
+            <Protectedroutes>
+              <HumDetailsPage />
+            </Protectedroutes>
+          </Suspense>
+        ),
+      },
+      {
         path: "/dashboard/customers/:id",
         element: (
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense
+            fallback={
+              <div className="flex justify-center items-center h-40">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-orange-600"></div>
+              </div>
+            }
+          >
             <Protectedroutes>
               <CustomerDetailsPage />
             </Protectedroutes>

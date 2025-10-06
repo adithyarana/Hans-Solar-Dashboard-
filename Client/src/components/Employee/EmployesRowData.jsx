@@ -15,12 +15,13 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
   const { Apicall, loading:deleteloading } = useDeleteEmploye();
 
   if(!employeeData || employeeData.length === 0){
-    return (
-      <div className="flex justify-center mt-20 items-center h-full">
-        <p className="text-gray-600 text-2xl">No employee data available ! </p>
+    return(
+      <div className="flex justify-center items-center h-40">
+        <div className='text-gray-500 text-2xl font-semibold'>No Employee Data. Please Add !</div>
       </div>
     )
   }
+
 
   const maskPassword = () => {
     return "********";
@@ -67,7 +68,7 @@ const EmployeesRowData = ({ employeeData, loading , refetch }) => {
       <div className="overflow-x-auto shadow rounded-lg">
         <table className="w-full border-collapse bg-white">
           <thead>
-            <tr className="bg-gradient-to-b from-orange-500 to-red-500 text-white text-left">
+            <tr className="bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 text-white text-left">
               <th className="p-3 border-b">Emp Id</th>
               <th className="p-3 border-b">Name</th>
               <th className="p-3 border-b">Email</th>

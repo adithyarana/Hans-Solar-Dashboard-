@@ -15,11 +15,11 @@ const NotesViwer = ({notesdata}) => {
           <div className="border border-gray-300 rounded-lg shadow-sm bg-white">
             <ReactQuill
               theme="snow"
-              value={notesdata.notes || "No Notes Created !"}
+              value={notesdata?.notes || "No Notes Created !"}
               readOnly={true}
               modules={{ toolbar: false }}
               className="bg-white"
-              style={{ height: "200px" }} 
+              style={{ height: "250px" }} 
             />
           </div>
         </div>

@@ -6,31 +6,52 @@ import prisma from "../utils/prisma.js";
 
 dotenv.config();
 
-async function countEmployee() {
-  const lastemployee = await prisma.user.findFirst({
+async function countHansUrja() {
+  const lasthansurja = await prisma.hansUrja.findFirst({
     where: {
-      role: { in: ["EMPLOYEE", "RECEPTIONIST"] },
+      role:"HANSURJAMITRA",
     },
     orderBy: {
-      empid: "desc",
+      hansurjaId: "desc",
     },
   });
 
-  let newempid = 1;
+  let newhansurjaId = 1;
 
-  if (lastemployee?.empid) {
-    const num = parseInt(lastemployee.empid.replace("EMP", ""), 10);
-    newempid = num + 1;
+  if (lasthansurja?.hansurjaId) {
+    const num = parseInt(lasthansurja.hansurjaId.replace("HUM", ""), 10);
+    newhansurjaId = num + 1;
   }
 
-  return `EMP${String(newempid).padStart(2, "0")}`;
+  return `HUM${String(newhansurjaId).padStart(2, "0")}`;
 }
 
-export const registerUser = async (req, res) => {
+export const registerHansUrja = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const {
+      name,
+      profilePic,
+      email,
+      password,
+      role = "HANSURJAMITRA",
+      phoneNumber,
+      whatsappNumber,
+      address,
+      birthday,
+      state,
+      district,
+      tehsil,
+      village,
+      infoSource,
+      notes,
+      followUp,
+      workCategory,
+      startDate,
+      aadhaarNumber,
+      panNumber,
+    } = req.body;
 
-    if (!name || !email || !password || !role) {
+    if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -38,7 +59,7 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: "Invalid email" });
     }
 
-    const existingUser = await prisma.user.findUnique({
+    const existingUser = await prisma.hansUrja.findUnique({
       where: {
         email,
       },
@@ -51,34 +72,49 @@ export const registerUser = async (req, res) => {
     if (req.user.role !== "ADMIN") {
       return res
         .status(403)
-        .json({ message: "Forbidden - Admins only can create employees" });
+        .json({ message: "Forbidden - Admins only can create Hans Urja Mitra" });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
 
     const LowerCaseName = name.toLowerCase();
 
-    let empId;
-    if(role === "EMPLOYEE" || role === "RECEPTIONIST"){
-      empId = await countEmployee();
+    let Id;
+    if(role === "HANSURJAMITRA"){
+      Id = await countHansUrja();
     }
 
-    const CreateUser = {
+    const CreateHansUrja = {
       name: LowerCaseName,
       email,
       password: hashPassword,
-      normalpass: password,
       role,
-      empid: empId,
+      profilePic,
+      phoneNumber,
+      whatsappNumber,
+      ...(address && { address }),
+      birthday: birthday ? new Date(birthday) : null,
+      state,
+      district,
+      tehsil,
+      village,
+      ...(infoSource && { infoSource }),
+      ...(notes && { notes }),
+      followUp: followUp ? new Date(followUp) : null,
+      ...(workCategory && { workCategory }),
+      startDate: startDate ? new Date(startDate) : null,
+      ...(aadhaarNumber && { aadhaarNumber }),
+      ...(panNumber && { panNumber }),
+      ...(Id && { hansurjaId: Id }),
     };
 
-    const newuser = await prisma.user.create({
-      data: CreateUser,
+    const newuser = await prisma.hansUrja.create({
+      data: CreateHansUrja,
     });
 
     return res
       .status(200)
-      .json({ message: "Employee created successfully", user: newuser });
+      .json({ message: "Hans Urja Mitra created successfully", user: newuser });
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
@@ -86,7 +122,7 @@ export const registerUser = async (req, res) => {
 
 // where role is employee and he want to login
 
-export const login = async (req, res) => {
+export const loginHansUrja = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -100,7 +136,7 @@ export const login = async (req, res) => {
       return res.status(400).json({ message: "Invalid email" });
     }
 
-    const user = await prisma.user.findUnique({
+    const user = await prisma.hansUrja.findUnique({
       where: {
         email,
       },
@@ -120,15 +156,15 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "INVALID CREDENTIALS" });
     }
 
-
     // token and jwt logic here
-    
+
     // generate token
     const token = jwt.sign(
-      { 
-        userId: user.id, 
+      {
+        userId: user.id,
         role: user.role,
-        empid: user.empid  // Include empid in the token payload
+        hansurjaId: user.hansurjaId, // Include empid in the token payload
+     
       },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
@@ -141,27 +177,23 @@ export const login = async (req, res) => {
       maxAge: 24 * 60 * 60 * 1000,
     });
 
-    res
-      .status(200)
-      .json({
-        message: "Login successful",
-        token,
-        user: {
-          userId: user.id,
-          name: user.name,
-          email: user.email,
-          normalpass: user.normalpass,
-          role: user.role,
-          empid: user.empid,
-        },
-
-      });
+    res.status(200).json({
+      message: "Login successful",
+      token,
+      user: {
+        userId: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        hansurjaId: user.hansurjaId,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ message: "Internal Server Error" });
   }
 };
 
-export const logout = async (req, res) => {
+export const logoutHansUrja = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,

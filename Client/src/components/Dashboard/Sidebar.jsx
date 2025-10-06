@@ -120,6 +120,32 @@ const Sidebar = () => {
             </NavLink>
           )}
 
+          {/* Hum page */}
+
+          {user.role === "ADMIN" && (
+            <NavLink
+              to="/dashboard/hum"
+              className={({ isActive }) =>
+                `flex items-center gap-3 px-3 py-2 rounded-lg transition-all
+       ${
+         isActive
+           ? "bg-orange-100 text-orange-500 font-semibold"
+           : "text-gray-600 hover:bg-gray-100"
+       }`
+              }
+            >
+              <LuUser size={22} />
+              <motion.span
+                initial={{ opacity: 0 }}
+                animate={{ opacity: toggle ? 1 : 0 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+              >
+                {toggle && "HUM ☀️"}
+              </motion.span>
+            </NavLink>
+          )}
+
+
           <NavLink
             to="/dashboard/profile"
             className={({ isActive }) =>

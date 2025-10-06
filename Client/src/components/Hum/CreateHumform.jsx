@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
-import usePostcustomerData from "../../Hooks/usePostcustomerData";
 import { toast } from "react-toastify";
-import useUpdateLead from "../../Hooks/useUpdateLead";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
+import usepostdata from "../../Hooks/HUM/usepostdata";
+import useUpdateHum from "../../Hooks/HUM/useupdate";
 
 const indianStates = [
   "Andhra Pradesh",
@@ -38,30 +38,6 @@ const indianStates = [
   "West Bengal",
 ];
 
-const Leadstages = [
-  { lable: "New Lead", value: "NEW_LEAD" },
-  { lable: "In Process", value: "IN_PROCESS" },
-  { lable: "Qualified", value: "QUALIFIED" },
-  { lable: "Site Visit Scheduled", value: "SITE_VISIT_SCHEDULE" },
-  { lable: "Site Visit Done", value: "SITE_VISIT_DONE" },
-  { lable: "Estimate Sent", value: "ESTIMATE_SENT" },
-  { lable: "Negotiation", value: "NEGOTIATION" },
-  { lable: "Lead Lost", value: "LEAD_LOST" },
-  { lable: "On Hold", value: "ON_HOLD" },
-  { lable: "Lead Won", value: "LEAD_WON" },
-  // subsidy process
-  { lable: "Registration", value: "Registration" },
-  { lable: "Application", value: "Application" },
-  { lable: "Feasibility", value: "Feasibility" },
-  { lable: "Vendor Selection", value: "Vendor_Selection" },
-  { lable: "Upload Agreement", value: "Upload_Agreement" },
-  { lable: "Installation", value: "Installation" },
-  { lable: "Inspection", value: "Inspection" },
-  { lable: "Project Commissioning", value: "Project_Commissioning" },
-  { lable: "Subsidy Request", value: "Subsidy_Request" },
-  { lable: "Subsidy Disbursal", value: "Subsidy_Disbursal" },
-];
-
 const modules = {
   toolbar: {
     container: [
@@ -87,7 +63,7 @@ const formats = [
 ];
 
 
-const CreateLeadForm = ({
+const CreateHumForm = ({
   close,
   refetch,
   closeedit,
@@ -96,14 +72,14 @@ const CreateLeadForm = ({
   onSuccessId,
 }) => {
   const [loading, setloading] = useState(false);
-  const { Apicall } = usePostcustomerData(); // custom hook for post customer data
-  const { UpdateApicall } = useUpdateLead();
+  const{postHumdata} = usepostdata()
+  const{UpdateApicall} = useUpdateHum()
   return (
     <div className="max-w-6xl mx-auto p-6  bg-gray-50 rounded-2xl">
       <h2 className="text-2xl font-semibold mb-6 text-center text-gray-800">
         <span className="text-orange-500 font-semibold">
           {" "}
-          {initialData ? "Edit" : "Create"} Lead
+          {initialData ? "Edit" : "Create"} Hum
         </span>
       </h2>
 
@@ -113,7 +89,7 @@ const CreateLeadForm = ({
           email: initialData?.email || "",
           phoneNumber: initialData?.phoneNumber || "",
           whatsappNumber: initialData?.whatsappNumber || "",
-          interestAreas: initialData?.interestAreas || "",
+          password: initialData?.password || "",
           address: initialData?.address || "",
           birthday: initialData?.birthday || "",
           infoSource: initialData?.infoSource || "",
@@ -121,22 +97,21 @@ const CreateLeadForm = ({
           followUp: initialData?.followUp || "",
           workCategory: initialData?.workCategory || "",
           startDate: initialData?.startDate || "",
-          leadStage: initialData?.leadStage || "NEW_LEAD",
-          priority: initialData?.priority || "LOW",
           state: initialData?.state || "",
           district: initialData?.district || "",
           tehsil: initialData?.tehsil || "",
           village: initialData?.village || "",
-          // images: initialData?.images || [],
-          // attachments: initialData?.attachments || [],
+          aadhaarNumber: initialData?.aadhaarNumber || "",
+          panNumber: initialData?.panNumber || "",
+       
         }}
         enableReinitialize
         validate={(value) => {
           let errors = {};
 
           if (!value.name) errors.name = "Name is required";
-          if (!value.phoneNumber)
-            errors.phoneNumber = "Phone number is required";
+          if(!value.email) errors.email = "Email is required";
+          if(!value.password) errors.password = "Password is required";
           return errors;
         }}
         onSubmit={async (values, { resetForm }) => {
@@ -180,7 +155,7 @@ const CreateLeadForm = ({
               // update lead
               result = await UpdateApicall(id, formData);
               if (result) {
-                toast.success("Lead updated successfully");
+                toast.success("Hum updated successfully");
                 // navigate("/dashboard/customers");
                 closeedit?.(false);
                 onSuccessId?.();
@@ -189,9 +164,9 @@ const CreateLeadForm = ({
             } else {
               // create lead
               setloading(true);
-              result = await Apicall(formData);
+              result = await postHumdata(formData);
               if (result) {
-                toast.success("Lead created successfully");
+                toast.success("Hum created successfully");
                 resetForm();
                 close?.(false);
                 refetch?.();
@@ -202,8 +177,8 @@ const CreateLeadForm = ({
             toast.error(
               error.response?.data?.message ||
                 (initialData
-                  ? "Failed to update lead"
-                  : "Failed to create lead")
+                  ? "Failed to update Hum"
+                  : "Failed to create Hum")
             );
           }
         }}
@@ -251,11 +226,25 @@ const CreateLeadForm = ({
               )}
             </div>
 
+                 {/* Password */}
+                 <div>
+              <label className="block font-medium mb-1">Password</label>
+              <Field
+                type="password"
+                name="password"
+                placeholder="Enter password"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
+              />
+              {errors.password && touched.password && (
+                <div className="text-red-500">{errors.password}</div>
+              )}
+            </div>
+
             {/* Phone Number */}
             <div>
               <label className="block font-medium mb-1">Phone Number</label>
               <Field
-                type="number"
+                type="text"
                 name="phoneNumber"
                 value={values.phoneNumber}
                 onChange={handleChange}
@@ -263,69 +252,25 @@ const CreateLeadForm = ({
                 placeholder="Enter phone number"
                 className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
-              {errors.phoneNumber && touched.phoneNumber && (
-                <div className="text-red-500">{errors.phoneNumber}</div>
-              )}
+              
             </div>
 
             {/* WhatsApp Number */}
             <div>
               <label className="block font-medium mb-1">WhatsApp Number</label>
               <Field
-                type="number"
+                type="text"
                 name="whatsappNumber"
+                value={values.whatsappNumber}
+                onChange={handleChange}
+                onBlur={handleBlur}
                 placeholder="Enter WhatsApp number"
                 className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
+           
             </div>
 
-            {/* Address - Full Width */}
-            <div className="md:col-span-2">
-              <label className="block font-medium mb-1">Address</label>
-              <Field
-                type="text"
-                name="address"
-                placeholder="Enter address"
-                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
-              />
-            </div>
-
-            {/* Interest Areas */}
-            <div>
-              <label className="block font-medium mb-1">Looking For</label>
-              <Field
-                as="select"
-                name="interestAreas"
-                value={values.interestAreas}
-                onChange={(e) => setFieldValue("interestAreas", e.target.value)}
-                onBlur={handleBlur}
-                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
-              >
-                <option value="">Select what you are looking for</option>
-                <option className="text-gray-500" value="ONGRID">
-                  ONGRID – Connected to electricity grid, no battery, lower cost
-                </option>
-                <option className="text-gray-500" value="HYBRID">
-                  HYBRID – Works with grid + batteries, backup during power cuts
-                </option>
-                <option className="text-gray-500" value="OFFGRID">
-                  OFFGRID – Fully independent, uses only batteries/solar, no
-                  grid
-                </option>
-                <option className="text-gray-500" value="KW_1">
-                  1 KW – Small setup for basic needs
-                </option>
-                <option className="text-gray-500" value="KW_2">
-                  2 KW – Suitable for small homes
-                </option>
-                <option className="text-gray-500" value="KW_3">
-                  3 KW – Medium household usage
-                </option>
-                <option className="text-gray-500" value="KW_4">
-                  4 KW – Higher usage homes
-                </option>
-              </Field>
-            </div>
+      
 
             {/* Birthday */}
             <div>
@@ -380,53 +325,8 @@ const CreateLeadForm = ({
               />
             </div>
 
-            {/* Lead Stage */}
-            <div>
-              <label className="block font-medium mb-1">Lead Stage</label>
-              <Field
-                as="select"
-                name="leadStage"
-                value={values.leadStage}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
-              >
-                {Leadstages.map((stage) => (
-                  <option key={stage.value} value={stage.value}>
-                    {stage.lable}
-                  </option>
-                ))}
-              </Field>
-              {errors.leadStage && touched.leadStage && (
-                <div className="text-red-500">{errors.leadStage}</div>
-              )}
-            </div>
+        
 
-            {/* Priority */}
-            <div>
-              <label className="block font-medium mb-1">Priority</label>
-              <Field
-                as="select"
-                name="priority"
-                value={values.priority}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
-              >
-                <option className="text-gray-500" value="LOW">
-                  Low
-                </option>
-                <option className="text-gray-500" value="MEDIUM">
-                  Medium
-                </option>
-                <option className="text-gray-500" value="HIGH">
-                  High
-                </option>
-              </Field>
-              {errors.priority && touched.priority && (
-                <div className="text-red-500">{errors.priority}</div>
-              )}
-            </div>
 
             {/* Location (State, District, Tehsil, Village) */}
             <div>
@@ -471,6 +371,38 @@ const CreateLeadForm = ({
                 name="village"
                 placeholder="Enter village"
                 className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
+
+            <div>
+              <label className="block font-medium mb-1">Aadhaar Number</label>
+              <Field
+                type="text"
+                name="aadhaarNumber"
+                placeholder="Enter aadhaar number"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
+
+            <div>
+              <label className="block font-medium mb-1">Pan Number</label>
+              <Field
+                type="text"
+                name="panNumber"
+                placeholder="Enter pan number"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-orange-300"
+              />
+            </div>
+
+            
+            {/* Address - Full Width */}
+            <div className="md:col-span-2">
+              <label className="block font-medium mb-1">Address</label>
+              <Field
+                type="text"
+                name="address"
+                placeholder="Enter address"
+                className="w-full p-2 border border-gray-400 rounded-lg focus:ring focus:ring-blue-300"
               />
             </div>
 
@@ -540,4 +472,4 @@ const CreateLeadForm = ({
   );
 };
 
-export default CreateLeadForm;
+export default CreateHumForm;

@@ -13,7 +13,7 @@ const router = Router();
 
 router.post(
   "/addcustomerdata",
-  verifyRole(["ADMIN", "EMPLOYEE"]),
+  verifyRole(["ADMIN", "EMPLOYEE", "HANSURJAMITRA"]),
   upload.fields([
     { name: "images", maxCount: 5 },
     { name: "attachments", maxCount: 5 },
@@ -23,9 +23,9 @@ router.post(
 
 router.post("/bulkuploaddata", verifyRole(["ADMIN"]), uploadLocal.single("file"), BulkUploaddata);
 
-router.get("/getallcustomerdata", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), getallcustomerdata);
-router.get("/getcustomerbyid/:id", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST"]), getCustomerdataById);
-router.put("/updatecustomer/:id", verifyRole(["ADMIN", "EMPLOYEE"]), updateCustomerdata);
+router.get("/getallcustomerdata", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST", "HANSURJAMITRA"]), getallcustomerdata);
+router.get("/getcustomerbyid/:id", verifyRole(["ADMIN", "EMPLOYEE", "RECEPTIONIST", "HANSURJAMITRA"]), getCustomerdataById);
+router.put("/updatecustomer/:id", verifyRole(["ADMIN", "EMPLOYEE", "HANSURJAMITRA"]), updateCustomerdata);
 router.delete("/deletecustomer/:id", verifyRole(["ADMIN"]), deleteCustomerdata);
 
 

@@ -68,10 +68,10 @@ if(loading){
             <tr
               key={index}
               className="hover:bg-orange-100  transition border-b cursor-pointer border-gray-300"
-              onClick={() => navigate(`/dashboard/customers/${item.id}`, { state: { page, search: location.search } })}
+              onClick={() => window.open(`/dashboard/customers/${item.id}`,'_blank')}
             >
              {user.role === "ADMIN" && (
-              <td className="px-4 py-2 font-semibold">{item.createdByEmpId || "ADMIN"}</td>
+              <td className="px-4 py-2 font-semibold">{item.createdByHansUrjaId ? item.createdByHansUrjaId : item.createdByEmpId || "ADMIN"}</td>
              )}
               <td className="px-4 py-2 font-semibold">{item.customerId ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>
               <td className="px-4 py-2">{item.name ||<span className="text-gray-500 text-2xl text-center">-</span>}</td>

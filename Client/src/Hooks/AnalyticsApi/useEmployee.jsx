@@ -16,7 +16,7 @@ const useEmployeeAnalytics = (empid, enabled = true) => {
           "Content-Type": "application/json",
         },
       });
-      setEmployeeAnalyticsData(response.data);
+      setEmployeeAnalyticsData(response.data?.data);
     } catch (error) {
        toast.error(error?.response?.data?.message);
     

@@ -96,7 +96,7 @@ const EmployeeAnalytics = ({data,loading}) => {
 
           
       {/* leadstage dashboard */}
-      <Leadstages prioritydata={data?.priority} data={data?.leadstage} loading={loading} />
+      <Leadstages prioritydata={data?.priority} data={data?.leadstage} followupdata={data?.followUpLead} loading={loading} />
     </>
   )
 }

@@ -44,15 +44,31 @@ const UpdatedData = ({ changes, close }) => {
       </div>
 
       {Object.entries(changes)
-        .filter(([field]) => field !== "notes")
         .map(([field, { old, new: newVal }]) => {
+          if (field === "notes") {
+            return (
+              <div
+                key={field}
+                className="mb-5 p-4 rounded-lg bg-gray-50 shadow-sm "
+              >
+                <div className="text-base font-semibold text-gray-700 capitalize">
+                  Notes
+                </div>
+                <div className="mt-3">
+                  <span className="text-blue-700 font-semibold flex justify-center items-center w-[300px] bg-blue-50 px-2 py-1 rounded-md text-sm">
+                    Notes updated
+                  </span>
+                </div>
+              </div>
+            );
+          }
           const formattedOld =
-            field === "birthday" || field === "startDate"
+            field === "birthday" || field === "startDate" || field === "followUp"
               ? FormateDate(old)
               : old || "New Created";
 
           const formattedNew =
-            field === "birthday" || field === "startDate"
+            field === "birthday" || field === "startDate" || field === "followUp"
               ? FormateDate(newVal)
               : newVal;
 

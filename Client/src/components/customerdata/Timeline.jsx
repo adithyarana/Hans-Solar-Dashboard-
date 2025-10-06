@@ -17,7 +17,7 @@ const Timeline = ({ updatedTimeLine }) => {
  
  
   return (
-    <div className="shadow border border-gray-200 rounded w-full h-[400px] overflow-y-auto">
+    <div className="shadow border border-gray-200 rounded w-full h-[450px] overflow-y-auto">
       <h2 className="text-xl font-semibold p-2 text-gray-600">Timeline</h2>
       <div className="flex flex-col p-3 relative">
         {/* timeline items */}

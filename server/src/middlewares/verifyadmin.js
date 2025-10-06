@@ -18,6 +18,8 @@ export const verifyUser = (req, res, next) => {
           .json({ message: "Unauthorized - Invalid token" });
       }
       req.user = decoded;
+      req.hansUrja = decoded;
+
       next();
     });
   } catch (error) {
